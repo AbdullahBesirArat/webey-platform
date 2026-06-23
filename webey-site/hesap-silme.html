@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Hesap Silme | Webey</title>
+  <meta name="description" content="Webey hesabınızı ve kişisel verilerinizi nasıl silersiniz: uygulama içi 'Hesabımı Sil' akışı, e-posta ile talep, silinen ve saklanan veriler, süre ve iletişim."/>
+  <meta name="robots" content="index,follow"/>
+  <link rel="canonical" href="https://webey.com.tr/hesap-silme"/>
+  <link rel="icon" href="img/favicon.ico"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    :root{ --brand:#0ea5b3; --brand-d:#0b8a96; --brand-soft:rgba(14,165,179,.08);
+      --ink:#0d0d0d; --ink-2:#3d3d3d; --ink-3:#6b6b6b; --surface:#fff;
+      --surface-2:#f8f7f4; --border:#e8e6e0; --radius:14px; --radius-lg:22px; }
+    *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0 }
+    body{ font-family:'Inter',system-ui,sans-serif; background:var(--surface-2);
+      color:var(--ink); line-height:1.65; -webkit-font-smoothing:antialiased }
+    a{ color:var(--brand); text-decoration:none } a:hover{ color:var(--brand-d); text-decoration:underline }
+    .nav{ position:sticky; top:0; z-index:100; height:60px; background:rgba(255,255,255,.92);
+      backdrop-filter:blur(16px); border-bottom:1px solid var(--border); display:flex;
+      align-items:center; gap:16px; padding:0 20px }
+    .nav-logo{ font-family:'DM Serif Display',serif; font-style:italic; font-size:21px; color:var(--ink) }
+    .nav-logo em{ color:var(--brand); font-style:normal }
+    .nav-back{ margin-left:auto; font-size:13.5px; font-weight:500; color:var(--ink-3); display:flex; align-items:center; gap:6px }
+    .hero{ background:linear-gradient(135deg,#e6f9fb 0%,#f8f7f4 60%); border-bottom:1px solid var(--border);
+      padding:48px 20px 40px; text-align:center }
+    .hero .badge{ display:inline-flex; align-items:center; gap:7px; background:var(--surface);
+      border:1px solid var(--border); border-radius:999px; padding:6px 14px; font-size:12.5px;
+      font-weight:600; color:var(--brand-d); margin-bottom:16px }
+    .hero h1{ font-family:'DM Serif Display',serif; font-size:30px; font-weight:400; color:var(--ink); margin-bottom:8px }
+    .hero p{ color:var(--ink-3); font-size:14.5px; max-width:620px; margin:0 auto }
+    .wrap{ max-width:760px; margin:0 auto; padding:36px 20px 56px }
+    .card{ background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg);
+      padding:26px 24px; margin-bottom:18px }
+    .card h2{ font-size:18px; font-weight:700; color:var(--ink); margin-bottom:12px; display:flex; align-items:center; gap:9px }
+    .card h2 i{ color:var(--brand); font-size:16px }
+    .card p{ color:var(--ink-2); font-size:14.5px; margin-bottom:10px }
+    .card ul{ padding-left:20px; color:var(--ink-2); font-size:14.5px }
+    .card li{ margin-bottom:7px }
+    .steps{ counter-reset:step; list-style:none; padding:0 }
+    .steps li{ position:relative; padding:0 0 14px 42px; color:var(--ink-2); font-size:14.5px }
+    .steps li::before{ counter-increment:step; content:counter(step); position:absolute; left:0; top:-2px;
+      width:28px; height:28px; border-radius:50%; background:var(--brand-soft); color:var(--brand-d);
+      font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center }
+    .callout{ background:var(--brand-soft); border:1px solid rgba(14,165,179,.25); border-radius:var(--radius);
+      padding:14px 16px; font-size:14px; color:var(--ink-2); display:flex; gap:10px }
+    .callout i{ color:var(--brand-d); margin-top:2px }
+    .btn{ display:inline-flex; align-items:center; gap:8px; background:var(--brand); color:#fff;
+      font-weight:600; font-size:14.5px; padding:13px 22px; border-radius:12px; margin-top:6px }
+    .btn:hover{ background:var(--brand-d); text-decoration:none; color:#fff }
+    .muted{ color:var(--ink-3); font-size:12.5px }
+    .foot{ text-align:center; color:var(--ink-3); font-size:12px; padding:24px 20px 40px; border-top:1px solid var(--border) }
+    .foot a{ color:var(--ink-3) }
+    @media(max-width:600px){ .hero h1{ font-size:25px } .card{ padding:20px 18px } }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <span class="nav-logo">web<em>ey</em></span>
+    <a class="nav-back" href="https://webey.com.tr"><i class="fas fa-arrow-left"></i> Ana sayfa</a>
+  </nav>
+
+  <header class="hero">
+    <span class="badge"><i class="fas fa-user-shield"></i> Hesap &amp; Veri Silme</span>
+    <h1>Hesabını Sil</h1>
+    <p>Webey hesabınızı ve ilişkili kişisel verilerinizi silme talebinde bulunabilirsiniz. Bu sayfa süreci, silinen ve yasal olarak saklanan verileri açıklar.</p>
+  </header>
+
+  <main class="wrap">
+    <section class="card">
+      <h2><i class="fas fa-mobile-screen"></i> Uygulama içinden silme</h2>
+      <p>En hızlı yöntem Webey mobil uygulamasıdır:</p>
+      <ol class="steps">
+        <li>Webey Beauty (müşteri) veya Webey İşletme uygulamasını açın.</li>
+        <li><strong>Profil</strong> ekranına gidin.</li>
+        <li><strong>"Hesabımı Sil"</strong> seçeneğine dokunun.</li>
+        <li>Açılan ekrandaki yönergeleri izleyerek talebinizi gönderin.</li>
+      </ol>
+      <div class="callout"><i class="fas fa-circle-info"></i>
+        <span>Uygulamaya erişiminiz yoksa, aşağıdaki e-posta yöntemiyle de talepte bulunabilirsiniz.</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><i class="fas fa-envelope"></i> E-posta ile silme talebi</h2>
+      <p>Aşağıdaki adrese, hesabınıza kayıtlı telefon veya e-posta ile yazın. Kimliğiniz doğrulandıktan sonra talebiniz işleme alınır.</p>
+      <a class="btn" href="mailto:destek@webey.com.tr?subject=Hesap%20Silme%20Talebi&body=Ad%20Soyad%3A%0AKay%C4%B1tl%C4%B1%20telefon%2Fe-posta%3A%0ATalebim%3A%20Hesab%C4%B1m%C4%B1n%20silinmesini%20talep%20ediyorum.">
+        <i class="fas fa-paper-plane"></i> destek@webey.com.tr
+      </a>
+      <p class="muted" style="margin-top:12px">KVKK kapsamındaki başvurular için: <a href="mailto:kvkk@webey.com.tr">kvkk@webey.com.tr</a></p>
+    </section>
+
+    <section class="card">
+      <h2><i class="fas fa-trash-can"></i> Silinen veriler</h2>
+      <p>Talebiniz onaylandığında aşağıdaki veriler silinir veya anonim hale getirilir:</p>
+      <ul>
+        <li>Hesap bilgileri: ad-soyad, telefon, e-posta</li>
+        <li>Profil görseli ve uygulama tercihleriniz</li>
+        <li>Randevu geçmişi ve favori salonlar</li>
+        <li>Yorum ve değerlendirmeleriniz (talebinize göre anonimleştirilir)</li>
+        <li>Anlık bildirim (push) jetonu</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2><i class="fas fa-scale-balanced"></i> Saklanabilen veriler</h2>
+      <p>Bazı veriler, yasal yükümlülükler ve güvenlik gerekçeleriyle KVKK Madde 5 kapsamında sınırlı bir süre saklanabilir:</p>
+      <ul>
+        <li>Fatura ve işlem kayıtları (ilgili mevzuatın öngördüğü süre boyunca)</li>
+        <li>Güvenlik ve dolandırıcılık önleme amaçlı sınırlı log kayıtları</li>
+      </ul>
+      <p class="muted">Saklama süresi dolan veriler silinir, yok edilir veya anonim hale getirilir. Ayrıntılar için <a href="https://webey.com.tr/gizlilik-politikasi">Gizlilik Politikası</a>.</p>
+    </section>
+
+    <section class="card">
+      <h2><i class="fas fa-building-columns"></i> Kapora ve ödemeler</h2>
+      <div class="callout"><i class="fas fa-circle-info"></i>
+        <span>Webey kapora veya ödeme <strong>tahsil etmez</strong>. Kapora doğrudan randevu aldığınız <strong>salonun IBAN'ına</strong> gönderilir. Hesabınızın silinmesi, salonla aranızdaki geçmiş ödeme/kapora işlemlerini etkilemez; bu konulardaki talepleri doğrudan ilgili salonla çözebilirsiniz.</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><i class="fas fa-clock"></i> Süre</h2>
+      <p>Talepler, kimlik doğrulamasının ardından en geç <strong>30 gün</strong> içinde sonuçlandırılır. İşlem tamamlandığında kayıtlı e-posta veya telefonunuz üzerinden bilgilendirilirsiniz.</p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    Webey Teknoloji A.Ş. · İstanbul ·
+    <a href="https://webey.com.tr/gizlilik-politikasi">Gizlilik</a> ·
+    <a href="https://webey.com.tr/kvkk">KVKK</a> ·
+    <a href="https://webey.com.tr/kullanim-sartlari">Kullanım Şartları</a>
+  </footer>
+</body>
+</html>

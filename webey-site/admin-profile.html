@@ -1,0 +1,697 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#111" />
+  <meta name="google-signin-client_id" content="279602177241-o5qmpgshp4g13jlrunnkav6vdu4hiejv.apps.googleusercontent.com" />
+  <title>Profilim</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <link rel="stylesheet" href="css/admin-profile.css?v=5" />
+  <link rel="stylesheet" href="css/mobile-admin.css" />
+  <link rel="stylesheet" href="css/wb-transitions.css" />
+  <link rel="stylesheet" href="css/wb-bottom-nav.css" />
+  <link rel="stylesheet" href="css/admin-wb.css" />
+</head>
+<body data-page="profile">
+
+  <!-- Rail bar-menu (bar-menu.html'den fetch edilir) -->
+  <div id="rail-mount" aria-hidden="true"></div>
+
+  <!-- ══════ MOBİL ALT NAVİGASYON (≤768px) ══════ -->
+  <nav class="wb-bottom-nav" id="adminBottomNav" aria-label="Admin menü" role="navigation">
+    <div class="wb-bn-inner">
+      <a class="wb-bn-item" href="staff.html" aria-label="Personel">
+        <span class="wb-bn-icon material-symbols-rounded">group</span>
+        <span class="wb-bn-label">Personel</span>
+      </a>
+      <a class="wb-bn-item" href="settings.html" aria-label="Dükkan">
+        <span class="wb-bn-icon material-symbols-rounded">store</span>
+        <span class="wb-bn-label">Dükkan</span>
+      </a>
+      <a class="wb-bn-item wb-bn-cta" href="calendar.html" aria-label="Takvim">
+        <div class="wb-bn-cta-bubble">
+          <span class="wb-bn-icon material-symbols-rounded">calendar_month</span>
+        </div>
+        <span class="wb-bn-label">Takvim</span>
+      </a>
+      <a class="wb-bn-item" href="bildirimler.html" aria-label="Bildirimler">
+        <span class="wb-bn-icon material-symbols-rounded">notifications</span>
+        <span class="wb-bn-label">Bildirim</span>
+      </a>
+      <a class="wb-bn-item is-active" href="admin-profile.html" aria-current="page" aria-label="Profil">
+        <span class="wb-bn-icon material-symbols-rounded">account_circle</span>
+        <span class="wb-bn-label">Profil</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ====== Üst bar ====== -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a id="brandName" class="logo" href="#" title="Profil">Profil</a>
+      <div class="spacer"></div>
+      <button id="logoutBtn" class="btn btn--ghost" type="button">Çıkış Yap</button>
+      <a id="viewProfileBtn" class="btn btn--ghost" href="#" title="Profilimi gör">Profilimi Gör</a>
+    </div>
+  </header>
+
+  <!-- Email doğrulama banner -->
+  <div id="emailVerifyBanner" hidden style="
+    display:none;background:#fef3c7;border-bottom:2px solid #fbbf24;
+    padding:13px 24px;font-size:13.5px;color:#92400e;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  ">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:20px;"></span>
+      <span>
+        <strong>Email adresiniz henüz doğrulanmadı.</strong>
+        Gönderilen doğrulama linkine tıklayın. Spam klasörünü de kontrol edin.
+      </span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button id="resendVerifyProfileBtn" type="button" style="
+        background:#f59e0b;color:#fff;border:none;border-radius:8px;
+        padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer;
+      ">Tekrar Gönder</button>
+      <button id="verifyBannerClose" type="button" style="
+        background:none;border:none;cursor:pointer;color:#92400e;font-size:18px;padding:4px;
+      ">×</button>
+    </div>
+  </div>
+
+  <main class="page wb-page-in" role="main">
+    <div class="page__head">
+      <h1 class="page__title">Profilim</h1>
+      <p class="page__subtitle">Hesap bilgilerinizi, güvenliği ve üyelik/ödeme ayarlarını tek yerden yönetin.</p>
+    </div>
+
+    <!-- Sekmeler -->
+    <div class="tabs" role="tablist" aria-label="Profil sekmeleri">
+      <button class="tab is-active" data-tab="account" role="tab" aria-selected="true">
+        <span class="material-symbols-rounded tab__icon">person</span>
+        Kişisel Bilgiler &amp; Güvenlik
+      </button>
+      <button class="tab" data-tab="billing" role="tab" aria-selected="false">
+        <span class="material-symbols-rounded tab__icon">credit_card</span>
+        Üyelik &amp; Ödeme
+      </button>
+      <button class="tab" data-tab="plans" role="tab" aria-selected="false">
+        <span class="material-symbols-rounded tab__icon">workspace_premium</span>
+        Planlar
+      </button>
+
+    </div>
+
+    <!-- ===== Kişisel Bilgiler & Güvenlik ===== -->
+    <section id="tab-account" class="tab-panel is-active" role="tabpanel">
+      <div class="grid-2col">
+        <section class="card">
+          <div class="card__titlebar">
+            <h2 class="card__title">Hesap Özeti</h2>
+          </div>
+          <div class="kv">
+            <div><span>Kayıt Tarihi</span><strong id="createdAt">—</strong></div>
+            <div><span>Son Giriş</span><strong id="lastLogin">—</strong></div>
+            <div><span>Kullanıcı ID</span><strong id="uid">—</strong></div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card__titlebar">
+            <h2 class="card__title">E-posta</h2>
+          </div>
+          <label class="field">
+            <span>Mevcut E-posta</span>
+            <input id="currentEmail" class="input" disabled />
+          </label>
+          <p class="muted" style="margin-top:-2px;">
+            <span id="emailVerifyBadge" class="badge badge--info">Kontrol ediliyor…</span>
+          </p>
+          <button id="openEmailUpdatePage" class="btn btn--primary" type="button">E-postamı Güncelle</button>
+          <p class="muted">Yeni e-posta doğrulaması için ayrı sayfa açılır.</p>
+        </section>
+
+        <section class="card">
+          <div class="card__titlebar">
+            <h2 class="card__title">Telefon</h2>
+          </div>
+          <label class="field">
+            <span>Mevcut Telefon</span>
+            <input id="currentPhone" class="input" disabled />
+          </label>
+          <button id="openPhoneUpdatePage" class="btn btn--soft" type="button">Telefonu Güncelle</button>
+          <p class="muted">Telefon doğrulaması için ayrı sayfada OTP girilir.</p>
+        </section>
+
+        <section class="card">
+          <div class="card__titlebar">
+            <h2 class="card__title">Şifre</h2>
+          </div>
+          <p class="muted">Şifre değiştirme ekranı yeni sekmede açılır.</p>
+          <button id="openPasswordPage" class="btn btn--primary" type="button">Şifremi Değiştir</button>
+        </section>
+
+        <section class="card">
+          <div class="card__titlebar">
+            <h2 class="card__title">Google Girişi</h2>
+          </div>
+          <p class="muted" style="margin-top:0;">
+            <span id="googleConnectBadge" class="badge badge--info">Kontrol ediliyor…</span>
+          </p>
+          <p id="googleConnectText" class="muted">Google bağlantı durumu yükleniyor.</p>
+          <button id="googleConnectBtn" class="btn btn--soft" type="button">Google hesabını bağla</button>
+        </section>
+      </div>
+    </section>
+
+    <!-- ===== Üyelik & Ödeme ===== -->
+    <section id="tab-billing" class="tab-panel" role="tabpanel">
+
+      <!-- Mevcut Plan Durumu -->
+      <section class="card sub-status-card wb-reveal" id="subStatusCard">
+        <div class="sub-status-card__top">
+          <div class="sub-status-card__info">
+            <div class="sub-status-card__plan-wrap">
+              <span id="statusBadge" class="badge badge--warning">Deneme</span>
+              <h2 id="planName" class="sub-status-card__plan-name">Ücretsiz Deneme</h2>
+            </div>
+            <p id="subStatusText" class="sub-status-card__desc">30 günlük ücretsiz deneme süreniz devam ediyor.</p>
+          </div>
+          <div class="sub-status-card__actions">
+            <button id="manageSubBtn" class="btn btn--primary" type="button">
+              <span class="material-symbols-rounded" style="font-size:17px">rocket_launch</span>
+              Planı Yönet
+            </button>
+          </div>
+        </div>
+
+        <div class="sub-meta-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="sub-meta-item">
+            <span class="sub-meta-label">Plan</span>
+            <strong id="smPlan">—</strong>
+          </div>
+          <div class="sub-meta-item">
+            <span class="sub-meta-label">Durum</span>
+            <strong id="smStatus">—</strong>
+          </div>
+          <div class="sub-meta-item">
+            <span class="sub-meta-label">Dönem Sonu</span>
+            <strong id="smPeriodEnd">—</strong>
+          </div>
+          <div class="sub-meta-item" style="grid-column:1/-1">
+            <span class="sub-meta-label">Ödeme Yöntemi</span>
+            <strong id="smPayMethod">—</strong>
+          </div>
+        </div>
+
+        <div id="trialProgressWrap" class="trial-progress-wrap">
+          <div class="trial-progress-labels">
+            <span id="trialProgressStartLabel">Deneme başladı</span>
+            <span id="trialDaysLeft">— gün kaldı</span>
+          </div>
+          <div class="trial-progress-bar">
+            <div id="trialProgressFill" class="trial-progress-fill" style="width:70%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Kayıtlı Kartlar -->
+      <section class="card">
+        <div class="card__titlebar">
+          <h2 class="card__title">Kayıtlı Kartlarım</h2>
+          <div class="card__titlebar-right">
+            <span class="badge-iyzico">
+              <span class="material-symbols-rounded" style="font-size:13px">lock</span>
+              iyzico güvenceli
+            </span>
+            <button id="addCardBtn" class="btn btn--sm btn--primary" type="button">
+              <span class="material-symbols-rounded" style="font-size:15px">add</span>
+              Kart Ekle
+            </button>
+          </div>
+        </div>
+        <div id="cards" class="cards-list"></div>
+      </section>
+
+      <!-- Fatura Geçmişi -->
+      <section class="card">
+        <div class="card__titlebar">
+          <h2 class="card__title">Fatura Geçmişi</h2>
+          <button id="exportInvoicesBtn" class="btn btn--sm btn--soft" type="button" hidden>
+            <span class="material-symbols-rounded" style="font-size:15px">download</span>
+            Dışa Aktar
+          </button>
+        </div>
+        <div id="invoices" class="invoices-list"></div>
+      </section>
+
+      <!-- Önceki Planlarım -->
+      <section class="card" id="planHistorySection">
+        <div class="card__titlebar">
+          <h2 class="card__title">Önceki Planlarım</h2>
+        </div>
+        <div id="planHistoryList" class="invoices-list"></div>
+      </section>
+
+      <!-- Tehlikeli Bölge -->
+      <section class="card card--danger-zone">
+        <div class="card__titlebar">
+          <h2 class="card__title card__title--danger">Tehlikeli Bölge</h2>
+        </div>
+        <div class="danger-zone-row">
+          <div>
+            <strong>Aboneliği Sonlandır</strong>
+            <p class="muted">Dönem sonunda üyeliğiniz iptal edilir. Kalan süre boyunca erişiminiz devam eder.</p>
+          </div>
+          <button id="cancelAtPeriodEnd" class="btn btn--danger" type="button">
+            <span class="material-symbols-rounded" style="font-size:16px">cancel</span>
+            Aboneliği İptal Et
+          </button>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ===== Planlar ===== -->
+    <section id="tab-plans" class="tab-panel" role="tabpanel">
+
+      <!-- Mevcut Plan Özeti -->
+      <div id="planTabStatusBar" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--r-sm);padding:14px 20px;display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap">
+        <span id="planTabBadge" class="badge badge--success">Aktif</span>
+        <span id="planTabName" style="font-weight:700;font-size:15px">—</span>
+        <span id="planTabEnd" style="color:var(--muted2);font-size:13px"></span>
+        <a href="#" onclick="document.querySelector('[data-tab=billing]').click();return false" style="margin-left:auto;font-size:12px;color:var(--teal)">Ödeme & Fatura →</a>
+      </div>
+
+      <!-- Plan Seçimi -->
+      <section class="card" id="plansSection">
+        <div class="card__titlebar">
+          <h2 class="card__title">Plan Seç</h2>
+          <span class="badge-iyzico">
+            <span class="material-symbols-rounded" style="font-size:13px">lock</span>
+            iyzico güvenli ödeme
+          </span>
+        </div>
+        <p class="section-desc">Dükkanınıza en uygun planı seçin. İstediğiniz zaman plan değiştirebilirsiniz.</p>
+
+        <div class="plans-grid" id="plansGrid">
+
+          <!-- 1 Aylık -->
+          <div class="plan-card wb-reveal" data-plan="monthly_1" data-price="1150" data-months="1">
+            <div class="plan-card__header">
+              <span class="plan-card__period">1 Aylık</span>
+            </div>
+            <div class="plan-card__price-wrap">
+              <span class="plan-card__price">₺1.150</span>
+              <span class="plan-card__per">/ay</span>
+            </div>
+            <div class="plan-card__total">₺1.150 toplam · KDV dahil</div>
+            <ul class="plan-card__features">
+              <li><span class="material-symbols-rounded">check_circle</span> Sınırsız randevu</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Personel yönetimi</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Online profil sayfası</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Müşteri bildirimleri</li>
+            </ul>
+            <button class="plan-card__btn btn" type="button" data-select-plan="monthly_1">Seç</button>
+          </div>
+
+          <!-- 3 Aylık -->
+          <div class="plan-card" data-plan="monthly_3" data-price="2865" data-months="3">
+            <div class="plan-card__header">
+              <span class="plan-card__period">3 Aylık</span>
+              <span class="plan-card__discount">%17 indirim</span>
+            </div>
+            <div class="plan-card__price-wrap">
+              <span class="plan-card__price">₺955</span>
+              <span class="plan-card__per">/ay</span>
+            </div>
+            <div class="plan-card__total">₺2.865 toplam · KDV dahil</div>
+            <ul class="plan-card__features">
+              <li><span class="material-symbols-rounded">check_circle</span> Sınırsız randevu</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Personel yönetimi</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Online profil sayfası</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Müşteri bildirimleri</li>
+            </ul>
+            <button class="plan-card__btn btn" type="button" data-select-plan="monthly_3">Seç</button>
+          </div>
+
+          <!-- 6 Aylık — Popüler -->
+          <div class="plan-card plan-card--featured" data-plan="monthly_6" data-price="4620" data-months="6">
+            <div class="plan-card__popular-tag">⭐ En Popüler</div>
+            <div class="plan-card__header">
+              <span class="plan-card__period">6 Aylık</span>
+              <span class="plan-card__discount">%33 indirim</span>
+            </div>
+            <div class="plan-card__price-wrap">
+              <span class="plan-card__price">₺770</span>
+              <span class="plan-card__per">/ay</span>
+            </div>
+            <div class="plan-card__total">₺4.620 toplam · KDV dahil</div>
+            <ul class="plan-card__features">
+              <li><span class="material-symbols-rounded">check_circle</span> Sınırsız randevu</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Personel yönetimi</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Online profil sayfası</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Müşteri bildirimleri</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Öncelikli destek</li>
+            </ul>
+            <button class="plan-card__btn btn btn--featured" type="button" data-select-plan="monthly_6">Seç</button>
+          </div>
+
+          <!-- 1 Yıllık -->
+          <div class="plan-card" data-plan="yearly_1" data-price="6900" data-months="12">
+            <div class="plan-card__header">
+              <span class="plan-card__period">1 Yıllık</span>
+              <span class="plan-card__discount">%50 indirim</span>
+            </div>
+            <div class="plan-card__price-wrap">
+              <span class="plan-card__price">₺575</span>
+              <span class="plan-card__per">/ay</span>
+            </div>
+            <div class="plan-card__total">₺6.900 toplam · KDV dahil</div>
+            <ul class="plan-card__features">
+              <li><span class="material-symbols-rounded">check_circle</span> Sınırsız randevu</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Personel yönetimi</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Online profil sayfası</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Müşteri bildirimleri</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Öncelikli destek</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Analitik raporlar</li>
+            </ul>
+            <button class="plan-card__btn btn" type="button" data-select-plan="yearly_1">Seç</button>
+          </div>
+
+          <!-- 2 Yıllık -->
+          <div class="plan-card plan-card--gold" data-plan="yearly_2" data-price="11040" data-months="24">
+            <div class="plan-card__popular-tag plan-card__popular-tag--gold"> En Tasarruflu</div>
+            <div class="plan-card__header">
+              <span class="plan-card__period">2 Yıllık</span>
+              <span class="plan-card__discount">%60 indirim</span>
+            </div>
+            <div class="plan-card__price-wrap">
+              <span class="plan-card__price">₺460</span>
+              <span class="plan-card__per">/ay</span>
+            </div>
+            <div class="plan-card__total">₺11.040 toplam · KDV dahil</div>
+            <ul class="plan-card__features">
+              <li><span class="material-symbols-rounded">check_circle</span> Sınırsız randevu</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Personel yönetimi</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Online profil sayfası</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Müşteri bildirimleri</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Öncelikli destek</li>
+              <li><span class="material-symbols-rounded">check_circle</span> Analitik raporlar</li>
+              <li><span class="material-symbols-rounded">check_circle</span> API erişimi</li>
+            </ul>
+            <button class="plan-card__btn btn btn--gold" type="button" data-select-plan="yearly_2">Seç</button>
+          </div>
+
+        </div>
+
+        <div class="plans-footer">
+          <span class="material-symbols-rounded plans-footer__icon">lock</span>
+          <span>Tüm ödemeler iyzico altyapısıyla 256-bit SSL ile şifrelenerek güvenle işlenir. Dilediğiniz zaman iptal edebilirsiniz.</span>
+        </div>
+      </section>
+
+    </section>
+
+  </main>
+
+  <!-- MODAL: Telefon Güncelle -->
+  <div id="phoneModal" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="phoneModalTitle">
+      <div class="modal__header">
+        <h2 id="phoneModalTitle" class="modal__title">Telefonu Güncelle</h2>
+        <button type="button" class="modal__close" data-close-modal aria-label="Kapat">&times;</button>
+      </div>
+      <div class="modal__body">
+        <label class="field">
+          <span>Yeni Telefon (E.164)</span>
+          <input id="newPhone" class="input" placeholder="+905xxxxxxxxx" inputmode="tel" />
+        </label>
+        <div class="field" id="otpRow" hidden>
+          <span>SMS Kodu</span>
+          <div class="row">
+            <input id="otpCode" class="input" placeholder="123456" inputmode="numeric" />
+            <button id="confirmOtp" class="btn btn--primary" type="button">Onayla</button>
+          </div>
+        </div>
+        <div id="recaptcha-container" class="recaptcha"></div>
+        <p class="muted">Yeni telefon numaranızı doğrulamak için SMS gönderilir.</p>
+      </div>
+      <div class="modal__footer">
+        <button id="sendOtp" class="btn btn--primary" type="button">Kod Gönder</button>
+        <button class="btn" type="button" data-close-modal>Vazgeç</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Checkout -->
+  <div id="checkoutModal" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog modal__dialog--wide" role="dialog" aria-modal="true" aria-labelledby="checkoutModalTitle">
+      <div class="modal__header">
+        <div class="modal__header-left">
+          <span class="material-symbols-rounded modal__header-icon">shopping_cart</span>
+          <h2 id="checkoutModalTitle" class="modal__title">Planı Satın Al</h2>
+        </div>
+        <button type="button" class="modal__close" data-close-modal aria-label="Kapat">&times;</button>
+      </div>
+      <div class="modal__body">
+
+        <div class="checkout-plan-summary" id="checkoutPlanSummary">
+          <div class="checkout-plan-summary__left">
+            <span class="checkout-plan-summary__icon material-symbols-rounded">workspace_premium</span>
+            <div>
+              <strong id="checkoutPlanName">— Aylık Plan</strong>
+              <span id="checkoutPlanPeriod" class="checkout-plan-summary__period">—</span>
+            </div>
+          </div>
+          <div class="checkout-plan-summary__price">
+            <span id="checkoutPlanPrice">₺—</span>
+            <span class="checkout-plan-summary__total" id="checkoutPlanTotal"></span>
+          </div>
+        </div>
+
+        <div class="checkout-section">
+          <h3 class="checkout-section__title">Ödeme Yöntemi</h3>
+          <div class="pay-method-tabs">
+            <button class="pay-tab is-active" data-pay-tab="new-card" type="button">
+              <span class="material-symbols-rounded">add_card</span>
+              Yeni Kart
+            </button>
+            <button class="pay-tab" data-pay-tab="saved-card" type="button">
+              <span class="material-symbols-rounded">credit_card</span>
+              Kayıtlı Kart
+            </button>
+          </div>
+
+          <div id="payTab-new-card" class="pay-tab-panel is-active">
+            <div class="card-form">
+              <label class="field">
+                <span>Kart Üzerindeki İsim</span>
+                <input id="ccName" class="input" placeholder="AD SOYAD" autocomplete="cc-name" />
+              </label>
+              <label class="field">
+                <span>Kart Numarası</span>
+                <div class="card-input-wrap">
+                  <span class="material-symbols-rounded card-input-icon">credit_card</span>
+                  <input id="ccNumber" class="input input--card" placeholder="0000 0000 0000 0000"
+                         inputmode="numeric" maxlength="19" autocomplete="cc-number" />
+                  <span id="cardBrandIcon" class="card-brand-icon"></span>
+                </div>
+              </label>
+              <div class="card-form__row">
+                <label class="field">
+                  <span>Son Kullanma</span>
+                  <input id="ccExpiry" class="input" placeholder="AA / YY"
+                         inputmode="numeric" maxlength="7" autocomplete="cc-exp" />
+                </label>
+                <label class="field">
+                  <span>CVV / CVC</span>
+                  <div class="card-input-wrap">
+                    <input id="ccCvv" class="input" placeholder="•••"
+                           inputmode="numeric" maxlength="4" autocomplete="cc-csc" />
+                    <span class="material-symbols-rounded card-input-icon card-input-icon--right">help</span>
+                  </div>
+                </label>
+              </div>
+              <label class="field field--check">
+                <input id="saveCardCheck" type="checkbox" checked />
+                <span>Bu kartı ileride kullanmak için kaydet</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="payTab-saved-card" class="pay-tab-panel">
+            <div id="savedCardsForCheckout" class="saved-cards-list">
+              <p class="empty-state__text">Kayıtlı kart bulunamadı.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-section">
+          <h3 class="checkout-section__title">Fatura Bilgileri</h3>
+          <div class="card-form">
+            <div class="card-form__row">
+              <label class="field">
+                <span>Ad</span>
+                <input id="billFirstName" class="input" placeholder="Adınız" />
+              </label>
+              <label class="field">
+                <span>Soyad</span>
+                <input id="billLastName" class="input" placeholder="Soyadınız" />
+              </label>
+            </div>
+            <label class="field">
+              <span>E-posta</span>
+              <input id="billEmail" class="input" placeholder="ornek@site.com" type="email" />
+            </label>
+            <label class="field">
+              <span>Telefon</span>
+              <input id="billPhone" class="input" placeholder="+905xxxxxxxxx" inputmode="tel" />
+            </label>
+          </div>
+        </div>
+
+        <!-- PROMO KODU -->
+        <div class="checkout-section checkout-section--promo">
+          <h3 class="checkout-section__title">Promosyon Kodu</h3>
+          <div class="promo-row">
+            <input id="promoCodeInput" class="input promo-input" placeholder="ÖRNEK: WEBEY2026"
+                   maxlength="32" autocomplete="off" spellcheck="false" style="text-transform:uppercase"/>
+            <button id="applyPromoBtn" class="btn btn--outline btn--sm" type="button">Uygula</button>
+            <button id="clearPromoBtn" class="btn btn--ghost btn--sm" type="button" style="display:none">✕</button>
+          </div>
+          <div id="promoResult" class="promo-result" style="display:none"></div>
+        </div>
+
+        <div class="checkout-summary">
+          <div class="checkout-summary__row">
+            <span>Plan</span>
+            <span id="csSummaryPlan">—</span>
+          </div>
+          <div class="checkout-summary__row" id="csSummaryDiscountRow" style="display:none">
+            <span>Promosyon İndirimi</span>
+            <span id="csSummaryDiscount" class="checkout-summary__discount" style="color:#0ea5b3;font-weight:600">—</span>
+          </div>
+          <div class="checkout-summary__row checkout-summary__row--total">
+            <span>Toplam</span>
+            <strong id="csSummaryTotal">₺—</strong>
+          </div>
+        </div>
+
+        <p class="checkout-legal">
+          <span class="material-symbols-rounded" style="font-size:14px;vertical-align:-2px">security</span>
+          Ödemeniz iyzico altyapısıyla 256-bit SSL ile şifrelenerek güvenle işlenir.
+        </p>
+      </div>
+      <div class="modal__footer">
+        <button id="confirmPayBtn" class="btn btn--success btn--pay" type="button">
+          <span class="material-symbols-rounded" style="font-size:17px">lock</span>
+          <span id="confirmPayBtnLabel">Güvenli Ödeme Yap</span>
+        </button>
+        <button class="btn" type="button" data-close-modal>Vazgeç</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Kart Ekle -->
+  <div id="addCardModal" class="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__dialog" role="dialog" aria-modal="true" aria-labelledby="addCardModalTitle">
+      <div class="modal__header">
+        <div class="modal__header-left">
+          <span class="material-symbols-rounded modal__header-icon">add_card</span>
+          <h2 id="addCardModalTitle" class="modal__title">Kart Ekle</h2>
+        </div>
+        <button type="button" class="modal__close" data-close-modal aria-label="Kapat">&times;</button>
+      </div>
+      <div class="modal__body">
+        <div class="card-form">
+          <label class="field">
+            <span>Kart Üzerindeki İsim</span>
+            <input id="acName" class="input" placeholder="AD SOYAD" autocomplete="cc-name" />
+          </label>
+          <label class="field">
+            <span>Kart Numarası</span>
+            <div class="card-input-wrap">
+              <span class="material-symbols-rounded card-input-icon">credit_card</span>
+              <input id="acNumber" class="input input--card" placeholder="0000 0000 0000 0000"
+                     inputmode="numeric" maxlength="19" autocomplete="cc-number" />
+            </div>
+          </label>
+          <div class="card-form__row">
+            <label class="field">
+              <span>Son Kullanma</span>
+              <input id="acExpiry" class="input" placeholder="AA / YY" inputmode="numeric" maxlength="7" autocomplete="cc-exp" />
+            </label>
+            <label class="field">
+              <span>CVV / CVC</span>
+              <input id="acCvv" class="input" placeholder="•••" inputmode="numeric" maxlength="4" autocomplete="cc-csc" />
+            </label>
+          </div>
+        </div>
+        <p class="muted"><span class="material-symbols-rounded" style="font-size:13px;vertical-align:-2px">lock</span> Kart bilgileri iyzico'da güvenle saklanır.</p>
+      </div>
+      <div class="modal__footer">
+        <button id="saveAddCardBtn" class="btn btn--primary" type="button">Kartı Kaydet</button>
+        <button class="btn" type="button" data-close-modal>Vazgeç</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <noscript><div style="padding:12px;margin:16px;border:1px solid #eee;border-radius:8px">Bu sayfa JavaScript olmadan çalışmaz.</div></noscript>
+
+  <!-- Merkezi API katmanı -->
+  <script src="js/wb-api-shim.js"></script>
+  <script src="js/wb-email-banner.js" defer></script>
+  <script src="js/admin-profile.js?v=5" defer></script>
+  <script src="js/wb-transitions.js" defer></script>
+
+  <!-- Rail yükleyici -->
+  <script>
+  (function loadRail(){
+    const mount = document.getElementById('rail-mount');
+    if(!mount) return;
+    const CANDIDATES = ['bar-menu.html', '/bar-menu.html', 'partials/bar-menu.html', '/partials/bar-menu.html', '../bar-menu.html'];
+    function ensureRailStyles(){
+      const has = Array.from(document.styleSheets).some(ss=>{ try{ return Array.from(ss.cssRules||[]).some(r=>String(r.cssText).includes('.app-bar')); }catch{return false;} });
+      if(has) return;
+    }
+    async function tryFetch(url){
+      try{
+        const r = await fetch(url,{credentials:'same-origin'}); if(!r.ok) throw new Error();
+        const html = await r.text(); mount.innerHTML = html; mount.removeAttribute('aria-hidden');
+        ensureRailStyles();
+        // admin-profile.html sayfasını aktif işaretle
+        mount.querySelectorAll('.app-bar__item, nav a').forEach(a=>{
+          const href = (a.getAttribute('href')||'').split(/[?#]/)[0];
+          if(/(^|\/)admin-profile\.html$/i.test(href)) {
+            a.classList.add('app-bar__item--active');
+            a.setAttribute('aria-current','page');
+          }
+        });
+        return true;
+      }catch{ return false; }
+    }
+    (async()=>{
+      let ok=false; for(const u of CANDIDATES){ ok=await tryFetch(u); if(ok) break; }
+    })();
+  })();
+  </script>
+
+  <!-- Global Bildirimler -->
+  <script src="js/wb-notifications.js"></script>
+</body>
+</html>

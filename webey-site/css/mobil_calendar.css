@@ -1,0 +1,1022 @@
+/* ===========================================================
+   MOBİL STİLLER — genişlik <= 900px
+   =========================================================== */
+@media (max-width: 900px) {
+  :root{
+    /* Takvim ölçüleri */
+    --timeW: 64px;
+    --colW: calc((100vw - var(--timeW) - 24px) / 2);
+    --cellH: 64px;
+    --wkRowH: 300px;
+
+    /* Mini takvim */
+    --miniPad: 10px;
+    --miniGap: 4px;
+    --miniCell: calc((100% - (2 * var(--miniPad)) - (6 * var(--miniGap))) / 7);
+  }
+
+  html, body, .container { width: auto !important; min-width: 0 !important; }
+  html, body, .app { height: 100%; }
+  html, body, .app, .main { overflow-x: hidden !important; }
+  /* admin-wb.css: html.is-mobile body { padding-bottom: ~68px !important }
+     Bunu ezmek için daha yüksek spesifiklik kullanıyoruz */
+  html body,
+  html.is-mobile body,
+  html.is-mobile body.has-rail {
+    margin: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .main{
+    padding-left: 0 !important;
+    padding-bottom: 68px; /* sadece bottom-nav (64px) + 4px boşluk */
+    min-width: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ======================= TOPBAR ======================= */
+  .topbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e4e7ef !important;
+    box-shadow: 0 1px 8px rgba(0,0,0,.06) !important;
+  }
+
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 10px;
+    flex-wrap: nowrap;
+    min-width: 0;
+    height: 52px;
+  }
+
+  .view-select, .date-nav, .staff-wrap, .actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .date-nav {
+    flex: 1 1 auto;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .date-nav::-webkit-scrollbar { display: none; }
+
+  .icon-btn,
+  .view-chip,
+  #viewChip,
+  #staffBtn,
+  .pill#staffBtn,
+  #todayBtn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    border-radius: 10px !important;
+    border: 1.5px solid #e4e7ef !important;
+    background: #f7f8fb !important;
+    color: #374151 !important;
+    font-size: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    cursor: pointer;
+    transition: background .12s, border-color .12s, transform .08s;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .icon-btn:hover, #viewChip:hover, #staffBtn:hover {
+    background: #eef0f6 !important;
+    border-color: #c4c9d8 !important;
+  }
+  .icon-btn:active, #viewChip:active, #staffBtn:active {
+    transform: scale(0.93);
+    background: #e8eaf1 !important;
+  }
+
+  .icon-btn > svg, .view-chip > svg, #viewChip > svg, #viewChip > span,
+  #viewChip .chev, #staffBtn > svg, #staffBtn > span, #staffBtn .chev,
+  .pill#staffBtn span, #todayBtn > svg { display: none !important; }
+
+  #viewChip::before {
+    content: "";
+    display: block;
+    width: 17px; height: 17px;
+    background: #4b5563;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='8' height='8' rx='2'/%3E%3Crect x='13' y='3' width='8' height='8' rx='2'/%3E%3Crect x='3' y='13' width='8' height='8' rx='2'/%3E%3Crect x='13' y='13' width='8' height='8' rx='2'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; -webkit-mask-size: contain;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='3' width='8' height='8' rx='2'/%3E%3Crect x='13' y='3' width='8' height='8' rx='2'/%3E%3Crect x='3' y='13' width='8' height='8' rx='2'/%3E%3Crect x='13' y='13' width='8' height='8' rx='2'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat; mask-position: center; mask-size: contain;
+  }
+
+  #prevDay::before {
+    content: "";
+    display: block;
+    width: 18px; height: 18px;
+    background: #4b5563;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; -webkit-mask-size: contain;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M15 6l-6 6 6 6'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat; mask-position: center; mask-size: contain;
+  }
+
+  #nextDay::before {
+    content: "";
+    display: block;
+    width: 18px; height: 18px;
+    background: #4b5563;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M9 6l6 6-6 6'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; -webkit-mask-size: contain;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M9 6l6 6-6 6'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat; mask-position: center; mask-size: contain;
+  }
+
+  #todayBtn {
+    background: #eef2ff !important;
+    border-color: #c7d2fe !important;
+  }
+  #todayBtn:hover { background: #e0e7ff !important; border-color: #a5b4fc !important; }
+  #todayBtn::before {
+    content: "";
+    display: block;
+    width: 17px; height: 17px;
+    background: #4f46e5;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M6 2a1 1 0 0 0-1 1v1H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1V3a1 1 0 0 0-2 0v1H7V3a1 1 0 0 0-1-1zM4 8h16v11H4V8zm8 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2z'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; -webkit-mask-size: contain;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M6 2a1 1 0 0 0-1 1v1H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1V3a1 1 0 0 0-2 0v1H7V3a1 1 0 0 0-1-1zM4 8h16v11H4V8zm8 3a1 1 0 1 1 0 2 1 1 0 0 1 0-2z'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat; mask-position: center; mask-size: contain;
+  }
+
+  .pill#staffBtn, #staffBtn {
+    background: #ffffff !important;
+    border-color: #dbe2ee !important;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, .08) !important;
+  }
+  .pill#staffBtn:hover, #staffBtn:hover {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+  }
+  #staffBtn::before {
+    content: "";
+    display: block;
+    width: 18px; height: 18px;
+    background: #334155;
+    /* Tek kişi: daire baş + yay gövde */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3Cpath d='M4 20c0-4 3.6-7 8-7s8 3 8 7'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat; -webkit-mask-position: center; -webkit-mask-size: contain;
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3Cpath d='M4 20c0-4 3.6-7 8-7s8 3 8 7'/%3E%3C/svg%3E");
+    mask-repeat: no-repeat; mask-position: center; mask-size: contain;
+  }
+
+  .date-chip {
+    flex: 1 1 0;
+    min-width: 70px !important;
+    max-width: 150px;
+    height: 36px !important;
+    padding: 0 10px !important;
+    border-radius: 10px !important;
+    border: 1.5px solid #e4e7ef !important;
+    background: #f7f8fb !important;
+    color: #0d0f1a !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    cursor: pointer;
+    transition: background .12s, border-color .12s;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .date-chip:hover { background: #eef0f6 !important; border-color: #c4c9d8 !important; }
+  .date-chip .date-range { display: none !important; }
+  .date-chip .chev { display: none !important; }
+  .date-chip .date-main {
+    display: flex; align-items: center; overflow: hidden; max-width: 100%;
+  }
+  .date-chip .date-main strong {
+    font-size: 12.5px; font-weight: 700; color: #0d0f1a;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  .bell-btn.icon-btn > svg {
+    display: block !important;
+    width: 18px !important; height: 18px !important;
+    stroke: #4b5563 !important; fill: none !important;
+  }
+  .bell-btn.icon-btn.alert { border-color: #fecaca !important; background: #fff5f5 !important; }
+  .bell-btn.icon-btn.alert > svg { stroke: #ef4444 !important; }
+
+  .topbar .search{ display:none !important; }
+
+  /* ======================= TARİH POPOVER ======================= */
+  #calendarPopover.center-pop{
+    position: fixed;
+    inset: 8px auto auto 50%;
+    transform: translateX(-50%);
+    width: min(92vw, 380px);
+    max-height: calc(100vh - 16px);
+    overflow: hidden;
+    border-radius: 18px;
+    padding: 14px var(--miniPad) 16px;
+    z-index: 1100;
+    -webkit-overflow-scrolling: touch;
+    background: #ffffff;
+    box-shadow: 0 12px 40px rgba(0,0,0,.16), 0 2px 8px rgba(0,0,0,.08);
+    border: 1px solid #e4e7ef;
+  }
+  .calendar-head strong{ font-size: 15px; font-weight: 800; color: #0d0f1a; }
+  .calendar-head { margin-bottom: 10px; padding: 0 2px; }
+  .calendar-head .icon-btn {
+    background: #f0f2f7 !important;
+    border-color: #d1d5db !important;
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .dow { font-size: 11px; font-weight: 700; color: #9ca3af; margin-bottom: 4px; }
+
+  .calendar-grid{
+    display:grid !important;
+    grid-template-columns: repeat(7, var(--miniCell)) !important;
+    gap: var(--miniGap) !important;
+    padding-inline: var(--miniPad) !important;
+    justify-content:center; align-content:start;
+  }
+  .calendar-grid .cell{
+    width: var(--miniCell) !important;
+    height: var(--miniCell) !important;
+    box-sizing: border-box;
+    display:grid !important; place-items:center !important;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+  }
+  .calendar-grid .cell > *{ line-height: 1; }
+  .calendar-grid .cell.today { background: #f0f2f7; }
+  .calendar-grid .cell.selected { background: #4f46e5; color: #fff; border-radius: 10px; }
+  .calendar-grid .cell.has-event::after {
+    content: '';
+    width: 4px; height: 4px;
+    background: #4f46e5;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 2px; left: 50%; transform: translateX(-50%);
+  }
+
+  /* ======================= PERSONEL POPOVER ======================= */
+  .staff-pop{
+    position: fixed;
+    left: 50%; transform: translateX(-50%);
+    top: 56px;
+    width: min(92vw, 420px);
+    max-height: calc(100vh - 72px);
+    overflow: auto;
+    padding: 10px;
+    border-radius: 12px;
+    z-index: 1100;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ======================= BİLDİRİM + RANDEVU ======================= */
+  .notify,
+  .drawer{
+    position: fixed;
+    top: 0;
+    right: -100vw;
+    left: auto;
+    width: min(75vw, 480px) !important;
+    height: calc(100vh - 60px);
+    border-radius: 16px 0 0 16px;
+    box-shadow: -10px 0 28px rgba(0,0,0,.18);
+    background:#fff;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    transform: none;
+    opacity: 1;
+    transition: right .22s ease;
+    z-index: 1100;
+  }
+  .notify.open, .drawer.open{ right: 0; }
+  .notify-body, .drawer-body{ -webkit-overflow-scrolling: touch; overflow: auto; }
+
+  /* ======================= GÜN GÖRÜNÜMÜ ======================= */
+  /* ── DEĞIŞIKLIK 1: Takvim yüksekliği arttırıldı ── */
+  .calendar{
+    margin: 4px auto 0;
+    width: min(92vw, 420px);
+    max-width: 420px;
+    /* 100vh - topbar(52px) - margin-top(4px) - main-padding-bottom(68px) = 100vh - 124px */
+    height: calc(100vh - 124px);
+    min-height: 480px;
+    border-radius: 14px;
+  }
+
+  #dayView { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  .staff-row{
+    grid-template-columns: var(--timeW) repeat(2, var(--colW));
+    grid-auto-columns: var(--colW);
+    min-width: calc(var(--timeW) + (2 * var(--colW)));
+    height: 46px;
+  }
+  .staff-head{ padding: 0 8px; gap: 6px; }
+  .avatar{ width: 22px; height: 22px; font-size: 10px; }
+  .name{ font-size: 12px; }
+  .sub{ font-size: 10px; }
+
+  .grid{
+    grid-template-columns: var(--timeW) repeat(2, var(--colW));
+    grid-auto-columns: var(--colW);
+    min-width: calc(var(--timeW) + (2 * var(--colW)));
+  }
+  .time-cell{ font-size: 10px; padding: 2px 6px; }
+  .booking{ border-radius: 9px; padding: 4px 6px; font-size: 11px; }
+
+  /* ======================= HAFTA GÖRÜNÜMÜ ======================= */
+  .week{
+    margin: 6px auto 0;
+    width: min(92vw, 420px);
+    max-width: 420px;
+    border-radius: 14px;
+  }
+  #weekView { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .wk-head{ grid-template-columns: 124px repeat(7, minmax(112px, 1fr)); }
+  .wk-grid{ grid-template-columns: 124px repeat(7, minmax(112px, 1fr)); }
+  .wk-staff{ padding: 8px 10px; }
+  .wk-day-btn{ padding: 6px 8px; }
+  .wk-day .date{ font-size: 13px; }
+  .wk-col-inner{ height: var(--wkRowH); }
+  .wk-chip{ font-size: 11px; padding: 4px 8px; }
+
+  /* ======================= BOTTOM BAR (rail) ======================= */
+  .rail{
+    position: fixed !important;
+    inset: auto 0 0 0 !important;
+    width: 100% !important;
+    height: 60px !important;
+    padding: 6px 8px !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    border-right: none !important;
+    border-top: 1px solid var(--rail-divider) !important;
+    z-index: 1000 !important;
+    backdrop-filter: saturate(1.2) blur(4px);
+  }
+  .rail__list{
+    width: 100% !important; height: 100% !important;
+    flex-direction: row !important;
+    justify-content: space-evenly !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+  .rail__item{ width: auto !important; }
+  .rail__btn{
+    width: 40px !important; height: 40px !important;
+    border-radius: 12px !important;
+    display:grid; place-items:center;
+  }
+  .rail__btn[aria-current="page"]::before{ display:none !important; }
+
+  .rail .avatar-btn .avatar-circle{
+    width: 28px; height: 28px;
+    border-radius: 999px;
+    display:grid; place-items:center;
+    font: 600 12px/1 "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+    color:#fff; background:#7c6cff;
+    box-shadow: 0 2px 8px rgba(124,108,255,.35), inset 0 0 0 1px rgba(255,255,255,.25);
+  }
+
+  /* ── DEĞIŞIKLIK 2: FAB takvimin sağ alt köşesinde sabit ──
+     Takvim: width=min(92vw,420px), centered, margin-bottom yaklaşık 64px nav.
+     Takvimin sağ kenarı = (100vw - min(92vw,420px)) / 2 ≈ 4vw'den içeride.
+     FAB bottom = 64px (wb-bottom-nav) + 14px (takvim alt boşluğu içine girer) = 78px
+     FAB right  = takvimin sağ kenarına hizalı = max(4vw, calc((100vw - 420px)/2)) + 12px  */
+  #fabWrap {
+    position: fixed !important;
+    bottom: calc(var(--bn-h, 68px) + var(--bn-safe, 0px) + 8px) !important;
+    right: max(8px, calc((100vw - min(92vw, 420px)) / 2 + 8px)) !important;
+    z-index: 9001 !important;
+    display: flex !important;
+    flex-direction: column !important;   /* fabMenu üstte, fabBtn altta */
+    align-items: flex-end !important;
+    gap: 10px !important;
+    pointer-events: none !important;
+  }
+  #fabWrap > * { pointer-events: all !important; }
+
+  .fab-main,
+  #fabBtn,
+  #fabWrap > button {
+    position: static !important;
+    width: 52px !important;
+    height: 52px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    background: #111318 !important;
+    color: #fff !important;
+    display: grid !important;
+    place-items: center !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.30) !important;
+    cursor: pointer !important;
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1), background .15s !important;
+    flex-shrink: 0 !important;
+  }
+  .fab-main:hover, #fabBtn:hover { background: #1c1f2e !important; }
+  .fab-main.open, #fabBtn.open   { transform: rotate(45deg) !important; }
+  .fab-main svg, #fabBtn svg     { width: 22px !important; height: 22px !important; }
+
+  /* FAB sub-menü: static → fabWrap flex sırasında üstte görünür */
+  .fab-menu,
+  #fabMenu {
+    position: static !important;
+    bottom: auto !important;
+    right: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 8px !important;
+    transform: translateY(10px) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: transform .22s cubic-bezier(.34,1.56,.64,1), opacity .18s !important;
+  }
+  .fab-menu.open, #fabMenu.open {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: all !important;
+  }
+  .fab-opt-label {
+    background: #111318 !important;
+    color: #fff !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    padding: 7px 13px !important;
+    border-radius: 999px !important;
+    white-space: nowrap !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,.22) !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+  }
+  .fab-opt-icon {
+    width: 40px !important; height: 40px !important;
+    border-radius: 50% !important;
+    background: #1c1f2e !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    font-size: 17px !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,.22) !important;
+  }
+}
+
+/* ==== Kompakt kırılımlar ≤600px & ≤360px ==== */
+@media (max-width: 600px){
+  .topbar .topbar-inner{ gap: 4px; }
+  .date-nav{ gap: 4px; }
+  .date-nav .icon-btn,
+  .date-nav #prevDay,
+  .date-nav #nextDay { width:32px !important; height:32px !important; min-width:32px !important; }
+  .date-nav .date-chip { height:32px !important; font-size:11.5px !important; max-width:120px; }
+  #todayBtn { height:32px !important; width:32px !important; min-width:32px !important; }
+  #viewChip { height:32px !important; width:32px !important; min-width:32px !important; }
+  #staffBtn, .pill#staffBtn { height:32px !important; width:32px !important; min-width:32px !important; }
+  .actions .icon-btn { width:32px !important; height:32px !important; }
+  #fabWrap { right: max(6px, calc((100vw - min(92vw, 420px)) / 2 + 6px)) !important; }
+}
+@media (max-width: 360px){
+  .date-nav .icon-btn,
+  .date-nav #prevDay,
+  .date-nav #nextDay { width:28px !important; height:28px !important; min-width:28px !important; }
+  .date-nav .date-chip { height:28px !important; font-size:11px !important; max-width:100px; }
+  #todayBtn { height:28px !important; width:28px !important; min-width:28px !important; }
+  #viewChip { height:28px !important; width:28px !important; min-width:28px !important; }
+  #staffBtn, .pill#staffBtn { height:28px !important; width:28px !important; min-width:28px !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TASARIM İYİLEŞTİRMELERİ
+   1. Topbar — birleşik hap grubu (tarih nav)
+   2. Tarih seçici — minimal, çakışmasız
+   3. FAB — monokrom siyah/beyaz, şık sub-menü
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+
+  /* ────────────────────────────────────────────
+     TOPBAR YENİDEN TASARIM
+  ──────────────────────────────────────────── */
+
+  /* Topbar yüksekliğini biraz artır, temiz görünsün */
+  .topbar-inner {
+    height: 56px !important;
+    padding: 0 10px !important;
+    gap: 6px !important;
+  }
+
+  /* Görünüm butonu (grid ikon) */
+  #viewChip {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 11px !important;
+    background: #f1f2f6 !important;
+    border-color: #e0e3ed !important;
+  }
+
+  /* ── Tarih nav: tek bir hap gibi görünen grup ── */
+  .date-nav {
+    flex: 1 1 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 2px !important;
+    background: #f1f2f6 !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+    height: 46px !important;
+    overflow: hidden !important;
+    margin: 0 2px !important;
+    scrollbar-width: none !important;
+  }
+  .date-nav::-webkit-scrollbar { display: none !important; }
+
+  /* Ok butonları: şeffaf, border yok */
+  #prevDay, #nextDay {
+    width: 28px !important;
+    height: 36px !important;
+    min-width: 28px !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
+  }
+  #prevDay:hover, #nextDay:hover {
+    background: rgba(0,0,0,.07) !important;
+    border: none !important;
+  }
+  /* Ok SVG'lerini göster */
+  #prevDay > svg, #nextDay > svg {
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;
+    stroke: #555 !important;
+  }
+  #prevDay::before, #nextDay::before { display: none !important; content: none !important; }
+
+  /* Tarih chip: beyaz kart ortada */
+  .date-chip {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 36px !important;
+    padding: 0 8px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(0,0,0,.08) !important;
+    background: #fff !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,.07) !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: #111 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+  }
+  .date-chip .date-main strong {
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: #111318 !important;
+  }
+
+  /* Bugün butonu: accent rengi */
+  #todayBtn {
+    width: auto !important;
+    height: 36px !important;
+    min-width: 0 !important;
+    padding: 0 9px !important;
+    background: #eef2ff !important;
+    border: 1.5px solid #c7d2fe !important;
+    border-radius: 8px !important;
+    flex-shrink: 0 !important;
+  }
+  #todayBtn::before { display: none !important; content: none !important; }
+  /* Masaüstü "Bugün" after'ını mobilde de kullan */
+  .topbar .date-nav #todayBtn::after,
+  #todayBtn::after {
+    content: "Bugün" !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    color: #4f46e5 !important;
+    letter-spacing: .01em !important;
+  }
+  #todayBtn > svg { display: none !important; }
+
+  /* Personel butonu: yeşil tonu */
+  #staffBtn, .pill#staffBtn {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    background: #f0fdf4 !important;
+    border-color: #bbf7d0 !important;
+    border-radius: 11px !important;
+  }
+
+  /* Bildirim butonu */
+  .bell-btn.icon-btn {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 11px !important;
+    background: #f1f2f6 !important;
+    border-color: #e0e3ed !important;
+  }
+
+  /* ────────────────────────────────────────────
+     TARİH SEÇİCİ — minimal, çakışmasız
+  ──────────────────────────────────────────── */
+
+  #calendarPopover.center-pop {
+    width: min(94vw, 340px) !important;
+    padding: 14px 12px 16px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 16px 48px rgba(0,0,0,.16), 0 2px 10px rgba(0,0,0,.07) !important;
+    border: 1px solid #e8eaf0 !important;
+    top: 62px !important;
+  }
+
+  /* Header: flex row, oklar yan yana */
+  .calendar-head {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 0 10px 0 !important;
+    margin-bottom: 8px !important;
+    border-bottom: 1px solid #f0f0f5 !important;
+    position: static !important;
+  }
+  .calendar-head strong {
+    flex: 1 !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    color: #111318 !important;
+    display: block !important;
+  }
+  /* Ay nav butonları: topbar etkisini sıfırla */
+  .calendar-head #calPrev,
+  .calendar-head #calNext {
+    position: static !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    border-radius: 8px !important;
+    border: 1.5px solid #e4e7ef !important;
+    background: #f5f6fa !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+  .calendar-head #calPrev::before,
+  .calendar-head #calNext::before {
+    display: none !important;
+    content: none !important;
+    -webkit-mask-image: none !important;
+    mask-image: none !important;
+  }
+  .calendar-head #calPrev > svg,
+  .calendar-head #calNext > svg {
+    display: block !important;
+    width: 14px !important;
+    height: 14px !important;
+    stroke: #555 !important;
+    fill: none !important;
+  }
+
+  /* Haftanın günleri */
+  .dow {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 2px !important;
+    margin-bottom: 4px !important;
+    padding: 0 !important;
+  }
+  .dow div {
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    color: #b0b5c3 !important;
+    text-align: center !important;
+  }
+
+  /* Takvim grid: 7 eşit sütun, border yok */
+  .calendar-grid {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr) !important;
+    gap: 2px !important;
+    padding: 0 !important;
+    justify-items: stretch !important;
+  }
+  .calendar-grid .cell {
+    width: 100% !important;
+    aspect-ratio: 1 !important;
+    height: auto !important;
+    min-height: 32px !important;
+    border: none !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    font-size: 12.5px !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    display: grid !important;
+    place-items: center !important;
+    box-sizing: border-box !important;
+    transition: background .1s !important;
+  }
+  .calendar-grid .cell:hover { background: #f0f1f6 !important; }
+  .calendar-grid .cell.today {
+    background: #eef2ff !important;
+    color: #4f46e5 !important;
+    font-weight: 800 !important;
+    outline: none !important;
+  }
+  .calendar-grid .cell.selected {
+    background: #111318 !important;
+    color: #fff !important;
+    font-weight: 800 !important;
+    outline: none !important;
+    border: none !important;
+  }
+
+  /* ────────────────────────────────────────────
+     FAB — Monokrom siyah/beyaz, şık sub-menü
+  ──────────────────────────────────────────── */
+
+  .fab-main, #fabBtn, #fabWrap > button {
+    background: #111318 !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,.32), 0 2px 6px rgba(0,0,0,.18),
+                inset 0 1px 0 rgba(255,255,255,.08) !important;
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1),
+                background .15s, box-shadow .2s !important;
+  }
+  .fab-main:hover, #fabBtn:hover {
+    background: #1c1f2e !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,.38) !important;
+  }
+  .fab-main.open, #fabBtn.open {
+    background: #1c1f2e !important;
+  }
+
+  .fab-opt-label {
+    background: #111318 !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    padding: 7px 14px !important;
+    border-radius: 999px !important;
+    letter-spacing: .01em !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,.24) !important;
+    white-space: nowrap !important;
+  }
+  .fab-opt-icon {
+    background: #1c1f2e !important;
+    border: 1px solid rgba(255,255,255,.1) !important;
+    box-shadow: 0 4px 14px rgba(0,0,0,.24) !important;
+  }
+  .fab-opt:hover .fab-opt-label { background: #2a2d3e !important; }
+  .fab-opt:hover .fab-opt-icon  { background: #2a2d3e !important; }
+}
+
+/* ──────────────────────────────────────────────
+   PERSONEL MODAL — Simge altına, sağa hizalı
+   Pill buton: ikon + yazı (mobilde ikon only)
+────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  /* Staff-wrap: relative → popup buradan konumlanır */
+  .staff-wrap { position: relative !important; }
+
+  /* Mobilde pill: sadece ikon göster, yazıyı gizle */
+  #staffBtn .staff-label { display: none !important; }
+  #staffBtn .chev        { display: none !important; }
+  #staffBtn svg:first-child {
+    width: 18px !important;
+    height: 18px !important;
+    display: block !important;
+    stroke: #334155 !important;
+  }
+  #staffBtn::before {
+    display: none !important;
+  }
+  #staffBtn {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    padding: 0 !important;
+    border-radius: 11px !important;
+    background: rgba(255,255,255,.96) !important;
+    border-color: #dbe2ee !important;
+    box-shadow: 0 10px 24px rgba(15,23,42,.1) !important;
+    justify-content: center !important;
+  }
+
+  /* Popup: staff-wrap'e göre absolute, soldan başlar */
+  .staff-pop {
+    position: absolute !important;
+    left: 0 !important;
+    right: auto !important;
+    transform: none !important;
+    top: calc(100% + 8px) !important;
+    width: min(88vw, 280px) !important;
+    max-height: calc(100vh - 130px) !important;
+    overflow-y: auto !important;
+    padding: 16px 14px 14px !important;
+    border-radius: 20px !important;
+    z-index: 1100 !important;
+    box-shadow: 0 22px 48px rgba(15,23,42,.18) !important;
+    border: 1px solid rgba(226,232,240,.95) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(248,250,252,.98) 100%) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-overflow-scrolling: touch !important;
+    /* Ekran dışına taşarsa sağdan geri çek */
+    max-width: calc(100vw - 20px) !important;
+  }
+  .staff-pop .sp-title {
+    margin-bottom: 12px !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+  }
+  #staffChkWrap {
+    gap: 8px !important;
+    margin-top: 2px !important;
+  }
+  .staff-pop .chk {
+    gap: 10px !important;
+    padding: 12px !important;
+    border-radius: 14px !important;
+    border: 1px solid transparent !important;
+    background: rgba(255,255,255,.82) !important;
+  }
+  .staff-pop .chk:hover {
+    background: #f8fafc !important;
+    border-color: #dbe2ee !important;
+  }
+  .staff-pop .chk:first-child {
+    margin-bottom: 2px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid #e9eef5 !important;
+    border-radius: 14px 14px 0 0 !important;
+  }
+  .staff-pop .chk:has(input:checked) {
+    background: linear-gradient(180deg, #f8faff 0%, #f3f4ff 100%) !important;
+    border-color: #c7d2fe !important;
+    box-shadow: 0 14px 26px rgba(79,70,229,.1) !important;
+  }
+  .staff-pop .chk:has(input:checked) > span:not(.sp-avatar):not(.dot) {
+    color: #312e81 !important;
+  }
+  .staff-pop .chk .dot {
+    background: #4f46e5 !important;
+  }
+  .staff-pop .apply {
+    margin-top: 14px !important;
+    min-height: 46px !important;
+    border-radius: 14px !important;
+    background: #111827 !important;
+    box-shadow: 0 14px 26px rgba(17,24,39,.18) !important;
+    letter-spacing: .04em !important;
+  }
+  .staff-pop .apply:hover {
+    background: #0f172a !important;
+  }
+  /* Ok: solda buton hizasında */
+.staff-pop::before {
+    left: 16px !important;
+    right: auto !important;
+  }
+}
+
+@media (max-width: 900px) {
+  #fabWrap {
+    right: max(8px, calc((100vw - min(92vw, 420px)) / 2 + 8px)) !important;
+    bottom: calc(var(--bn-h, 68px) + var(--bn-safe, 0px) + 8px) !important;
+    gap: 10px !important;
+    align-items: flex-end !important;
+  }
+
+  #fabMenu {
+    width: min(300px, calc(100vw - 24px)) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    position: absolute !important;
+    right: 0 !important;
+    bottom: calc(100% + 10px) !important;
+    transform: translateY(12px) scale(.98) !important;
+    transform-origin: bottom right !important;
+  }
+
+  #fabMenu.open {
+    transform: translateY(0) scale(1) !important;
+  }
+
+  #fabMenu .fab-opt {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 72px !important;
+    padding: 14px !important;
+    border-radius: 18px !important;
+    background: rgba(17,19,24,.96) !important;
+    border: 1px solid rgba(255,255,255,.08) !important;
+    box-shadow: 0 14px 32px rgba(0,0,0,.24) !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  #fabMenu .fab-opt-copy {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 3px !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  #fabMenu .fab-opt-label {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+    color: #fff !important;
+    white-space: normal !important;
+  }
+
+  #fabMenu .fab-opt-desc {
+    display: block !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+    color: rgba(255,255,255,.68) !important;
+    text-align: left !important;
+  }
+
+  #fabMenu .fab-opt-icon {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg,#1f8ea3,#0ea5b3) !important;
+    border: 1px solid rgba(255,255,255,.14) !important;
+    box-shadow: 0 8px 20px rgba(14,165,179,.28) !important;
+    color: #fff !important;
+    font-size: 22px !important;
+  }
+
+  #fabMenu .fab-opt:hover .fab-opt-label,
+  #fabMenu .fab-opt:hover .fab-opt-icon {
+    background: unset !important;
+  }
+}
+
+@media (max-width: 640px) {
+  #fabWrap {
+    right: max(6px, calc((100vw - min(92vw, 420px)) / 2 + 6px)) !important;
+    bottom: calc(var(--bn-h, 68px) + var(--bn-safe, 0px) + 6px) !important;
+  }
+
+  #fabMenu {
+    width: min(286px, calc(100vw - 20px)) !important;
+  }
+
+  #fabMenu .fab-opt {
+    padding: 13px !important;
+    min-height: 68px !important;
+    border-radius: 16px !important;
+  }
+
+  #fabMenu .fab-opt-icon {
+    width: 42px !important;
+    height: 42px !important;
+    min-width: 42px !important;
+  }
+
+  #fabMenu .fab-opt-label {
+    font-size: 13.5px !important;
+  }
+
+  #fabMenu .fab-opt-desc {
+    font-size: 11.5px !important;
+  }
+}

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="robots" content="noindex,nofollow"/><meta name="theme-color" content="#07080d"/>
+  <title>Adım 5 – Hizmetler | Webey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    :root{--bg:#07080d;--bg2:#0d0f17;--bg3:#111420;--teal:#0ea5b3;--teal-d:#0b8a96;--teal-g:rgba(14,165,179,.35);--teal-s:rgba(14,165,179,.10);--ink:#fff;--ink2:rgba(255,255,255,.68);--ink3:rgba(255,255,255,.40);--border:rgba(255,255,255,.08);--border-t:rgba(14,165,179,.22);--on:#22c55e;--on-g:rgba(34,197,94,.2);--danger:#ef4444;--danger-s:rgba(239,68,68,.12);--warn:#f59e0b;--warn-s:rgba(245,158,11,.12);--input-bg:rgba(255,255,255,.04);--radius:20px;--radius-sm:12px;--shadow:0 0 0 1px var(--border-t),0 32px 80px rgba(0,0,0,.6),0 0 60px rgba(14,165,179,.06);--ring:rgba(14,165,179,.3);}
+    *,*::before,*::after{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0;min-height:100dvh;font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;align-items:center;padding:clamp(16px,3vw,28px) clamp(12px,4vw,20px);padding-top:calc(env(safe-area-inset-top,0px) + 16px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px);-webkit-font-smoothing:antialiased;}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(14,165,179,.12),transparent 65%);}
+    .page-logo{display:block;text-align:center;margin-bottom:20px;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:#fff;text-decoration:none;position:relative;z-index:1;}.page-logo em{color:var(--teal);font-style:normal;}
+    .sn{width:min(600px,100%);margin:0 auto 20px;display:flex;align-items:flex-start;position:relative;z-index:1;}
+    .sn-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:0 0 auto;}
+    .sn-line{flex:1 1 0;height:2px;background:var(--border);margin-top:14px;border-radius:2px;min-width:6px;transition:background .35s;}.sn-line.done{background:var(--on);}
+    .sn-bubble{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:2px solid var(--border);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink3);transition:all .3s;}
+    .sn-item.done .sn-bubble{background:var(--on);border-color:var(--on);color:#fff;}
+    .sn-item.active .sn-bubble{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 4px var(--teal-s);}
+    .sn-label{font-size:9.5px;font-weight:700;color:var(--ink3);letter-spacing:.05em;text-align:center;white-space:nowrap;text-transform:uppercase;line-height:1;}
+    .sn-item.done .sn-label,.sn-item.active .sn-label{color:var(--ink2);}
+    @media(max-width:480px){.sn-label{display:none}.sn-bubble{width:24px;height:24px;font-size:10px}.sn-line{margin-top:11px}}
+    .card,.container{width:min(600px,100%);background:var(--bg2);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border-t);padding:28px 28px 32px;position:relative;z-index:1;}
+    @media(max-width:560px){.card,.container{padding:20px 18px 28px;}}
+    .top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+    .back-btn{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--ink2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;}
+    .back-btn:hover{border-color:var(--border-t);color:var(--teal);background:var(--teal-s);}
+    .back-btn:focus-visible{outline:2px solid var(--teal);}
+    h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    h2{font-size:clamp(17px,3.5vw,20px);font-weight:700;letter-spacing:-.1px;margin:0 0 8px;color:#fff;}
+    .title{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    .subtitle,.sub{color:var(--ink2);margin:0 0 22px;font-size:14px;line-height:1.55;}
+    .row,.form-row,.field,.field-row{margin-bottom:16px;}
+    label{display:block;font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:7px;letter-spacing:.08em;text-transform:uppercase;}
+    input[type="text"],input[type="tel"],input[type="email"],input[type="password"],input[type="number"],input[type="time"],select,textarea{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;}
+    input::placeholder,textarea::placeholder{color:var(--ink3);}
+    input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    input[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+    textarea{height:auto;padding:12px 14px;resize:vertical;}
+    select option{background:var(--bg3);color:#fff;}
+    .btn{width:100%;min-height:50px;border-radius:999px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-top:10px;}
+    .btn:hover:not([disabled]){opacity:.92;}
+    .btn:active:not([disabled]){transform:scale(.98);}
+    .btn[disabled]{opacity:.4;cursor:not-allowed;}
+    .btn-primary{background:var(--teal);color:#fff;box-shadow:0 6px 22px var(--teal-g);}
+    .btn-primary:hover:not([disabled]){background:var(--teal-d);box-shadow:0 10px 28px var(--teal-g);transform:translateY(-1px);}
+    .btn-ghost{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ghost:hover:not([disabled]){background:rgba(255,255,255,.09);color:#fff;}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ok{background:var(--on);color:#fff;}
+    .btn-danger{background:rgba(239,68,68,.15);color:var(--danger);border:1px solid rgba(239,68,68,.25);}
+    .btn-row{display:flex;gap:10px;margin-top:14px;}
+    .btn-row .btn{margin-top:0;flex:1;}
+    @media(max-width:440px){.btn-row{flex-direction:column;}}
+    .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--bg3);color:#fff;border:1px solid var(--border);padding:11px 22px;border-radius:999px;font-size:13.5px;font-weight:600;display:none;z-index:10000;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.4);}
+    .toast.show{display:block;animation:toastPop 2.4s ease both;}
+    .toast.err{background:#7f1d1d;border-color:var(--danger);}
+    @keyframes toastPop{0%{opacity:0;transform:translate(-50%,10px)}12%{opacity:1;transform:translate(-50%,0)}88%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
+    .help{font-size:12px;color:var(--ink3);margin-top:5px;line-height:1.4;}
+    .error-text{font-size:12px;color:var(--danger);margin-top:5px;display:none;}
+    .error-text.show{display:block;}
+    .warn-text{font-size:12px;color:var(--warn);margin-top:5px;display:none;}
+    .warn-text.show{display:block;}
+    .section-divider{height:1px;background:var(--border);margin:20px 0;}
+    /* Toggle switch */
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+    .toggle-row:last-child{border-bottom:none;}
+    .toggle-label{font-size:14px;font-weight:600;color:var(--ink);}
+    .toggle-sub{font-size:12px;color:var(--ink3);}
+    .sw{position:relative;width:46px;height:26px;flex-shrink:0;}
+    .sw input{opacity:0;width:0;height:0;}
+    .sw-slider{position:absolute;inset:0;background:rgba(255,255,255,.15);border-radius:999px;cursor:pointer;transition:.25s;}
+    .sw-slider::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s;}
+    .sw input:checked~.sw-slider{background:var(--teal);}
+    .sw input:checked~.sw-slider::before{transform:translateX(20px);}
+    /* Day rows (register6) */
+    .day-row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+    .day-row:last-child{border-bottom:none;}
+    .day-name{font-size:14px;font-weight:600;min-width:80px;}
+    .time-pair{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .time-pair input[type="time"]{width:110px;height:40px;flex-shrink:0;}
+    .time-sep{font-size:13px;color:var(--ink3);}
+    /* Service & staff cards */
+    .item-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .item-name{font-size:15px;font-weight:600;}
+    .item-detail{font-size:13px;color:var(--ink2);}
+    .item-actions{display:flex;gap:6px;flex-shrink:0;}
+    .icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--ink3);display:grid;place-items:center;cursor:pointer;transition:all .15s;font-size:14px;}
+    .icon-btn:hover{color:#fff;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);}
+    .icon-btn.del:hover{color:var(--danger);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.06);}
+    /* Avatar */
+    .avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700;flex-shrink:0;}
+    /* Modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.active{display:flex;}
+    /* Hizmet modalları */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;}
+    .modal{background:var(--bg2);border:1px solid var(--border-t);border-radius:var(--radius);padding:24px;width:min(480px,100%);max-height:90dvh;overflow-y:auto;box-sizing:border-box;}
+    .modal h3{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;margin:0 0 18px;color:#fff;}
+    .modal-footer{display:flex;gap:10px;margin-top:20px;}
+    .modal-footer .btn{margin-top:0;flex:1;}
+    /* Picker */
+    .picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:2000;display:none;flex-direction:column;}
+    .picker-overlay.active{display:flex;}
+    .picker-sheet{background:var(--bg2);border-top:1px solid var(--border-t);border-radius:20px 20px 0 0;padding:20px;margin-top:auto;max-height:70dvh;display:flex;flex-direction:column;}
+    .picker-title{font-size:16px;font-weight:700;margin-bottom:12px;color:#fff;}
+    .picker-search{width:100%;height:44px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;margin-bottom:10px;}
+    .picker-search:focus{border-color:var(--teal);}
+    .picker-list{overflow-y:auto;flex:1;}
+    .picker-item{display:block;width:100%;text-align:left;padding:13px 14px;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--ink2);font-family:inherit;font-size:15px;cursor:pointer;transition:background .15s;}
+    .picker-item:hover,.picker-item.selected{background:var(--teal-s);color:#fff;}
+    .picker-cancel{margin-top:10px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--ink2);font-family:inherit;font-size:15px;font-weight:600;border-radius:999px;height:48px;cursor:pointer;transition:all .15s;}
+    .picker-cancel:hover{background:rgba(255,255,255,.09);color:#fff;}
+    .picker-empty{padding:20px;text-align:center;color:var(--ink3);font-size:14px;}
+    /* Grid */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media(max-width:420px){.grid-2{grid-template-columns:1fr;}}
+    /* Add form */
+    .add-form{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px;}
+    /* Staff owner card */
+    .owner-card{background:var(--teal-s);border:1px solid var(--border-t);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+    .owner-badge{font-size:11px;font-weight:700;background:var(--teal);color:#fff;border-radius:999px;padding:2px 8px;}
+    /* Success card (register9) */
+    .success-hero{text-align:center;padding:16px 0 28px;}
+    .success-icon{width:72px;height:72px;border-radius:24px;background:var(--on-g);border:1px solid rgba(34,197,94,.3);display:grid;place-items:center;margin:0 auto 20px;font-size:28px;color:var(--on);}
+    .feature-list{list-style:none;padding:0;margin:0;}
+    .feature-list li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--ink2);}
+    .feature-list li:last-child{border-bottom:none;}
+    .feature-list li i{color:var(--teal);width:20px;text-align:center;flex-shrink:0;}
+    /* Checkbox */
+    input[type="checkbox"]{accent-color:var(--teal);width:16px;height:16px;}
+    /* Tag chips */
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600;background:var(--teal-s);border:1px solid var(--border-t);color:var(--teal);margin:3px;}
+    .tag.inactive{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--ink3);}
+    /* Select trigger button for address page */
+    .select-trigger{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:var(--ink3);font-family:inherit;outline:none;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:border-color .15s;}
+    .select-trigger.filled{color:#fff;}
+    .select-trigger:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    .select-trigger[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+    /* Register7 specific */
+    main.card{padding-bottom:28px;}
+    .banner{display:none;}
+    .content{margin-bottom:20px;}
+    .content h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;}
+    .content p{color:var(--ink2);font-size:14px;margin:0 0 16px;}
+    .actions{display:flex;flex-direction:column;gap:8px;}
+    .list-wrap{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:20px;}
+    .list-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+    .list-head strong{font-size:14px;font-weight:700;}
+    .muted{color:var(--ink3);font-size:13px;}
+    .scroller{max-height:280px;overflow-y:auto;}
+    .scroller.scrollable{overflow-y:auto;}
+    .svc-list{display:flex;flex-direction:column;gap:6px;}
+    .empty{padding:16px 0;text-align:center;color:var(--ink3);font-size:13px;}
+    .svc-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--radius-sm);transition:border-color .15s;}
+    .svc-item:hover{border-color:var(--border-t);}
+    .svc-item .info{flex:1;cursor:pointer;}
+    .svc-item .name{font-size:14px;font-weight:600;}
+    .svc-item .sub{font-size:12px;color:var(--ink3);}
+    .svc-item .price{font-size:14px;font-weight:700;color:var(--teal);cursor:pointer;flex-shrink:0;}
+    .svc-item .icon-btn{flex-shrink:0;}
+    .hint{font-size:12px;color:var(--ink3);margin-bottom:10px;line-height:1.5;}
+    .footer{margin-top:6px;}
+    /* Overlay modal */
+    .m-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
+    .m-title{font-size:16px;font-weight:700;color:#fff;}
+    .m-close{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--ink2);display:grid;place-items:center;cursor:pointer;transition:all .15s;font-size:16px;flex-shrink:0;}
+    .m-close:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-s);}
+    .m-body{padding-bottom:4px;}
+    .m-foot{display:flex;gap:8px;margin-top:16px;}
+    .m-foot .btn{margin-top:0;flex:1;}
+    .inp{margin-bottom:14px;}
+    .inp label{display:block;font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:6px;letter-spacing:.06em;text-transform:uppercase;}
+    .svc-name-display{padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);font-size:15px;font-weight:600;}
+    .prefix-wrap{position:relative;}
+    .prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink3);font-size:15px;pointer-events:none;}
+    .prefix-wrap input{padding-left:28px;}
+    .invalid{--border:rgba(239,68,68,.4)!important;}
+    /* Search bar */
+    .search{position:relative;margin-bottom:14px;}
+    .search input{padding-left:44px;padding-right:16px;height:48px;border-radius:999px;border:1.5px solid var(--border);background:rgba(255,255,255,.06);font-size:14.5px;letter-spacing:.01em;transition:border-color .2s,box-shadow .2s,background .2s;}
+    .search input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);background:rgba(255,255,255,.09);}
+    .search input::placeholder{color:var(--ink3);}
+    .search .fa-magnifying-glass{position:absolute;left:16px;right:auto;top:50%;transform:translateY(-50%);color:var(--teal);pointer-events:none;font-size:14px;}
+    /* Service select rows - modern redesign */
+    .svc-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid var(--border);transition:background .12s;}
+    .svc-row:last-child{border-bottom:none;}
+    .svc-row:hover{background:rgba(255,255,255,.03);}
+    .svc-row span{font-size:14px;color:var(--ink);flex:1;padding-right:10px;}
+    .svc-row mark{background:rgba(14,165,179,.25);color:var(--teal);border-radius:2px;}
+    /* SEÇ / EKLENDİ chip */
+    .chip{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:999px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:all .18s;border:1.5px solid;letter-spacing:.04em;}
+    .chip:not(.ok){border-color:var(--teal);color:var(--teal);background:transparent;}
+    .chip:not(.ok):hover{background:var(--teal);color:#fff;box-shadow:0 4px 12px var(--teal-g);}
+    .chip.ok{border-color:var(--on);color:var(--on);background:rgba(34,197,94,.1);}
+    .chip.ok::before{content:"✓ ";}
+  </style>
+</head>
+<body>
+  <a href="index.html" class="page-logo">Web<em>ey</em></a>
+  <nav class="sn" aria-label="Kayıt adımları (7 adım)">
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Şifre</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Profil</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Adres</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Saatler</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item active" aria-current=step><div class="sn-bubble">5</div><span class="sn-label">Hizmetler</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">6</div><span class="sn-label">Personel</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">7</div><span class="sn-label">Bitiş</span></div>
+  </nav>
+  
+  
+<main class="card" role="main">
+    <div class="top">
+      <button class="back-btn" id="btnBack" aria-label="Geri"><i class="fa-solid fa-arrow-left"></i></button>
+    </div>
+
+    <div class="banner" aria-hidden="true">
+      <div class="avatar"><img src="img/salon-cover.jpg" alt="Berber"></div>
+    </div>
+
+    <section class="content">
+      <h1>Hizmetlerinizi seçin</h1>
+      <p>Sizin gibi işletmeler genelde <strong>6 veya daha fazla</strong> hizmet ekler.</p>
+      <div class="actions">
+        <button id="btnSee" class="btn btn-primary" aria-haspopup="dialog">
+          <i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> ÖNERİLERİ GÖR
+        </button>
+        <button id="btnOpenAdd" class="btn btn-ghost"><i class="fa-solid fa-plus" aria-hidden="true"></i> YENİ HİZMET EKLE</button>
+      </div>
+    </section>
+
+    <section class="list-wrap" aria-labelledby="addedTitle">
+      <div class="list-head">
+        <strong id="addedTitle">Eklediğin Hizmetler</strong>
+        <span id="addedCount" class="muted">0 hizmet</span>
+      </div>
+      <div id="listScroller" class="scroller">
+        <div id="servicesList" class="svc-list">
+          <div class="empty" id="emptyState">Henüz hizmet eklemediniz. Önerilere göz atın ya da “Yeni hizmet ekle”yi kullanın.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <p class="hint">Not: Kaydı tamamladıktan sonra <strong>Ayarlar → Hizmetler</strong> bölümünden dilediğin zaman hizmet ekleyip çıkarabilirsin.</p>
+      <button id="btnContinue" class="btn btn-primary" disabled>DEVAM ET</button>
+    </div>
+  </main>
+
+  <div class="overlay" id="selectOverlay" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="modal" role="document">
+      <div class="m-head">
+        <div class="m-title">Hizmetleri seç</div>
+        <button id="selCloseBtn" class="m-close" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="m-body" style="padding-top:14px;">
+        <div class="search" style="margin-bottom:6px;">
+          <input id="svcSearch" type="search" placeholder="Hizmet ara…" autocomplete="off"/>
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        </div>
+        <div id="groupsContainer" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="addOverlay" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="modal" role="document">
+      <div class="m-head">
+        <div class="m-title">Yeni Hizmet Ekle</div>
+        <button id="addCloseBtn" class="m-close" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="m-body">
+        <div class="inp"><label for="addName">Hizmet adı</label><input id="addName" type="text" placeholder="Örn: Saç kesimi"></div>
+        <div class="grid-2">
+          <div class="inp"><label for="addHours">Saat</label><select id="addHours"></select></div>
+          <div class="inp"><label for="addMins">Dakika</label><select id="addMins"></select></div>
+        </div>
+        <div class="inp prefix-wrap">
+          <label for="addPrice">Ücret</label>
+          <span class="prefix">₺</span>
+          <input id="addPrice" type="number" min="0" step="1" inputmode="decimal" placeholder="Örn: 250">
+        </div>
+      </div>
+      <div class="m-foot">
+        <button id="addCancelBtn" class="btn btn-ghost">İPTAL</button>
+        <button id="addSaveBtn" class="btn btn-primary" disabled>EKLE</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="detailOverlay" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="modal" role="document">
+      <div class="m-head">
+        <div class="m-title" id="detailHeader">Hizmet Bilgileri</div>
+        <button id="detailCloseBtn" class="m-close" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="m-body">
+        <div class="inp">
+          <label>Hizmet adı</label>
+          <div id="detailName" class="svc-name-display"></div>
+        </div>
+        <div class="grid-2">
+          <div class="inp"><label for="detHours">Saat</label><select id="detHours"></select></div>
+          <div class="inp"><label for="detMins">Dakika</label><select id="detMins"></select></div>
+        </div>
+        <div class="inp prefix-wrap">
+          <label for="detPrice">Ücret</label>
+          <span class="prefix">₺</span>
+          <input id="detPrice" type="number" min="0" step="1" inputmode="decimal" placeholder="Örn: 250">
+        </div>
+      </div>
+      <div class="m-foot">
+        <button id="detCancelBtn" class="btn btn-ghost">İPTAL</button>
+        <button id="detSaveBtn" class="btn btn-primary" disabled>KAYDET</button>
+      </div>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module">
+  /* ===============================
+     ✅ Firebase kaldırıldı.
+     ✅ PHP session + MySQL: /api/auth/me.php ile kontrol.
+     =============================== */
+
+  // ===== API (MySQL + PHP) =====
+  const API_BASE = (window.API_BASE || "/api").replace(/\/+$/, "");
+  const apiUrl = (path) => {
+    if (!path.startsWith("/")) path = "/" + path;
+    return API_BASE + path;
+  };
+
+      // ── CSRF Token Yönetimi ─────────────────────────────────────
+    let __wbCsrf = null;
+    async function getCsrfToken() {
+      if (__wbCsrf) return __wbCsrf;
+      try { const r=await fetch("/api/csrf.php",{credentials:"include"}); const j=await r.json(); __wbCsrf=j?.data?.token||null; } catch {}
+      return __wbCsrf;
+    }
+    // ─────────────────────────────────────────────────────────────
+  async function postJson(path, body){
+    const csrf = await getCsrfToken();
+    const hdrs = {"Content-Type":"application/json","Accept":"application/json"};
+    if (csrf) hdrs["X-CSRF-Token"] = csrf;
+    const res = await fetch(apiUrl(path), {
+      method:"POST",
+      credentials:"include",
+      headers: hdrs,
+      body: JSON.stringify(body && typeof body==="object" ? body : {})
+    });
+    const data = await res.json().catch(()=> ({}));
+    if(!res.ok){
+      const err = new Error(data?.error || data?.message || `İstek başarısız (${res.status})`);
+      err.status = res.status;
+      err.response = data;
+      throw err;
+    }
+    return data;
+  }
+
+  async function requireSessionOrRedirect(){
+    try{
+      // register5-7 arası session YOK — sadece localStorage kontrolü yapılır
+      const flow  = (localStorage.getItem(K_FLOW)||"").trim().toLowerCase();
+      const email = (localStorage.getItem(K_EMAIL)||"").trim();
+      const pw    = (localStorage.getItem("_reg_pw")||"").trim();
+      if(flow !== "admin" || !email){
+        location.replace("admin-register-login.html#login");
+        return null;
+      }
+      return { ok: true };
+    }catch{
+      location.replace("admin-register-login.html#login");
+      return null;
+    }
+  }
+
+  const K_EMAIL  = "pending_admin_email";
+  const K_FLOW   = "admin_onboarding_flow";
+  const K_METHOD = "admin_onboarding_method";
+  const K_LAST   = "admin_onboarding_last_step";
+  const K_TOTAL  = "admin_onboarding_total";
+
+  const TOTAL_STEPS = 7;
+  const CURRENT_STEP = 5; // ✅ bu sayfa: hizmetler
+
+  const K_DATA = "onboardingData"; // final payload burada birikecek
+
+  function stepToHref(n){
+    const s = Math.max(1, Math.min(TOTAL_STEPS, Number(n)||1));
+    if (s <= 1) return "admin-register1.html";
+    if (s === 2) return "admin-register2.html";
+    if (s === 3) return "admin-register5.html";
+    if (s === 4) return "admin-register6.html";
+    if (s === 5) return "admin-register7.html";
+    if (s === 6) return "admin-register8.html";
+    return "admin-register9.html";
+  }
+
+  function getOnboardingData(){
+    try{ return JSON.parse(localStorage.getItem(K_DATA) || "{}"); }catch{ return {}; }
+  }
+  function patchOnboardingData(patch){
+    const cur=getOnboardingData();
+    const next={ ...cur, ...patch };
+    localStorage.setItem(K_DATA, JSON.stringify(next));
+    return next;
+  }
+
+  /* ---------- Local flow guard (SESSION OK + LOCAL STEP) ---------- */
+  function guardFlow(){
+    const email  = (localStorage.getItem(K_EMAIL)||"").trim().toLowerCase();
+    const flow   = (localStorage.getItem(K_FLOW)||"").trim().toLowerCase();
+    const method = (localStorage.getItem(K_METHOD)||"").trim().toLowerCase();
+    const last   = Number(localStorage.getItem(K_LAST)||"0");
+
+    if(!email || flow!=="admin" || !method){
+      location.replace("admin-register-login.html#login");
+      return false;
+    }
+
+    if(last < CURRENT_STEP){
+      location.replace(stepToHref(last || 1)); // ✅ güvenli fallback
+      return false;
+    }
+    if(last > CURRENT_STEP){
+      location.replace(stepToHref(last));
+      return false;
+    }
+
+    // Çalışma saatleri yoksa bu sayfaya girme
+    const hasStep6 = !!localStorage.getItem("step6");
+    const hasHours = !!getOnboardingData()?.workingHours;
+    if(!hasStep6 && !hasHours){
+      location.replace("admin-register6.html");
+      return false;
+    }
+
+    if(!localStorage.getItem(K_TOTAL)){
+      localStorage.setItem(K_TOTAL, String(TOTAL_STEPS));
+    }
+    return true;
+  }
+
+  /* ---------- Helpers ---------- */
+  const $=s=>document.querySelector(s);
+  const toast=$("#toast");
+  const showToast=(msg,err=false)=>{ toast.textContent=msg; toast.className="toast"+(err?" err":"")+" show"; setTimeout(()=>toast.className="toast",2200); };
+  const escapeHtml = (str)=>String(str).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+  const normalize = s => String(s||"").trim().replace(/\s+/g," ").replace(/\s*&\s*/g," & ").trim();
+  const trLower = s => String(s||"").replace(/I/g,"ı").replace(/İ/g,"i").toLowerCase("tr-TR");
+  const keyOf = s => trLower(normalize(s));
+  const pad = n=> String(n).padStart(2,"0");
+  const minutesFrom=(h,m)=> (Number(h)||0)*60 + (Number(m)||0);
+  const hm = mins => { const h=Math.floor(mins/60), m=mins%60; if(h&&m) return `${h} sa ${m} dk`; if(h) return `${h} sa`; return `${m} dk`; };
+  const tl = v => v===""||v==null ? "—" : `₺ ${Number(v).toLocaleString('tr-TR',{maximumFractionDigits:0})}`;
+
+  /* ---------- Data ---------- */
+  const KUAFOR=["Erkek saç kesimi","Çocuk saç kesimi","Saç-Sakal kesimi","Sakal Kesimi","Yıkama & fön","Saç şekillendirme","Uzun saç kesimi","Dip sıfır","Saç boyama","Keratin bakım","Ense düzeltme","Kaş alma"];
+  const GUZELLIK=["Kadın saç kesimi","Fön","Maşa / şekillendirme","Dip boya","Komple boya","Balyaj / ombre / sombre","Röfle","Perma","Keratin bakım","Brezilya fönü","Saç botoksu","Manikür","Pedikür","Kalıcı oje / gel","Kaş alım & biçimlendirme","Kaş laminasyonu","Kirpik lifting","İpek kirpik","Cilt bakımı (derin)","Ağda (bölgesel)","Komple ağda","Günlük makyaj","Nişan / gelin makyajı","Gelin saçı"];
+  function getRecommended(){
+    try{
+      const prof = JSON.parse(localStorage.getItem("pending_admin_profile") || "null");
+      const types = Array.isArray(prof?.businessTypes) ? prof.businessTypes : [];
+      const t = types.map(x=> x==="berber" ? "kuafor" : x);
+      const hasK=t.includes("kuafor"), hasG=t.includes("guzellik");
+      if(hasK && hasG) return [...new Set([...KUAFOR,...GUZELLIK])];
+      if(hasK) return KUAFOR.slice();
+      if(hasG) return GUZELLIK.slice();
+      return KUAFOR.slice();
+    }catch{ return KUAFOR.slice(); }
+  }
+
+  /* ---------- Elements ---------- */
+  const btnBack=$("#btnBack"), btnSee=$("#btnSee"), btnOpenAdd=$("#btnOpenAdd"), btnContinue=$("#btnContinue");
+  const servicesList=$("#servicesList"), emptyState=$("#emptyState"), addedCount=$("#addedCount"), listScroller=$("#listScroller");
+  const selectOverlay=$("#selectOverlay"), groups=$("#groupsContainer"), selCloseBtn=$("#selCloseBtn"), svcSearch=$("#svcSearch");
+  const addOverlay=$("#addOverlay"), addCloseBtn=$("#addCloseBtn"), addCancelBtn=$("#addCancelBtn"), addSaveBtn=$("#addSaveBtn");
+  const addName=$("#addName"), addHours=$("#addHours"), addMins=$("#addMins"), addPrice=$("#addPrice");
+  const detailOverlay=$("#detailOverlay"), detailHeader=$("#detailHeader"), detailName=$("#detailName");
+  const detHours=$("#detHours"), detMins=$("#detMins"), detPrice=$("#detPrice");
+  const detailCloseBtn=$("#detailCloseBtn"), detCancelBtn=$("#detCancelBtn"), detSaveBtn=$("#detSaveBtn");
+
+  /* ---------- State ---------- */
+  let RECO = getRecommended();
+  let FILTER = "";
+  let services = [];           // {name, minutes, price}
+  let editingIndex = null;
+  let draftName = "";
+  let allowLeave=false;
+  let DIRTY=false;
+
+  /* ---------- Saat/Dakika selectleri ---------- */
+  function fillTimeSelects(hSel,mSel){
+    hSel.innerHTML=""; mSel.innerHTML="";
+    for(let h=0;h<=8;h++){ const o=document.createElement("option"); o.value=h; o.textContent=h; hSel.appendChild(o); }
+    [0,15,30,45].forEach(m=>{ const o=document.createElement("option"); o.value=m; o.textContent=pad(m); mSel.appendChild(o); });
+  }
+  fillTimeSelects(addHours, addMins); fillTimeSelects(detHours, detMins);
+
+  /* ---------- Validasyon ---------- */
+  function setInvalid(input, flag){ input.classList.toggle("invalid", !!flag); }
+  function validateAdd(){
+    const ok = normalize(addName.value).length>=2 &&
+               minutesFrom(addHours.value, addMins.value) > 0 &&
+               addPrice.value.trim()!=="" && Number(addPrice.value)>=0;
+    addSaveBtn.disabled = !ok;
+    setInvalid(addName, normalize(addName.value).length<2);
+    setInvalid(addPrice, !(addPrice.value.trim()!=="" && Number(addPrice.value)>=0));
+  }
+  function validateDet(){
+    const ok = minutesFrom(detHours.value, detMins.value)>0 &&
+               detPrice.value.trim()!=="" && Number(detPrice.value)>=0;
+    detSaveBtn.disabled = !ok;
+    setInvalid(detPrice, !(detPrice.value.trim()!=="" && Number(detPrice.value)>=0));
+  }
+  [addName, addHours, addMins, addPrice].forEach(el=> el.addEventListener("input", ()=>{ DIRTY=true; validateAdd(); }));
+  [detHours, detMins, detPrice].forEach(el=> el.addEventListener("input", ()=>{ DIRTY=true; validateDet(); }));
+
+  /* ---------- Liste & scroll ---------- */
+  const PC_SCROLL_THRESHOLD = 3;
+  function applyScrollMode(){
+    const needScroll = services.length >= PC_SCROLL_THRESHOLD;
+    listScroller.classList.toggle("scrollable", needScroll);
+  }
+
+  function renderList(){
+    servicesList.innerHTML="";
+    if(!services.length){
+      emptyState.style.display="block";
+      servicesList.appendChild(emptyState);
+    }else{
+      emptyState.style.display="none";
+      services.forEach((s,idx)=>{
+        const row=document.createElement("div"); row.className="svc-item";
+        row.innerHTML = `
+          <div class="info" role="button" tabindex="0" aria-label="${escapeHtml(s.name)} düzenle">
+            <div class="name">${escapeHtml(s.name)}</div>
+            <div class="sub">${hm(s.minutes||30)}</div>
+          </div>
+          <div class="price" role="button" tabindex="0" aria-label="${escapeHtml(s.name)} fiyat">${tl(s.price)}</div>
+          <button class="icon-btn" aria-label="Düzenle"><i class="fa-solid fa-pen"></i></button>
+          <button class="icon-btn" aria-label="Sil" data-del="${idx}"><i class="fa-solid fa-trash"></i></button>
+        `;
+        const openEditor=()=> openDetail(idx);
+        row.querySelector(".info").addEventListener("click",openEditor);
+        row.querySelector(".info").addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openEditor(); }});
+        row.querySelector(".price").addEventListener("click",openEditor);
+        row.querySelector(".price").addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); openEditor(); }});
+        row.querySelector('.fa-pen').parentElement.addEventListener("click",openEditor);
+        row.querySelector('[data-del]').addEventListener("click",()=>{
+          const name=services[idx]?.name||"Bu hizmet";
+          if(confirm(`“${name}” silinsin mi?`)){
+            DIRTY=true;
+            services.splice(idx,1);
+            persist(); renderList(); updateCTA();
+            showToast("Hizmet silindi");
+          }
+        });
+        servicesList.appendChild(row);
+      });
+    }
+    addedCount.textContent = `${services.length} hizmet`;
+    applyScrollMode();
+  }
+  function updateCTA(){ btnContinue.disabled = services.length===0; }
+  function scrollListToEnd(){ setTimeout(()=>{ listScroller.scrollTo({top:listScroller.scrollHeight, behavior:"smooth"}); }, 30); }
+  window.addEventListener("resize", applyScrollMode);
+
+  /* ---------- Persist (LOCAL + onboardingData) ---------- */
+  function persist(){
+    localStorage.setItem("step7", JSON.stringify({ services: services.map(s=>s.name), items:services }));
+
+    const finalItems = services.map(s=>({
+      name: s.name,
+      minutes: Number(s.minutes||0),
+      price: Number(s.price||0)
+    }));
+    patchOnboardingData({ services: finalItems });
+  }
+
+  /* ---------- Öneriler modalı ---------- */
+  function bodyLock(lock){ document.documentElement.style.overflow = lock ? "hidden" : ""; }
+  function openSelect(){ renderSelect(); selectOverlay.style.display="flex"; selectOverlay.setAttribute("aria-hidden","false"); bodyLock(true); setTimeout(()=>svcSearch.focus({preventScroll:true}),40); }
+  function closeSelect(){ selectOverlay.style.display="none"; selectOverlay.setAttribute("aria-hidden","true"); bodyLock(false); }
+
+  function highlight(text, query){
+    if(!query) return escapeHtml(text);
+    const q = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(q, "gi");
+    return escapeHtml(text).replace(re, m=>`<mark>${m}</mark>`);
+  }
+
+  function existsByName(name){
+    const key=keyOf(name);
+    return services.findIndex(s=> keyOf(s.name)===key);
+  }
+  function matchesFilter(name){
+    const f=(FILTER||"").trim().toLowerCase();
+    return !f || name.toLowerCase().includes(f);
+  }
+  function renderSelect(){
+    groups.innerHTML="";
+    const list = RECO.filter(matchesFilter);
+    if(!list.length){
+      const div=document.createElement("div");
+      div.className="svc-row";
+      div.innerHTML=`<span>Sonuç bulunamadı</span>`;
+      groups.appendChild(div);
+      return;
+    }
+    list.forEach(name=>{
+      const norm=normalize(name);
+      const idx=existsByName(norm);
+      const already = idx!==-1;
+      const row=document.createElement("div"); row.className="svc-row";
+      row.innerHTML = `<span>${highlight(norm, FILTER)}</span><button class="chip ${already?'ok':''}">${already?'EKLENDİ':'SEÇ'}</button>`;
+      const pick=()=>{
+        if(already){
+          closeSelect();
+          openDetail(idx);
+          showToast("Bu hizmet zaten listede");
+        }else{
+          draftName = norm;
+          closeSelect();
+          openDetail(null, norm);
+        }
+      };
+      row.addEventListener("click", pick);
+      row.querySelector(".chip").addEventListener("click", (e)=>{ e.stopPropagation(); pick(); });
+      groups.appendChild(row);
+    });
+  }
+  btnSee.addEventListener("click", ()=>{ RECO=getRecommended(); openSelect(); });
+  selCloseBtn.addEventListener("click", closeSelect);
+  selectOverlay.addEventListener("mousedown", e=>{ if(e.target===selectOverlay) closeSelect(); });
+  svcSearch.addEventListener("input", ()=>{ FILTER=svcSearch.value||""; renderSelect(); });
+
+  /* ---------- Yeni hizmet ekle ---------- */
+  function openAdd(){
+    addName.value=""; addPrice.value="";
+    addHours.value="0"; addMins.value="30"; validateAdd();
+    addOverlay.style.display="flex"; addOverlay.setAttribute("aria-hidden","false"); bodyLock(true);
+    setTimeout(()=> addName.focus({preventScroll:true}),40);
+  }
+  function closeAdd(){ addOverlay.style.display="none"; addOverlay.setAttribute("aria-hidden","true"); bodyLock(false); }
+  btnOpenAdd.addEventListener("click", openAdd);
+  addCloseBtn.addEventListener("click", closeAdd);
+  addCancelBtn.addEventListener("click", closeAdd);
+  addOverlay.addEventListener("mousedown",(e)=>{ if(e.target===addOverlay) closeAdd(); });
+  addOverlay.addEventListener("keydown",(e)=>{ if(e.key==="Enter"){ if(!addSaveBtn.disabled) addSaveBtn.click(); }});
+
+  addSaveBtn.addEventListener("click", ()=>{
+    if(addSaveBtn.disabled) return;
+    const name=normalize(addName.value), mins=minutesFrom(addHours.value, addMins.value), price=Number(addPrice.value);
+    const idx = existsByName(name);
+    if(idx!==-1){
+      closeAdd();
+      openDetail(idx);
+      showToast("Bu hizmet zaten listede");
+      return;
+    }
+    DIRTY=true;
+    services.push({ name, minutes:mins, price });
+    persist(); renderList(); updateCTA(); closeAdd(); scrollListToEnd();
+  });
+
+  /* ---------- Detay modalı ---------- */
+  function openDetail(index, newName=null){
+    if(index===null){
+      editingIndex = null;
+      detailHeader.textContent = "Hizmet Bilgileri";
+      detailName.textContent = newName || draftName || "";
+      detHours.value="0"; detMins.value="30"; detPrice.value="";
+    }else{
+      const s=services[index]; if(!s) return;
+      editingIndex = index;
+      detailHeader.textContent = "Hizmet Bilgileri";
+      detailName.textContent = s.name;
+      detHours.value = String(Math.floor((s.minutes||30)/60));
+      detMins.value  = String((s.minutes||30)%60);
+      detPrice.value = s.price ?? "";
+    }
+    validateDet();
+    detailOverlay.style.display="flex"; detailOverlay.setAttribute("aria-hidden","false"); bodyLock(true);
+    setTimeout(()=> detHours.focus({preventScroll:true}), 30);
+  }
+  function closeDetail(){ detailOverlay.style.display="none"; detailOverlay.setAttribute("aria-hidden","true"); bodyLock(false); }
+  detailCloseBtn.addEventListener("click", closeDetail);
+  detCancelBtn.addEventListener("click", closeDetail);
+  detailOverlay.addEventListener("mousedown",(e)=>{ if(e.target===detailOverlay) closeDetail(); });
+  detailOverlay.addEventListener("keydown",(e)=>{ if(e.key==="Enter"){ if(!detSaveBtn.disabled) detSaveBtn.click(); }});
+
+  detSaveBtn.addEventListener("click", ()=>{
+    if(detSaveBtn.disabled) return;
+    const mins=minutesFrom(detHours.value, detMins.value);
+    const price=Number(detPrice.value);
+    DIRTY=true;
+
+    if(editingIndex===null){
+      const name = detailName.textContent || draftName;
+      const idx = existsByName(name);
+      if(idx!==-1){
+        services[idx].minutes=mins;
+        services[idx].price=price;
+        persist(); renderList(); updateCTA(); closeDetail();
+        showToast("Mevcut hizmet güncellendi");
+        return;
+      }
+      services.push({ name, minutes:mins, price });
+      persist(); renderList(); updateCTA(); closeDetail(); scrollListToEnd();
+      return;
+    }
+
+    services[editingIndex].minutes=mins;
+    services[editingIndex].price=price;
+    persist(); renderList(); updateCTA(); closeDetail();
+  });
+
+  /* ---------- Hydrate ---------- */
+  (function hydrate(){
+    try{
+      const s=JSON.parse(localStorage.getItem("step7")||"null");
+      if(s){
+        if(Array.isArray(s.items) && s.items.length){
+          services = s.items.map(x=>({ name:normalize(x.name||""), minutes:Number(x.minutes||30), price:(x.price===""||x.price==null) ? "" : Number(x.price) }));
+        }else if(Array.isArray(s.services)){
+          services = s.services.map(n=>({ name:normalize(n), minutes:30, price:"" }));
+        }
+      }else{
+        const d = getOnboardingData();
+        if(Array.isArray(d?.services) && d.services.length){
+          services = d.services.map(x=>({ name:normalize(x.name||""), minutes:Number(x.minutes||30), price:Number(x.price||0) }));
+        }
+      }
+
+      const seen=new Set();
+      services = services.filter(s=>{
+        const k=keyOf(s.name);
+        if(seen.has(k)) return false;
+        seen.add(k);
+        return true;
+      });
+    }catch{ services=[]; }
+
+    renderList(); updateCTA();
+    persist();
+  })();
+
+  /* ---------- DEVAM ET (SADECE LOCAL) ---------- */
+  const setLoading=(on)=>{
+    btnContinue.disabled = !!on || services.length===0;
+    if(on){
+      btnContinue.dataset._t = btnContinue.innerHTML;
+      btnContinue.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Kaydediliyor…';
+    }else if(btnContinue.dataset._t){
+      btnContinue.innerHTML = btnContinue.dataset._t;
+      delete btnContinue.dataset._t;
+    }
+  };
+
+  btnContinue.addEventListener("click", ()=>{
+    if(!services.length) return;
+
+    persist();
+    setLoading(true);
+
+    localStorage.setItem(K_LAST,"6"); // ✅ sıradaki: admin-register8 (tamamla)
+    allowLeave=true;
+    DIRTY=false;
+    location.replace("admin-register8.html");
+  });
+
+  /* ---------- Leave guard + Back ---------- */
+  window.addEventListener("beforeunload",e=>{
+    if(!allowLeave && DIRTY){
+      e.preventDefault();
+      e.returnValue="";
+    }
+  });
+
+  btnBack.addEventListener("click",(e)=>{
+    e.preventDefault();
+    persist();
+    allowLeave=true;
+    DIRTY=false;
+    location.replace("admin-register6.html");
+  });
+
+  document.addEventListener("keydown",(e)=>{
+    if(e.key==="Escape"){
+      if(selectOverlay.style.display==="flex") selCloseBtn.click();
+      if(addOverlay.style.display==="flex") addCloseBtn.click();
+      if(detailOverlay.style.display==="flex") detailCloseBtn.click();
+    }
+  });
+
+  // ✅ Boot: önce session kontrol, sonra local guard
+  (async function boot(){
+    const me = await requireSessionOrRedirect();
+    if(!me) return;
+    guardFlow();
+  })();
+</script>
+
+</body>
+</html>

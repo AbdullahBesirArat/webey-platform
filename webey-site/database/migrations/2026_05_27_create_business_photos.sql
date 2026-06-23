@@ -1,0 +1,36 @@
+CREATE TABLE IF NOT EXISTS `business_photos` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `business_id` INT UNSIGNED NOT NULL,
+  `category` VARCHAR(40) NOT NULL,
+  `title` VARCHAR(160) DEFAULT NULL,
+  `description` TEXT DEFAULT NULL,
+  `service_id` INT UNSIGNED DEFAULT NULL,
+  `staff_id` INT UNSIGNED DEFAULT NULL,
+  `pair_group_id` VARCHAR(80) DEFAULT NULL,
+  `pair_role` ENUM('before','after') DEFAULT NULL,
+  `original_path` VARCHAR(500) NOT NULL,
+  `thumb_path` VARCHAR(500) DEFAULT NULL,
+  `medium_path` VARCHAR(500) DEFAULT NULL,
+  `large_path` VARCHAR(500) DEFAULT NULL,
+  `width` INT UNSIGNED DEFAULT NULL,
+  `height` INT UNSIGNED DEFAULT NULL,
+  `bytes` BIGINT UNSIGNED DEFAULT NULL,
+  `is_cover` TINYINT(1) NOT NULL DEFAULT 0,
+  `is_visible` TINYINT(1) NOT NULL DEFAULT 1,
+  `status` ENUM('active','hidden','flagged','deleted') NOT NULL DEFAULT 'active',
+  `sort_order` INT NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_business_photos_business` (`business_id`),
+  KEY `idx_business_photos_category_sort` (`business_id`, `category`, `sort_order`),
+  KEY `idx_business_photos_cover` (`business_id`, `is_cover`),
+  KEY `idx_business_photos_service` (`service_id`),
+  KEY `idx_business_photos_staff` (`staff_id`),
+  CONSTRAINT `fk_business_photos_business`
+    FOREIGN KEY (`business_id`) REFERENCES `businesses` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_business_photos_service`
+    FOREIGN KEY (`service_id`) REFERENCES `services` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `fk_business_photos_staff`
+    FOREIGN KEY (`staff_id`) REFERENCES `staff` (`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

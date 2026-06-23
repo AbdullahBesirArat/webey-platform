@@ -1,0 +1,111 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Webey — root .gitignore (portfolio-safe)
+# Keeps secrets, build artifacts, and local machine configuration out of Git.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# ── Secrets & credentials ────────────────────────────────────────────────────
+*.env
+.env
+.env.*
+!.env.example
+**/.env
+**/key.properties
+!**/key.properties.example
+**/keys/*
+!**/keys/.htaccess
+!**/keys/*.example
+**/_iyzico_config.php
+**/_email_config.local.php
+**/_sms_config.local.php
+*.local.php
+*.local.md
+AI_GIZLI_*.md
+
+# ── Signing keys & certificates ──────────────────────────────────────────────
+*.jks
+*.keystore
+*.pem
+*.p12
+*.pfx
+*.cer
+*.mobileprovision
+*.p8
+google-services.json
+!google-services.json.example
+GoogleService-Info.plist
+!GoogleService-Info.plist.example
+
+# ── Database exports / dumps ─────────────────────────────────────────────────
+*.sql.gz
+*.dump
+*.bak
+db_backup*
+*backup*.sql
+
+# ── Flutter / Dart ───────────────────────────────────────────────────────────
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+**/build/
+*.iml
+.metadata.local
+
+# ── Android ──────────────────────────────────────────────────────────────────
+**/android/.gradle/
+**/android/.kotlin/
+**/android/captures/
+**/android/local.properties
+**/android/app/.cxx/
+**/android/**/GeneratedPluginRegistrant.*
+*.apk
+*.aab
+*.ap_
+
+# ── iOS / macOS ──────────────────────────────────────────────────────────────
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework/
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Runner/GeneratedPluginRegistrant.*
+**/DerivedData/
+*.xcuserstate
+
+# ── PHP ──────────────────────────────────────────────────────────────────────
+/vendor/
+composer.lock
+**/uploads/
+!**/uploads/.gitkeep
+
+# ── Logs, caches, temp ───────────────────────────────────────────────────────
+*.log
+logs/
+*.cache
+.cache/
+tmp/
+temp/
+*.tmp
+
+# ── IDE / editor ─────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+.claude/
+*.swp
+*.swo
+*~
+
+# ── OS junk ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Deployment artifacts ─────────────────────────────────────────────────────
+deploy/
+*.tar.gz
+*.zip
+_release_*/
+.live-diff/

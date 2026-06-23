@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Dükkan Ayarları</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/settings.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="css/mobile-admin.css" />
+  <link rel="stylesheet" href="css/wb-transitions.css" />
+  <link rel="stylesheet" href="css/wb-bottom-nav.css" />
+  <link rel="stylesheet" href="css/admin-wb.css" />
+  <link rel="stylesheet" href="css/admin-interactions.css" />
+  <!-- Merkezi API katmanı — calendar.js/settings.js/staff.js'in apiGet/apiPost'larını otomatik geçersiz kılar -->
+  <script src="js/wb-api-shim.js"></script>
+  <script src="js/wb-email-banner.js" defer></script>
+</head>
+<body data-page="settings" class="has-admin-bottom-nav">
+
+  <!-- ══════ TOPBAR ══════ -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <a id="brandName" class="logo" href="#" aria-label="İşletme adı">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Dükkan</span>
+      </a>
+      <span class="topbar__badge">Dükkan Ayarları</span>
+      <div class="spacer"></div>
+      <a id="viewProfileBtn" href="#" title="Profilimi gör">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Profilimi Gör
+      </a>
+    </div>
+  </header>
+
+  <!-- ══════ ANA LAYOUT ══════ -->
+  <div class="settings-layout">
+
+    <!-- ── Sol Sidebar Nav ── -->
+    <nav class="settings-nav" aria-label="Ayar bölümleri">
+      <div class="settings-nav__title">Dükkan Ayarları</div>
+      <ul class="settings-nav__list">
+        <li class="settings-nav__item">
+          <a class="settings-nav__link is-active" href="#sec-biz" data-nav="biz">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            İşletme Bilgileri
+          </a>
+        </li>
+        <li class="settings-nav__item">
+          <a class="settings-nav__link" href="#sec-contact" data-nav="contact">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l.62-.62a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Hakkımızda & İletişim
+          </a>
+        </li>
+        <li class="settings-nav__item">
+          <a class="settings-nav__link" href="#sec-hours" data-nav="hours">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            Çalışma Saatleri
+          </a>
+        </li>
+        <li class="settings-nav__item">
+          <a class="settings-nav__link" href="#sec-images" data-nav="images">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            Görseller
+          </a>
+        </li>
+        <li class="settings-nav__item">
+          <a class="settings-nav__link" href="#sec-services" data-nav="services">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            Hizmetler & Ücretler
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- ── Ana İçerik ── -->
+    <main class="settings-content wb-page-in">
+
+      <!-- ══ İşletme Bilgileri ══ -->
+      <section class="card section-anchor" id="sec-biz">
+        <div class="card__header">
+          <div class="card__header-left">
+            <h2 class="card__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+              İşletme Bilgileri
+            </h2>
+            <p class="card__subtitle">Müşterilerin sizi bulmasını sağlayan konum ve adres bilgileri.</p>
+          </div>
+        </div>
+        <div class="card__body">
+          <div class="form-grid form-grid-3">
+            <label class="field">
+              <span>Salon adı</span>
+              <input id="bizName" class="input" placeholder="Örn. Barber Abdullah" />
+            </label>
+            <label class="field">
+              <span>Konum (Google Harita URL)</span>
+              <input id="mapUrl" class="input" placeholder="https://maps.app.goo.gl/..." />
+            </label>
+            <label class="field">
+              <span>Bina No</span>
+              <input id="buildingNo" class="input" placeholder="Örn. 12" />
+            </label>
+            <label class="field">
+              <span>İl</span>
+              <select id="city" class="input"></select>
+            </label>
+            <label class="field">
+              <span>İlçe</span>
+              <select id="district" class="input" disabled></select>
+            </label>
+            <label class="field">
+              <span>Mahalle</span>
+              <select id="hood" class="input" disabled></select>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Hakkımızda & İletişim ══ -->
+      <section class="card section-anchor" id="sec-contact">
+        <div class="card__header">
+          <div class="card__header-left">
+            <h2 class="card__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.41 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9a16 16 0 0 0 6.29 6.29l.62-.62a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              Hakkımızda & İletişim
+            </h2>
+            <p class="card__subtitle">Profil sayfanızda görünecek tanıtım metni ve iletişim numarası.</p>
+          </div>
+        </div>
+        <div class="card__body">
+          <div class="form-grid">
+            <label class="field">
+              <span>Hakkımızda</span>
+              <textarea
+                id="aboutText"
+                class="input"
+                rows="5"
+                maxlength="800"
+                placeholder="Kendinizi ve dükkanınızı anlatın. Örn: 10 yıllık tecrübe, özel kesimler, steril ortam..."
+              ></textarea>
+              <div class="hint">En fazla 800 karakter.</div>
+            </label>
+
+            <div class="form-grid form-grid-3">
+              <label class="field">
+                <span>İletişim Numarası</span>
+                <div class="phone-input">
+                  <span class="phone-prefix">+90</span>
+                  <input
+                    id="contactPhone"
+                    class="input"
+                    inputmode="tel"
+                    placeholder="5xx xxx xx xx"
+                  />
+                </div>
+                <div class="hint">10 haneli numara girin (5XXXXXXXXX).</div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Çalışma Saatleri ══ -->
+      <section class="card section-anchor" id="sec-hours">
+        <div class="card__header">
+          <div class="card__header-left">
+            <h2 class="card__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Çalışma Saatleri
+            </h2>
+            <p class="card__subtitle">Müşteriler bu saatler içinde randevu alabilir. Kapalı günler takvimde görünmez.</p>
+          </div>
+        </div>
+        <div class="card__body">
+          <div id="bhList" class="bh-list"></div>
+        </div>
+      </section>
+
+      <!-- ══ Görseller ══ -->
+      <section class="card section-anchor" id="sec-images">
+        <div class="card__header">
+          <div class="card__header-left">
+            <h2 class="card__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              Görseller
+            </h2>
+            <p class="card__subtitle">Kapak için tek, Salon &amp; Profil ve Servis &amp; Model için birden fazla görsel ekleyebilirsiniz.</p>
+          </div>
+        </div>
+        <div class="card__body">
+          <div class="uploaders-grid">
+
+            <!-- Kapak -->
+            <div class="uploader">
+              <div class="uploader__hd">
+                <div class="uploader__info">
+                  <strong>Kapak</strong>
+                  <div class="muted">Anasayfa kartlarında görünen ana görsel. Yalnızca 1 adet.</div>
+                </div>
+                <div class="uploader__actions">
+                  <button class="btn btn-accent" data-upload="cover">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Yükle
+                  </button>
+                </div>
+              </div>
+              <input type="file" accept="image/*,.heic,.heif" hidden data-input="cover" />
+              <div id="coverThumbs" class="thumbs"></div>
+            </div>
+
+            <!-- Salon & Profil -->
+            <div class="uploader">
+              <div class="uploader__hd">
+                <div class="uploader__info">
+                  <strong>Salon &amp; Profil</strong>
+                  <div class="muted">Dükkanınız veya personeliniz. Çoklu ekleme desteklenir.</div>
+                </div>
+                <div class="uploader__actions">
+                  <button class="btn btn-accent" data-upload="salon">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Yükle
+                  </button>
+                  <button class="btn btn--danger-soft" type="button" data-toggle-delete="salon">Sil</button>
+                </div>
+              </div>
+              <input type="file" accept="image/*,.heic,.heif" hidden data-input="salon" multiple />
+              <div id="salonThumbs" class="thumbs"></div>
+            </div>
+
+            <!-- Servis & Model -->
+            <div class="uploader">
+              <div class="uploader__hd">
+                <div class="uploader__info">
+                  <strong>Servis &amp; Model</strong>
+                  <div class="muted">Hizmet örneği veya saç modeli. Çoklu ekleme desteklenir.</div>
+                </div>
+                <div class="uploader__actions">
+                  <button class="btn btn-accent" data-upload="model">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Yükle
+                  </button>
+                  <button class="btn btn--danger-soft" type="button" data-toggle-delete="model">Sil</button>
+                </div>
+              </div>
+              <input type="file" accept="image/*,.heic,.heif" hidden data-input="model" multiple />
+              <div id="modelThumbs" class="thumbs"></div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ Hizmetler & Ücretler ══ -->
+      <section class="card section-anchor" id="sec-services">
+        <div class="card__header">
+          <div class="card__header-left">
+            <h2 class="card__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              Hizmetler &amp; Ücretler
+            </h2>
+            <p class="card__subtitle">Randevu sırasında müşterilerin seçeceği hizmetler ve fiyatları.</p>
+          </div>
+          <button id="openPicker" class="btn btn-accent">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Hızlı Ekle
+          </button>
+        </div>
+        <div class="card__body">
+
+          <div id="svcSuggest" class="svc-suggest" style="display:none;"></div>
+
+          <div class="table-wrap">
+            <div class="thead">
+              <div class="th">#</div>
+              <div class="th">Hizmet Adı</div>
+              <div class="th">Süre (dk)</div>
+              <div class="th">Ücret (₺)</div>
+              <div class="th">İşlem</div>
+            </div>
+            <div id="serviceList" class="tbody"></div>
+          </div>
+
+          <div class="svc-toolbar">
+            <button id="addQuick" class="btn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Boş satır ekle
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Mobil alt bar (varsa) -->
+  <script src="js/mobil_settings.js?v=4.8" defer></script>
+
+  <!-- Settings logic -->
+  <script type="module" src="js/settings.js?v=24.0"></script>
+  <script src="js/wb-transitions.js" defer></script>
+  <script src="js/admin-interactions.js" defer></script>
+
+  <!-- Sidebar scrollspy -->
+  <script>
+    (function () {
+      const links = document.querySelectorAll('.settings-nav__link[data-nav]');
+      const sections = Array.from(document.querySelectorAll('.section-anchor'));
+
+      function activate(id) {
+        links.forEach(l => l.classList.toggle('is-active', l.getAttribute('href') === '#' + id));
+      }
+
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) activate(e.target.id); });
+      }, { rootMargin: '-20% 0px -60% 0px', threshold: 0 });
+
+      sections.forEach(s => obs.observe(s));
+
+      links.forEach(l => {
+        l.addEventListener('click', e => {
+          e.preventDefault();
+          const id = l.getAttribute('href').slice(1);
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    })();
+  </script>
+
+  <!-- ══════ MOBİL ALT NAVİGASYON ══════ -->
+  <nav class="wb-bottom-nav" id="adminBottomNav" aria-label="Admin menü" role="navigation">
+    <div class="wb-bn-inner">
+
+      <!-- Personel -->
+      <a class="wb-bn-item" href="staff.html" aria-label="Personel">
+        <span class="wb-bn-icon material-symbols-rounded">group</span>
+        <span class="wb-bn-label">Personel</span>
+      </a>
+
+      <!-- Ayarlar — AKTİF -->
+      <a class="wb-bn-item is-active" href="settings.html" aria-label="Ayarlar" aria-current="page">
+        <span class="wb-bn-icon material-symbols-rounded">store</span>
+        <span class="wb-bn-label">Dükkan</span>
+      </a>
+
+      <!-- TAKVİM — Merkez CTA -->
+      <a class="wb-bn-item wb-bn-cta" href="calendar.html" aria-label="Takvim">
+        <div class="wb-bn-cta-bubble">
+          <span class="wb-bn-icon material-symbols-rounded">calendar_month</span>
+        </div>
+        <span class="wb-bn-label">Takvim</span>
+      </a>
+
+      <!-- Bildirimler -->
+      <a class="wb-bn-item" href="bildirimler.html" aria-label="Bildirimler" id="bnBellLink">
+        <span class="wb-bn-icon material-symbols-rounded" style="position:relative">
+          notifications
+          <span id="bnBellBadge" class="wb-bn-badge" aria-live="polite"></span>
+        </span>
+        <span class="wb-bn-label">Bildirim</span>
+      </a>
+
+      <!-- Profil -->
+      <a class="wb-bn-item" href="admin-profile.html" aria-label="Profil">
+        <span class="wb-bn-icon material-symbols-rounded">account_circle</span>
+        <span class="wb-bn-label">Profil</span>
+      </a>
+
+    </div>
+  </nav>
+
+  <!-- Global Bildirimler -->
+  <script src="js/wb-notifications.js"></script>
+</body>
+</html>

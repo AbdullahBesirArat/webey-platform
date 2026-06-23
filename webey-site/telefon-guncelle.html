@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Telefon Güncelle</title>
+  <style>
+    :root{--bg:#f4f3ef;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e5e7eb;--brand:#0ea5b3;--brand-d:#0b8a96;--ok:#16a34a;--err:#dc2626}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+    .card{width:min(460px,100%);background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+    h1{margin:0 0 8px;font-size:24px} p{margin:0;color:var(--muted);line-height:1.5}
+    .row{margin-top:18px}.label{display:block;margin-bottom:6px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+    input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+    .current{padding:11px 12px;border:1px solid var(--line);background:#f8fafc;border-radius:10px;font-weight:600}
+    .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+    button,a{border:0;border-radius:10px;padding:11px 14px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+    .pri{background:var(--brand);color:#fff}.pri:hover{background:var(--brand-d)} .sec{background:#fff;color:#334155;border:1px solid var(--line)}
+    .msg{display:none;margin-top:14px;padding:10px 12px;border-radius:10px;font-size:14px}
+    .msg.ok{display:block;background:#ecfdf3;color:var(--ok);border:1px solid #bbf7d0}
+    .msg.err{display:block;background:#fef2f2;color:var(--err);border:1px solid #fecaca}
+    .state{display:none}.state.show{display:block}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <div id="statePhone" class="state show">
+        <h1>Telefon Güncelle</h1>
+        <p>Yeni numaranı gir, SMS OTP kodunu doğrula ve numaran güncellensin.</p>
+
+        <div class="row">
+          <span class="label">Mevcut Telefon</span>
+          <div id="currentPhone" class="current">Yükleniyor...</div>
+        </div>
+
+        <div class="row">
+          <label class="label" for="newPhone">Yeni Telefon</label>
+          <input id="newPhone" type="tel" placeholder="5xxxxxxxxx" inputmode="numeric" maxlength="11" />
+        </div>
+
+        <div class="actions">
+          <button id="sendOtpBtn" class="pri" type="button">OTP Gönder</button>
+          <a class="sec" href="admin-profile.html">Profile Dön</a>
+        </div>
+
+        <div id="msg1" class="msg"></div>
+      </div>
+
+      <div id="stateOtp" class="state">
+        <h1>OTP Doğrula</h1>
+        <p id="otpText">Gönderilen 6 haneli kodu gir.</p>
+
+        <div class="row">
+          <label class="label" for="otpCode">OTP Kodu</label>
+          <input id="otpCode" type="text" placeholder="123456" inputmode="numeric" maxlength="6" />
+        </div>
+
+        <div class="actions">
+          <button id="verifyBtn" class="pri" type="button">Doğrula ve Kaydet</button>
+          <button id="backBtn" class="sec" type="button">Numarayı Değiştir</button>
+        </div>
+
+        <div id="msg2" class="msg"></div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    let csrf = '';
+    let pendingPhone = '';
+
+    function showState(id){
+      document.querySelectorAll('.state').forEach((el) => el.classList.remove('show'));
+      document.getElementById(id).classList.add('show');
+    }
+
+    function setMsg(id, text, type){
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className = 'msg ' + (type === 'ok' ? 'ok' : 'err');
+    }
+
+    function normalizePhone(raw){
+      const d = (raw || '').replace(/\D/g, '');
+      if (d.startsWith('90') && d.length === 12) return d.slice(2);
+      if (d.startsWith('0') && d.length === 11) return d.slice(1);
+      return d;
+    }
+
+    async function boot(){
+      try {
+        const [csrfRes, meRes] = await Promise.all([
+          fetch('api/csrf.php', { credentials: 'include' }),
+          fetch('api/profile/me.php', { credentials: 'include' })
+        ]);
+        const csrfJson = await csrfRes.json();
+        const meJson = await meRes.json();
+        if (!meJson?.ok) { location.replace('admin-register-login.html#login'); return; }
+        csrf = csrfJson?.data?.token || csrfJson?.token || '';
+        const p = meJson.data?.phone || '';
+        document.getElementById('currentPhone').textContent = p ? ('0' + p) : '-';
+      } catch {
+        location.replace('admin-register-login.html#login');
+      }
+    }
+
+    async function sendOtp(){
+      const btn = document.getElementById('sendOtpBtn');
+      const phone = normalizePhone(document.getElementById('newPhone').value);
+      if (!/^5\d{9}$/.test(phone)) return setMsg('msg1', 'Telefon 5xxxxxxxxx formatında olmalı.', 'err');
+
+      btn.disabled = true; btn.textContent = 'Gönderiliyor...';
+      try {
+        const res = await fetch('api/auth/send-otp.php', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf },
+          body: JSON.stringify({ phone, purpose: 'phone_change' })
+        });
+        const json = await res.json();
+        if (!json?.ok) throw new Error(json?.error || 'OTP gönderilemedi.');
+        pendingPhone = phone;
+        document.getElementById('otpText').textContent = '0' + phone + ' numarasına gönderilen 6 haneli kodu gir.';
+        document.getElementById('otpCode').value = '';
+        showState('stateOtp');
+      } catch (e) {
+        setMsg('msg1', e.message || 'Bağlantı hatası.', 'err');
+      } finally {
+        btn.disabled = false; btn.textContent = 'OTP Gönder';
+      }
+    }
+
+    async function verifyAndSave(){
+      const btn = document.getElementById('verifyBtn');
+      const code = (document.getElementById('otpCode').value || '').trim();
+      if (!/^\d{6}$/.test(code)) return setMsg('msg2', '6 haneli OTP kodunu gir.', 'err');
+      if (!pendingPhone) return setMsg('msg2', 'Önce OTP gönder.', 'err');
+
+      btn.disabled = true; btn.textContent = 'Doğrulanıyor...';
+      try {
+        const verifyRes = await fetch('api/auth/verify-otp.php', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf },
+          body: JSON.stringify({ phone: pendingPhone, code, purpose: 'phone_change' })
+        });
+        const verifyJson = await verifyRes.json();
+        if (!verifyJson?.ok) throw new Error(verifyJson?.error || 'OTP doğrulanamadı.');
+
+        const saveRes = await fetch('api/profile/update.php', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf },
+          body: JSON.stringify({ action: 'update_phone', phone: pendingPhone })
+        });
+        const saveJson = await saveRes.json();
+        if (!saveJson?.ok) throw new Error(saveJson?.error || 'Telefon güncellenemedi.');
+
+        setMsg('msg2', 'Telefon numarası güncellendi.', 'ok');
+        localStorage.setItem('wb_profile_refresh', String(Date.now()));
+        setTimeout(() => { window.location.href = 'admin-profile.html'; }, 700);
+      } catch (e) {
+        setMsg('msg2', e.message || 'İşlem başarısız.', 'err');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Doğrula ve Kaydet';
+      }
+    }
+
+    document.getElementById('sendOtpBtn').addEventListener('click', sendOtp);
+    document.getElementById('verifyBtn').addEventListener('click', verifyAndSave);
+    document.getElementById('backBtn').addEventListener('click', () => showState('statePhone'));
+    document.getElementById('otpCode').addEventListener('input', (e) => { e.target.value = e.target.value.replace(/\D/g, '').slice(0, 6); });
+
+    boot();
+  </script>
+</body>
+</html>

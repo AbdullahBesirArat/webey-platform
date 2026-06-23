@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<link rel="icon" href="img/favicon.ico"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Webey — App Verileri Paneli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet"/>
+<style>
+/* ── TOKENS (superadmin.html ile aynı) ── */
+:root {
+  --bg:#0a0b0f; --surface:#111318; --surface2:#191c24;
+  --border:rgba(255,255,255,.08); --border2:rgba(255,255,255,.13);
+  --text:#e8eaf0; --muted:#6b7280; --muted2:#9ca3af;
+  --teal:#0ea5b3; --teal-d:#0891b2; --teal-glow:rgba(14,165,179,.18);
+  --green:#22c55e; --red:#ef4444; --amber:#f59e0b; --purple:#a78bfa;
+  --r:12px; --r-sm:8px;
+  --font:'Space Grotesk',system-ui,sans-serif; --mono:'Space Mono',monospace;
+  --sh:0 4px 24px rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font:500 14px/1.6 var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+.shell{display:flex;min-height:100vh}
+
+/* ── Sidebar ── */
+.sidebar{width:220px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden}
+.sidebar__brand{padding:20px 20px 14px;border-bottom:1px solid var(--border)}
+.sidebar__logo{font-size:18px;font-weight:700;color:var(--teal);letter-spacing:-.02em}
+.sidebar__badge{display:inline-block;margin-left:6px;font-size:9px;font-weight:700;letter-spacing:.08em;background:var(--purple);color:#fff;padding:2px 6px;border-radius:999px;vertical-align:2px}
+.sidebar__nav{flex:1;padding:10px 0;overflow-y:auto}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;border:none;background:none;color:var(--muted2);font:600 13px/1 var(--font);width:100%;text-align:left;transition:.15s}
+.nav-item .material-symbols-rounded{font-size:18px}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.nav-item.active{color:var(--teal);background:var(--teal-glow);border-right:2px solid var(--teal)}
+.sidebar__footer{padding:14px 18px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+.sidebar__footer a{color:var(--teal);text-decoration:none}
+
+/* ── Main ── */
+.main{flex:1;min-width:0;padding:22px 26px 60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.topbar h1{font-size:19px;font-weight:700}
+.topbar .backlink{font-size:12px;color:var(--muted2);text-decoration:none;border:1px solid var(--border2);padding:6px 12px;border-radius:var(--r-sm)}
+.topbar .backlink:hover{color:var(--teal);border-color:var(--teal)}
+.page{display:none}
+.page.active{display:block}
+
+/* ── Cards ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:18px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px}
+.stat-card__val{font:700 24px/1.2 var(--mono);margin:4px 0 2px}
+.stat-card__label{font-size:12px;color:var(--muted2)}
+.stat-card--warn .stat-card__val{color:var(--amber)}
+.stat-card--bad .stat-card__val{color:var(--red)}
+.stat-card--good .stat-card__val{color:var(--green)}
+.stat-card--teal .stat-card__val{color:var(--teal)}
+.section-title{font-size:13px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;margin:18px 0 10px}
+
+/* ── Filters ── */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.filters input,.filters select{background:var(--surface2);border:1px solid var(--border2);color:var(--text);font:500 13px var(--font);padding:7px 10px;border-radius:var(--r-sm);outline:none}
+.filters input:focus,.filters select:focus{border-color:var(--teal)}
+.filters label.chk{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted2);cursor:pointer;background:var(--surface2);border:1px solid var(--border2);padding:7px 10px;border-radius:var(--r-sm)}
+.btn{background:var(--teal);color:#fff;border:none;font:600 13px var(--font);padding:8px 14px;border-radius:var(--r-sm);cursor:pointer}
+.btn:hover{background:var(--teal-d)}
+.btn--ghost{background:var(--surface2);color:var(--muted2);border:1px solid var(--border2)}
+
+/* ── Table ── */
+.tablewrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:700px}
+th{position:sticky;top:0;background:var(--surface2);text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted2);padding:10px 12px;border-bottom:1px solid var(--border2);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tbody tr.rowlink{cursor:pointer}
+tbody tr.rowlink:hover{background:rgba(255,255,255,.03)}
+.badge{display:inline-block;font:700 10px/1 var(--mono);padding:4px 8px;border-radius:999px;letter-spacing:.03em}
+.b-green{background:rgba(34,197,94,.15);color:var(--green)}
+.b-red{background:rgba(239,68,68,.15);color:var(--red)}
+.b-amber{background:rgba(245,158,11,.15);color:var(--amber)}
+.b-teal{background:var(--teal-glow);color:var(--teal)}
+.b-gray{background:rgba(255,255,255,.07);color:var(--muted2)}
+.b-purple{background:rgba(167,139,250,.15);color:var(--purple)}
+.dot-yes{color:var(--green);font-weight:700}
+.dot-no{color:var(--red);font-weight:700}
+
+/* ── States / pagination ── */
+.state{padding:34px;text-align:center;color:var(--muted);font-size:13px}
+.state--error{color:var(--red)}
+.pager{display:flex;align-items:center;gap:10px;justify-content:flex-end;margin-top:10px;font-size:12px;color:var(--muted2)}
+.pager button{background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:5px 10px;border-radius:var(--r-sm);cursor:pointer;font:600 12px var(--font)}
+.pager button:disabled{opacity:.35;cursor:default}
+
+/* ── Detail modal ── */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:50;padding:30px 16px;overflow:auto}
+.modal.open{display:block}
+.modal__box{max-width:900px;margin:0 auto;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r);box-shadow:var(--sh);padding:22px}
+.modal__close{float:right;background:none;border:none;color:var(--muted2);font-size:22px;cursor:pointer}
+.detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px 18px;font-size:13px;margin:12px 0}
+.detail-grid .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.act-row{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 6px}
+.fld{display:block;margin-bottom:10px;font-size:12px;color:var(--muted)}
+.fld input,.fld select,.fld textarea{display:block;width:100%;box-sizing:border-box;margin-top:4px;background:var(--surface2);border:1px solid var(--border2);color:var(--text);font:500 13px var(--font);padding:7px 10px;border-radius:var(--r-sm);outline:none}
+.fld input:focus,.fld select:focus,.fld textarea:focus{border-color:var(--teal)}
+.btn--sm{padding:5px 10px;font-size:12px}
+.btn--danger{background:var(--red,#e05260)}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--surface2);border:1px solid var(--border2);border-left:3px solid var(--red);border-radius:var(--r-sm);padding:10px 16px;font-size:13px;z-index:99;display:none}
+
+@media (max-width:800px){
+  .shell{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:static;flex-direction:row;align-items:center;overflow-x:auto}
+  .sidebar__brand{border-bottom:none;padding:12px 14px;flex-shrink:0}
+  .sidebar__nav{display:flex;padding:0}
+  .nav-item{width:auto;white-space:nowrap;padding:12px 12px}
+  .nav-item.active{border-right:none;border-bottom:2px solid var(--teal)}
+  .sidebar__footer{display:none}
+  .main{padding:16px 12px 50px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <div class="sidebar__logo">webey<span class="sidebar__badge">APP</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">App Verileri</div>
+    </div>
+    <nav class="sidebar__nav" id="nav">
+      <button class="nav-item active" data-page="dashboard"><span class="material-symbols-rounded">dashboard</span>Dashboard</button>
+      <button class="nav-item" data-page="businesses"><span class="material-symbols-rounded">store</span>İşletmeler</button>
+      <button class="nav-item" data-page="customers"><span class="material-symbols-rounded">people</span>Müşteriler</button>
+      <button class="nav-item" data-page="appointments"><span class="material-symbols-rounded">calendar_month</span>Randevular</button>
+      <button class="nav-item" data-page="gallery"><span class="material-symbols-rounded">photo_library</span>Galeri</button>
+      <button class="nav-item" data-page="services"><span class="material-symbols-rounded">design_services</span>Hizmetler</button>
+      <button class="nav-item" data-page="notifications"><span class="material-symbols-rounded">notifications</span>Bildirimler</button>
+      <button class="nav-item" data-page="boost"><span class="material-symbols-rounded">rocket_launch</span>Boost</button>
+      <button class="nav-item" data-page="subscriptions"><span class="material-symbols-rounded">subscriptions</span>Abonelikler</button>
+    </nav>
+    <div class="sidebar__footer">
+      Faz 1 — Salt okunur<br/>
+      <a href="superadmin.html">← Mevcut Super Admin Paneli</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <h1 id="pageTitle">Dashboard</h1>
+      <a class="backlink" href="superadmin.html">Mevcut Super Admin Paneli</a>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="page-dashboard">
+      <div id="dashState" class="state">Yükleniyor…</div>
+      <div id="dashContent" style="display:none">
+        <div class="kpi-grid" id="kpiMain"></div>
+        <div class="section-title">Eksik Veri Uyarıları</div>
+        <div class="kpi-grid" id="kpiWarn"></div>
+        <div class="section-title">Randevular</div>
+        <div class="kpi-grid" id="kpiAppt"></div>
+        <div class="section-title">Son 7 Gün</div>
+        <div class="kpi-grid" id="kpi7d"></div>
+      </div>
+    </section>
+
+    <!-- BUSINESSES -->
+    <section class="page" id="page-businesses">
+      <div class="filters" id="bizFilters">
+        <input type="text" id="bizQ" placeholder="Ara: ad, sahip, şehir…"/>
+        <select id="bizStatus">
+          <option value="">Durum (hepsi)</option>
+          <option value="active">active</option><option value="pending">pending</option>
+          <option value="draft">draft</option><option value="rejected">rejected</option>
+          <option value="suspended">suspended</option>
+        </select>
+        <select id="bizOnb">
+          <option value="">Onboarding (hepsi)</option>
+          <option value="completed">tamamlandı</option>
+          <option value="incomplete">eksik</option>
+        </select>
+        <input type="text" id="bizDistrict" placeholder="İlçe" style="width:110px"/>
+        <label class="chk"><input type="checkbox" id="bizNoLoc"/>Konum yok</label>
+        <label class="chk"><input type="checkbox" id="bizNoCover"/>Kapak yok</label>
+        <label class="chk"><input type="checkbox" id="bizNoSvc"/>Hizmet yok</label>
+        <label class="chk"><input type="checkbox" id="bizDep"/>Kapora aktif</label>
+        <label class="chk"><input type="checkbox" id="bizNoIban"/>IBAN yok</label>
+        <button class="btn" onclick="bizPage=1;loadBusinesses()">Filtrele</button>
+      </div>
+      <div class="tablewrap"><div id="bizState" class="state">Yükleniyor…</div><table id="bizTable" style="display:none">
+        <thead><tr><th>ID</th><th>İşletme</th><th>Sahip</th><th>Telefon</th><th>Konum</th><th>Durum</th><th>Abonelik</th><th>Görünürlük</th><th>Customer?</th><th>Boost</th><th>Boost Bitiş</th><th>Onb.</th><th>Konum?</th><th>Kapak?</th><th>Foto</th><th>Hizmet</th><th>Personel</th><th>Randevu</th><th>Kapora</th><th>IBAN</th><th>Kayıt</th></tr></thead>
+        <tbody id="bizBody"></tbody>
+      </table></div>
+      <div class="pager" id="bizPager"></div>
+    </section>
+
+    <!-- CUSTOMERS -->
+    <section class="page" id="page-customers">
+      <div class="filters">
+        <input type="text" id="cusQ" placeholder="Ara: ad, şehir…"/>
+        <input type="text" id="cusCity" placeholder="Şehir" style="width:110px"/>
+        <input type="text" id="cusDistrict" placeholder="İlçe" style="width:110px"/>
+        <button class="btn" onclick="cusPage=1;loadCustomers()">Filtrele</button>
+      </div>
+      <div class="tablewrap"><div id="cusState" class="state">Yükleniyor…</div><table id="cusTable" style="display:none">
+        <thead><tr><th>User ID</th><th>Ad Soyad</th><th>Telefon</th><th>E-posta</th><th>Şehir</th><th>İlçe</th><th>Mahalle</th><th>Randevu</th><th>Favori</th><th>Bildirim</th><th>Kayıt</th><th>Son Giriş</th></tr></thead>
+        <tbody id="cusBody"></tbody>
+      </table></div>
+      <div class="pager" id="cusPager"></div>
+    </section>
+
+    <!-- APPOINTMENTS -->
+    <section class="page" id="page-appointments">
+      <div class="filters">
+        <select id="apDate">
+          <option value="">Tarih (hepsi)</option>
+          <option value="today">Bugün</option>
+          <option value="week">Bu hafta</option>
+        </select>
+        <select id="apStatus">
+          <option value="">Durum (hepsi)</option>
+          <option>pending</option><option>approved</option><option>completed</option>
+          <option>cancelled</option><option>cancellation_requested</option>
+          <option>rejected</option><option>declined</option><option>no_show</option>
+        </select>
+        <select id="apDeposit">
+          <option value="">Kapora (hepsi)</option>
+          <option value="pending">bekliyor</option>
+          <option value="customer_marked_sent">müşteri gönderdim dedi</option>
+          <option value="paid">ödendi</option>
+          <option value="not_received">ulaşmadı</option>
+        </select>
+        <input type="text" id="apQ" placeholder="Ara: müşteri, işletme…"/>
+        <button class="btn" onclick="apPage=1;loadAppointments()">Filtrele</button>
+      </div>
+      <div class="tablewrap"><div id="apState" class="state">Yükleniyor…</div><table id="apTable" style="display:none">
+        <thead><tr><th>ID</th><th>İşletme</th><th>Müşteri</th><th>Telefon</th><th>Hizmet</th><th>Personel</th><th>Tarih/Saat</th><th>Durum</th><th>Kapora</th><th>Tutar</th><th>Ref. Kod</th><th>Kanal</th><th>Oluşturma</th></tr></thead>
+        <tbody id="apBody"></tbody>
+      </table></div>
+      <div class="pager" id="apPager"></div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="page" id="page-gallery">
+      <div class="filters">
+        <input type="text" id="galQ" placeholder="İşletme ara…"/>
+        <label class="chk"><input type="checkbox" id="galNoPhoto"/>Foto yok</label>
+        <label class="chk"><input type="checkbox" id="galNoCover"/>Kapak yok</label>
+        <label class="chk"><input type="checkbox" id="galOverQuota"/>Kota aşımı</label>
+        <button class="btn" onclick="galPage=1;loadGallery()">Filtrele</button>
+      </div>
+      <div class="tablewrap"><div id="galState" class="state">Yükleniyor…</div><table id="galTable" style="display:none">
+        <thead><tr><th>İşletme</th><th>Durum</th><th>Foto</th><th>Kapak?</th><th>Logo</th><th>Görünür</th><th>Gizli</th><th>Kota</th><th>Son Yükleme</th></tr></thead>
+        <tbody id="galBody"></tbody>
+      </table></div>
+      <div class="pager" id="galPager"></div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="page" id="page-services">
+      <div id="svcState" class="state">Yükleniyor…</div>
+      <div id="svcContent" style="display:none">
+        <div class="kpi-grid" id="svcKpi"></div>
+        <div class="section-title">Sistem Kategorileri</div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>ID</th><th>Kategori</th><th>Slug</th><th>Hizmet</th><th>İşletme</th><th>Aktif</th></tr></thead>
+          <tbody id="svcSysBody"></tbody>
+        </table></div>
+        <div class="section-title">İşletme Özel Kategorileri</div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>ID</th><th>İşletme</th><th>Kategori</th><th>Hizmet Sayısı</th></tr></thead>
+          <tbody id="svcCustomBody"></tbody>
+        </table></div>
+        <div class="section-title">Hizmeti Olmayan İşletmeler</div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>ID</th><th>İşletme</th><th>Durum</th><th>Onboarding</th></tr></thead>
+          <tbody id="svcEmptyBody"></tbody>
+        </table></div>
+        <div class="section-title">En Yaygın Hizmetler</div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Hizmet</th><th>İşletme Sayısı</th><th>Ort. Fiyat</th></tr></thead>
+          <tbody id="svcTopBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- NOTIFICATIONS -->
+    <section class="page" id="page-notifications">
+      <div class="filters">
+        <select id="ntTarget">
+          <option value="business">İşletme bildirimleri</option>
+          <option value="customer">Müşteri bildirimleri</option>
+        </select>
+        <label class="chk"><input type="checkbox" id="ntUnread"/>Sadece okunmamış</label>
+        <button class="btn" onclick="ntPage=1;loadNotifications()">Filtrele</button>
+        <span id="ntTokenStats" style="font-size:12px;color:var(--muted)"></span>
+      </div>
+      <div class="tablewrap"><div id="ntState" class="state">Yükleniyor…</div><table id="ntTable" style="display:none">
+        <thead><tr><th>ID</th><th>Hedef</th><th>Tip</th><th>Başlık/İçerik</th><th>İlgili</th><th>Okundu?</th><th>Tarih</th></tr></thead>
+        <tbody id="ntBody"></tbody>
+      </table></div>
+      <div class="pager" id="ntPager"></div>
+    </section>
+
+    <!-- BOOST -->
+    <section class="page" id="page-boost">
+      <div id="boostState" class="state">Yükleniyor…</div>
+      <div id="boostContent" style="display:none">
+        <div class="section-title">Paketler</div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>ID</th><th>Paket</th><th>Fiyat</th><th>Süre</th><th>Ağırlık</th><th>Aktif?</th><th>Aktif Abone</th><th>Bekleyen Talep</th></tr></thead>
+          <tbody id="boostPkgBody"></tbody>
+        </table></div>
+        <div class="section-title">Bekleyen Talepler</div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>ID</th><th>İşletme</th><th>Paket</th><th>Abonelik</th><th>Görünürlük</th><th>Customer?</th><th>Not</th><th>Tarih</th><th>Aksiyon</th></tr></thead>
+          <tbody id="boostReqBody"></tbody>
+        </table></div>
+        <div class="section-title">Aktif Abonelikler</div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>ID</th><th>İşletme</th><th>Paket</th><th>Abonelik</th><th>Görünürlük</th><th>Customer?</th><th>Ödeme</th><th>Tutar</th><th>Başlangıç</th><th>Bitiş</th></tr></thead>
+          <tbody id="boostActBody"></tbody>
+        </table></div>
+        <div class="section-title">Geçmiş / Süresi Dolmuş</div>
+        <div class="tablewrap"><table>
+          <thead><tr><th>ID</th><th>İşletme</th><th>Paket</th><th>Abonelik</th><th>Görünürlük</th><th>Customer?</th><th>Durum</th><th>Ödeme</th><th>Bitiş</th></tr></thead>
+          <tbody id="boostExpBody"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- SUBSCRIPTIONS (Faz 1: salt okunur) -->
+    <section class="page" id="page-subscriptions">
+      <div class="filters" id="subFilters">
+        <input type="text" id="subQ" placeholder="Ara: işletme, sahip…"/>
+        <select id="subStatus">
+          <option value="">Durum (hepsi)</option>
+          <option value="trial">Deneme</option>
+          <option value="active">Aktif</option>
+          <option value="overdue">Ödeme Gecikti</option>
+          <option value="suspended">Askıda</option>
+          <option value="cancelled">İptal</option>
+        </select>
+        <label class="chk"><input type="checkbox" id="subDue"/>Ödemesi geçenler</label>
+        <label class="chk"><input type="checkbox" id="subTrialEnding"/>Denemesi bitmek üzere</label>
+        <button class="btn" onclick="subPage=1;loadSubscriptions()">Filtrele</button>
+        <span style="font-size:11px;color:var(--muted)">Faz 1: salt okunur — abonelik aksiyonları Webey ekibinde.</span>
+      </div>
+      <div class="tablewrap"><div id="subState" class="state">Yükleniyor…</div><table id="subTable" style="display:none">
+        <thead><tr>
+          <th>İşletme</th><th>Sahip</th><th>Telefon</th><th>Paket</th><th>Durum</th><th>Görünürlük</th><th>Customer'da?</th><th>Boost</th>
+          <th>Aylık</th><th>Deneme Bitiş</th><th>Dönem Bitiş</th><th>Sonraki Ödeme</th>
+          <th>Son Ödeme</th><th>Yöntem</th><th>Not</th>
+        </tr></thead>
+        <tbody id="subBody"></tbody>
+      </table></div>
+      <div class="pager" id="subPager"></div>
+    </section>
+  </main>
+</div>
+
+<!-- Business detail modal -->
+<div class="modal" id="bizModal" onclick="if(event.target===this)closeBizModal()">
+  <div class="modal__box">
+    <button class="modal__close" onclick="closeBizModal()">×</button>
+    <div id="bizModalContent" class="state">Yükleniyor…</div>
+  </div>
+</div>
+
+<!-- Subscription detail modal (read-only) -->
+<div class="modal" id="subModal" onclick="if(event.target===this)closeSubModal()">
+  <div class="modal__box">
+    <button class="modal__close" onclick="closeSubModal()">×</button>
+    <div id="subModalContent" class="state">Yükleniyor…</div>
+  </div>
+</div>
+
+<!-- Abonelik/Boost aksiyon modalı (Faz 2) -->
+<div class="modal" id="saActModal" onclick="if(event.target===this)closeActModal()">
+  <div class="modal__box" style="max-width:460px">
+    <button class="modal__close" onclick="closeActModal()">×</button>
+    <div id="saActContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+
+/* ── XSS escape: tüm dinamik içerik bu fonksiyondan geçer ── */
+function esc(v) {
+  if (v === null || v === undefined) return '—';
+  return String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function fmtN(v){ return (v===null||v===undefined) ? '—' : Number(v).toLocaleString('tr-TR'); }
+function fmtDt(v){
+  if (!v) return '—';
+  const d = new Date(String(v).replace(' ','T'));
+  return isNaN(d) ? esc(v) : d.toLocaleDateString('tr-TR') + ' ' + d.toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});
+}
+function yesNo(b){ return b ? '<span class="dot-yes">✓</span>' : '<span class="dot-no">✗</span>'; }
+function toast(msg){
+  const t = $('toast'); t.textContent = msg; t.style.display = 'block';
+  clearTimeout(toast._t); toast._t = setTimeout(()=>{ t.style.display='none'; }, 4000);
+}
+
+/* ── API (GET-only; oturum yoksa login'e yönlendir) ── */
+async function apiGet(url) {
+  let res;
+  try { res = await fetch(url, { credentials:'include', cache:'no-store' }); }
+  catch { return { ok:false, error:'Ağ hatası' }; }
+  if (res.status === 401 || res.status === 403) {
+    window.location.href = 'admin-register-login.html';
+    return null;
+  }
+  try { return await res.json(); }
+  catch { return { ok:false, error:'Sunucu hatası (HTTP ' + res.status + ')' }; }
+}
+
+/* ── CSRF + POST (Faz 2 yazma aksiyonları) ── */
+let _csrfToken = null;
+async function getCsrfToken(){
+  if (_csrfToken) return _csrfToken;
+  try {
+    const r = await fetch('api/csrf.php', { credentials:'include', cache:'no-store' });
+    const j = await r.json();
+    if (j && j.ok && j.data && j.data.token) _csrfToken = j.data.token;
+  } catch {}
+  return _csrfToken || '';
+}
+async function apiPost(url, body){
+  const send = async () => {
+    const token = await getCsrfToken();
+    let res;
+    try {
+      res = await fetch(url, {
+        method:'POST', credentials:'include', cache:'no-store',
+        headers:{ 'Content-Type':'application/json', 'X-CSRF-Token': token },
+        body: JSON.stringify(body || {})
+      });
+    } catch { return { ok:false, error:'Ağ hatası' }; }
+    let j; try { j = await res.json(); } catch { j = { ok:false, error:'Sunucu hatası (HTTP ' + res.status + ')' }; }
+    return Object.assign({ _status: res.status }, j);
+  };
+  let r = await send();
+  if (r && r.ok === false && r.code === 'csrf_invalid') { _csrfToken = null; r = await send(); } // token bayatladı → bir kez yenile
+  if (r && r._status === 403 && r.code === 'superadmin_required') { window.location.href = 'admin-register-login.html'; return null; }
+  return r;
+}
+
+const STATUS_BADGE = {
+  active:'b-green', approved:'b-green', completed:'b-green', paid:'b-green',
+  pending:'b-amber', customer_marked_sent:'b-purple', draft:'b-gray',
+  cancelled:'b-red', rejected:'b-red', declined:'b-red', suspended:'b-red',
+  not_received:'b-red', no_show:'b-red', cancellation_requested:'b-amber',
+  expired:'b-gray', incomplete:'b-amber'
+};
+function badge(v){
+  if (v===null||v===undefined||v==='') return '—';
+  const cls = STATUS_BADGE[v] || 'b-gray';
+  return '<span class="badge ' + cls + '">' + esc(v) + '</span>';
+}
+function pager(elId, pg, onGo){
+  const el = $(elId);
+  if (!pg || pg.pages <= 1) { el.innerHTML = pg ? ('Toplam ' + fmtN(pg.total) + ' kayıt') : ''; return; }
+  el.innerHTML = '';
+  const info = document.createElement('span');
+  info.textContent = 'Sayfa ' + pg.page + ' / ' + pg.pages + ' — ' + Number(pg.total).toLocaleString('tr-TR') + ' kayıt';
+  const prev = document.createElement('button'); prev.textContent = '‹ Önceki'; prev.disabled = pg.page <= 1;
+  const next = document.createElement('button'); next.textContent = 'Sonraki ›'; next.disabled = pg.page >= pg.pages;
+  prev.onclick = () => onGo(pg.page - 1);
+  next.onclick = () => onGo(pg.page + 1);
+  el.append(info, prev, next);
+}
+function showState(stateId, tableId, mode, msg){
+  const st = $(stateId), tb = tableId ? $(tableId) : null;
+  if (mode === 'loading') { st.style.display='block'; st.className='state'; st.textContent='Yükleniyor…'; if(tb) tb.style.display='none'; }
+  else if (mode === 'error') { st.style.display='block'; st.className='state state--error'; st.textContent = msg || 'Veri yüklenemedi'; if(tb) tb.style.display='none'; }
+  else if (mode === 'empty') { st.style.display='block'; st.className='state'; st.textContent='Kayıt bulunamadı'; if(tb) tb.style.display='none'; }
+  else { st.style.display='none'; if(tb) tb.style.display='table'; }
+}
+
+/* ── Navigation ── */
+const PAGE_TITLES = {dashboard:'Dashboard',businesses:'İşletmeler',customers:'Müşteriler',appointments:'Randevular',gallery:'Galeri Kontrol',services:'Hizmet / Kategori',notifications:'Bildirimler',boost:'Boost / Premium',subscriptions:'Abonelikler'};
+const loadedOnce = {};
+const LOADERS = {dashboard:loadDashboard,businesses:loadBusinesses,customers:loadCustomers,appointments:loadAppointments,gallery:loadGallery,services:loadServices,notifications:loadNotifications,boost:loadBoost,subscriptions:loadSubscriptions};
+$('nav').addEventListener('click', e => {
+  const btn = e.target.closest('.nav-item'); if (!btn) return;
+  const id = btn.dataset.page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  $('page-' + id).classList.add('active');
+  btn.classList.add('active');
+  $('pageTitle').textContent = PAGE_TITLES[id] || id;
+  if (!loadedOnce[id]) { loadedOnce[id] = true; LOADERS[id](); }
+});
+
+/* ══════════ DASHBOARD ══════════ */
+function kpiCard(val, label, mod){
+  return '<div class="stat-card ' + (mod||'') + '"><div class="stat-card__val">' + fmtN(val) + '</div><div class="stat-card__label">' + esc(label) + '</div></div>';
+}
+async function loadDashboard(){
+  showState('dashState', null, 'loading');
+  $('dashContent').style.display = 'none';
+  const r = await apiGet('api/superadmin/app/dashboard.php');
+  if (!r) return;
+  if (!r.ok) { showState('dashState', null, 'error', r.error); return; }
+  const d = r.data;
+  $('kpiMain').innerHTML =
+    kpiCard(d.total_customers,'Toplam Müşteri','stat-card--teal') +
+    kpiCard(d.total_businesses,'Toplam İşletme','stat-card--teal') +
+    kpiCard(d.published_businesses,'Yayındaki İşletme','stat-card--good') +
+    kpiCard(d.total_photos,'Toplam Fotoğraf') +
+    kpiCard(d.total_reviews,'Toplam Yorum') +
+    kpiCard(d.boost_active_count,'Aktif Boost','stat-card--good') +
+    kpiCard(d.boost_pending_requests,'Bekleyen Boost Talebi', d.boost_pending_requests>0?'stat-card--warn':'') +
+    kpiCard(d.unread_notifications,'Okunmamış Bildirim');
+  $('kpiWarn').innerHTML =
+    kpiCard(d.onboarding_incomplete_businesses,'Onboarding Eksik','stat-card--warn') +
+    kpiCard(d.businesses_missing_location,'Konumu Olmayan','stat-card--warn') +
+    kpiCard(d.businesses_missing_cover,'Kapak Görseli Olmayan','stat-card--warn') +
+    kpiCard(d.businesses_without_services,'Hizmeti Olmayan','stat-card--bad') +
+    kpiCard(d.businesses_without_photos,'Galerisi Boş','stat-card--warn');
+  $('kpiAppt').innerHTML =
+    kpiCard(d.total_appointments,'Toplam Randevu','stat-card--teal') +
+    kpiCard(d.today_appointments,'Bugünkü Randevu') +
+    kpiCard(d.pending_appointments,'Bekleyen','stat-card--warn') +
+    kpiCard(d.approved_appointments,'Onaylanan','stat-card--good') +
+    kpiCard(d.cancelled_appointments,'İptal/Red','stat-card--bad') +
+    kpiCard(d.deposit_pending_appointments,'Kapora Bekleyen','stat-card--warn') +
+    kpiCard(d.deposit_customer_marked_sent,'Ödeme Kontrol Bekleyen', d.deposit_customer_marked_sent>0?'stat-card--bad':'');
+  $('kpi7d').innerHTML =
+    kpiCard(d.last_7_days.new_customers,'Yeni Müşteri (7g)','stat-card--teal') +
+    kpiCard(d.last_7_days.new_businesses,'Yeni İşletme (7g)','stat-card--teal') +
+    kpiCard(d.last_7_days.new_appointments,'Yeni Randevu (7g)','stat-card--teal');
+  showState('dashState', null, 'ok');
+  $('dashContent').style.display = 'block';
+}
+
+/* ══════════ BUSINESSES ══════════ */
+let bizPage = 1;
+async function loadBusinesses(){
+  showState('bizState','bizTable','loading');
+  const p = new URLSearchParams({ page:String(bizPage), limit:'25' });
+  if ($('bizQ').value.trim()) p.set('q', $('bizQ').value.trim());
+  if ($('bizStatus').value) p.set('status', $('bizStatus').value);
+  if ($('bizOnb').value) p.set('onboarding', $('bizOnb').value);
+  if ($('bizDistrict').value.trim()) p.set('district', $('bizDistrict').value.trim());
+  if ($('bizNoLoc').checked) p.set('missing_location','1');
+  if ($('bizNoCover').checked) p.set('missing_cover','1');
+  if ($('bizNoSvc').checked) p.set('no_services','1');
+  if ($('bizDep').checked) p.set('deposit_required','1');
+  if ($('bizNoIban').checked) p.set('iban_missing','1');
+  const r = await apiGet('api/superadmin/app/businesses.php?' + p.toString());
+  if (!r) return;
+  if (!r.ok) { showState('bizState','bizTable','error', r.error); return; }
+  const items = r.data.items || [];
+  if (!items.length) { showState('bizState','bizTable','empty'); pager('bizPager', r.data.pagination, go=>{bizPage=go;loadBusinesses();}); return; }
+  $('bizBody').innerHTML = items.map(b => `
+    <tr class="rowlink" data-id="${Number(b.id)}">
+      <td>${Number(b.id)}</td>
+      <td><strong>${esc(b.name)}</strong></td>
+      <td>${esc(b.owner_name)}</td>
+      <td>${esc(b.owner_phone_masked)}</td>
+      <td>${esc(b.city)} / ${esc(b.district)}</td>
+      <td>${badge(b.status)}</td>
+      <td>${subBadge(b.subscription_status)}</td>
+      <td>${visBadge(b.visibility_status)}</td>
+      <td>${yesNo(b.customer_visible)}</td>
+      <td>${b.is_boosted ? badge(b.boost_badge || 'boost') : '—'}</td>
+      <td>${fmtDt(b.boost_ends_at)}</td>
+      <td>${b.onboarding_completed ? yesNo(true) : badge('incomplete')}</td>
+      <td>${yesNo(b.has_location)}</td>
+      <td>${yesNo(b.has_cover)}</td>
+      <td>${fmtN(b.photo_count)}</td>
+      <td>${fmtN(b.service_count)}</td>
+      <td>${fmtN(b.staff_count)}</td>
+      <td>${fmtN(b.appointment_count)}</td>
+      <td>${b.deposit_required ? yesNo(true) : '—'}</td>
+      <td>${yesNo(b.has_iban)}</td>
+      <td>${fmtDt(b.created_at)}</td>
+    </tr>`).join('');
+  showState('bizState','bizTable','ok');
+  pager('bizPager', r.data.pagination, go=>{bizPage=go;loadBusinesses();});
+}
+$('bizBody').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-id]'); if (tr) openBizModal(Number(tr.dataset.id));
+});
+
+/* ── Business detail modal ── */
+async function openBizModal(id){
+  const m = $('bizModal'); m.classList.add('open');
+  $('bizModalContent').innerHTML = '<div class="state">Yükleniyor…</div>';
+  const r = await apiGet('api/superadmin/app/business-detail.php?id=' + Number(id));
+  if (!r) return;
+  if (!r.ok) { $('bizModalContent').innerHTML = '<div class="state state--error">' + esc(r.error) + '</div>'; return; }
+  const d = r.data, b = d.business, o = d.owner, ps = d.payment_settings, ph = d.photos;
+  const kv = (k,v) => '<div><div class="k">' + esc(k) + '</div><div>' + v + '</div></div>';
+  let html = '<h2 style="margin-bottom:4px">' + esc(b.name) + ' <span style="font-size:12px;color:var(--muted)">#' + Number(b.id) + '</span></h2>';
+  html += '<div class="detail-grid">'
+    + kv('Durum', badge(b.status))
+    + kv('Abonelik', subBadge(b.subscription_status))
+    + kv('Customer görünürlüğü', visBadge(b.visibility_status) + ' / ' + yesNo(b.customer_visible))
+    + kv('Boost', b.is_boosted ? badge(b.boost_badge || 'boost') + ' bitiş: ' + fmtDt(b.boost_ends_at) : yesNo(false))
+    + kv('Tür', esc(b.type))
+    + kv('Onboarding', b.onboarding_completed ? yesNo(true) : badge('incomplete') + ' (adım ' + Number(b.onboarding_step) + ')')
+    + kv('Konum', b.has_location ? yesNo(true) : yesNo(false))
+    + kv('Şehir', esc(b.city) + ' / ' + esc(b.district) + ' / ' + esc(b.neighborhood))
+    + kv('Fiyat Aralığı', fmtN(b.min_price) + ' – ' + fmtN(b.max_price) + ' ₺')
+    + kv('Kapora', (b.deposit_required ? 'Aktif' : 'Pasif') + (b.deposit_amount ? ' — ' + fmtN(b.deposit_amount) + ' ₺' : '') + (b.deposit_rate_pct !== null && b.deposit_rate_pct !== undefined ? ' (%' + Number(b.deposit_rate_pct) + ')' : ''))
+    + kv('Kapora (ödeme ayarı)', ps.deposit_enabled ? 'Aktif' : 'Pasif')
+    + kv('IBAN', ps.has_iban ? esc(ps.iban_masked) : yesNo(false))
+    + kv('Banka', esc(ps.bank_name))
+    + kv('Kayıt', fmtDt(b.created_at))
+    + kv('Güncelleme', fmtDt(b.updated_at))
+    + '</div>';
+  if (o) {
+    html += '<div class="section-title">Sahip</div><div class="detail-grid">'
+      + kv('Ad', esc(o.name)) + kv('E-posta', esc(o.email_masked))
+      + kv('Telefon', esc(o.phone_masked)) + kv('Son Giriş', fmtDt(o.last_login_at))
+      + '</div>';
+  }
+  html += '<div class="section-title">Galeri</div><div class="detail-grid">'
+    + kv('Toplam Foto', fmtN(ph.total)) + kv('Kapak', yesNo(ph.has_cover)) + kv('Görünür', fmtN(ph.visible_count))
+    + '</div>';
+  if ((ph.category_counts||[]).length) {
+    html += '<div style="font-size:12px;color:var(--muted2);margin-bottom:8px">'
+      + ph.category_counts.map(c => esc(c.category) + ': ' + fmtN(c.cnt)).join(' · ') + '</div>';
+  }
+  html += '<div class="section-title">Hizmetler (' + d.services.length + ')</div>';
+  html += d.services.length
+    ? '<div class="tablewrap"><table><thead><tr><th>Hizmet</th><th>Kategori</th><th>Fiyat</th><th>Süre</th><th>Aktif?</th></tr></thead><tbody>'
+      + d.services.map(s => '<tr><td>' + esc(s.name) + '</td><td>' + esc(s.category_name || s.category_text) + '</td><td>' + fmtN(s.price) + ' ₺</td><td>' + Number(s.duration_min) + ' dk</td><td>' + yesNo(Number(s.is_active)===1) + '</td></tr>').join('')
+      + '</tbody></table></div>'
+    : '<div class="state">Hizmet yok</div>';
+  html += '<div class="section-title">Personel (' + d.staff.length + ')</div>';
+  html += d.staff.length
+    ? '<div class="tablewrap"><table><thead><tr><th>Ad</th><th>Telefon</th><th>Aktif?</th></tr></thead><tbody>'
+      + d.staff.map(s => '<tr><td>' + esc(s.name) + '</td><td>' + esc(s.phone_masked) + '</td><td>' + yesNo(s.is_active) + '</td></tr>').join('')
+      + '</tbody></table></div>'
+    : '<div class="state">Personel yok</div>';
+  html += '<div class="section-title">Son Randevular</div>';
+  html += d.latest_appointments.length
+    ? '<div class="tablewrap"><table><thead><tr><th>ID</th><th>Müşteri</th><th>Hizmet</th><th>Tarih</th><th>Durum</th><th>Kapora</th></tr></thead><tbody>'
+      + d.latest_appointments.map(a => '<tr><td>' + Number(a.id) + '</td><td>' + esc(a.customer_name) + '</td><td>' + esc(a.service_name) + '</td><td>' + fmtDt(a.start_at) + '</td><td>' + badge(a.status) + '</td><td>' + badge(a.deposit_status) + '</td></tr>').join('')
+      + '</tbody></table></div>'
+    : '<div class="state">Randevu yok</div>';
+  html += '<div class="section-title">Son Yorumlar</div>';
+  html += d.latest_reviews.length
+    ? '<div class="tablewrap"><table><thead><tr><th>Puan</th><th>Yorum</th><th>Müşteri</th><th>Yanıt?</th><th>Tarih</th></tr></thead><tbody>'
+      + d.latest_reviews.map(rv => '<tr><td>' + Number(rv.rating) + '★</td><td style="white-space:normal;max-width:300px">' + esc(rv.comment) + '</td><td>' + esc(rv.customer_name) + '</td><td>' + yesNo(rv.has_reply) + '</td><td>' + fmtDt(rv.created_at) + '</td></tr>').join('')
+      + '</tbody></table></div>'
+    : '<div class="state">Yorum yok</div>';
+  if (d.boost.length) {
+    html += '<div class="section-title">Boost Geçmişi</div><div class="tablewrap"><table><thead><tr><th>Paket</th><th>Durum</th><th>Ödeme</th><th>Başlangıç</th><th>Bitiş</th></tr></thead><tbody>'
+      + d.boost.map(x => '<tr><td>' + esc(x.package_name) + '</td><td>' + badge(x.status) + '</td><td>' + badge(x.payment_status) + '</td><td>' + fmtDt(x.starts_at) + '</td><td>' + fmtDt(x.ends_at) + '</td></tr>').join('')
+      + '</tbody></table></div>';
+  }
+  $('bizModalContent').innerHTML = html;
+}
+function closeBizModal(){ $('bizModal').classList.remove('open'); }
+
+/* ══════════ CUSTOMERS ══════════ */
+let cusPage = 1;
+async function loadCustomers(){
+  showState('cusState','cusTable','loading');
+  const p = new URLSearchParams({ page:String(cusPage), limit:'25' });
+  if ($('cusQ').value.trim()) p.set('q', $('cusQ').value.trim());
+  if ($('cusCity').value.trim()) p.set('city', $('cusCity').value.trim());
+  if ($('cusDistrict').value.trim()) p.set('district', $('cusDistrict').value.trim());
+  const r = await apiGet('api/superadmin/app/customers.php?' + p.toString());
+  if (!r) return;
+  if (!r.ok) { showState('cusState','cusTable','error', r.error); return; }
+  const items = r.data.items || [];
+  if (!items.length) { showState('cusState','cusTable','empty'); pager('cusPager', r.data.pagination, go=>{cusPage=go;loadCustomers();}); return; }
+  $('cusBody').innerHTML = items.map(c => `
+    <tr>
+      <td>${Number(c.user_id)}</td>
+      <td><strong>${esc(c.name)}</strong></td>
+      <td>${esc(c.phone_masked)}</td>
+      <td>${esc(c.email_masked)}</td>
+      <td>${esc(c.city)}</td>
+      <td>${esc(c.district)}</td>
+      <td>${esc(c.neighborhood)}</td>
+      <td>${fmtN(c.appointment_count)}</td>
+      <td>${fmtN(c.favorite_count)}</td>
+      <td>${fmtN(c.notification_count)}</td>
+      <td>${fmtDt(c.created_at)}</td>
+      <td>${fmtDt(c.last_login_at)}</td>
+    </tr>`).join('');
+  showState('cusState','cusTable','ok');
+  pager('cusPager', r.data.pagination, go=>{cusPage=go;loadCustomers();});
+}
+
+/* ══════════ APPOINTMENTS ══════════ */
+let apPage = 1;
+async function loadAppointments(){
+  showState('apState','apTable','loading');
+  const p = new URLSearchParams({ page:String(apPage), limit:'25' });
+  if ($('apDate').value) p.set('date', $('apDate').value);
+  if ($('apStatus').value) p.set('status', $('apStatus').value);
+  if ($('apDeposit').value) p.set('deposit_status', $('apDeposit').value);
+  if ($('apQ').value.trim()) p.set('q', $('apQ').value.trim());
+  const r = await apiGet('api/superadmin/app/appointments.php?' + p.toString());
+  if (!r) return;
+  if (!r.ok) { showState('apState','apTable','error', r.error); return; }
+  const items = r.data.items || [];
+  if (!items.length) { showState('apState','apTable','empty'); pager('apPager', r.data.pagination, go=>{apPage=go;loadAppointments();}); return; }
+  $('apBody').innerHTML = items.map(a => `
+    <tr>
+      <td>${Number(a.id)}</td>
+      <td><strong>${esc(a.business_name)}</strong></td>
+      <td>${esc(a.customer_name)}</td>
+      <td>${esc(a.customer_phone_masked)}</td>
+      <td>${esc(a.service_name)}</td>
+      <td>${esc(a.staff_name)}</td>
+      <td>${fmtDt(a.start_at)}</td>
+      <td>${badge(a.status)}</td>
+      <td>${a.deposit_required ? badge(a.deposit_status || 'pending') : '—'}</td>
+      <td>${a.deposit_amount !== null ? fmtN(a.deposit_amount) + ' ₺' : '—'}</td>
+      <td style="font-family:var(--mono);font-size:11px">${esc(a.deposit_reference_code)}</td>
+      <td>${badge(a.booking_source)}</td>
+      <td>${fmtDt(a.created_at)}</td>
+    </tr>`).join('');
+  showState('apState','apTable','ok');
+  pager('apPager', r.data.pagination, go=>{apPage=go;loadAppointments();});
+}
+
+/* ══════════ GALLERY ══════════ */
+let galPage = 1;
+async function loadGallery(){
+  showState('galState','galTable','loading');
+  const p = new URLSearchParams({ page:String(galPage), limit:'25' });
+  if ($('galQ').value.trim()) p.set('q', $('galQ').value.trim());
+  if ($('galNoPhoto').checked) p.set('no_photos','1');
+  if ($('galNoCover').checked) p.set('missing_cover','1');
+  if ($('galOverQuota').checked) p.set('over_quota','1');
+  const r = await apiGet('api/superadmin/app/gallery.php?' + p.toString());
+  if (!r) return;
+  if (!r.ok) { showState('galState','galTable','error', r.error); return; }
+  const items = r.data.items || [];
+  if (!items.length) { showState('galState','galTable','empty'); pager('galPager', r.data.pagination, go=>{galPage=go;loadGallery();}); return; }
+  $('galBody').innerHTML = items.map(g => `
+    <tr>
+      <td><strong>${esc(g.business_name)}</strong> <span style="color:var(--muted);font-size:11px">#${Number(g.business_id)}</span></td>
+      <td>${badge(g.business_status)}</td>
+      <td>${fmtN(g.photo_count)}</td>
+      <td>${g.has_cover ? yesNo(true) : '<span class="badge b-red">KAPAK YOK</span>'}</td>
+      <td>${fmtN(g.logo_count)}</td>
+      <td>${fmtN(g.visible_photo_count)}</td>
+      <td>${fmtN(g.hidden_photo_count)}</td>
+      <td>${fmtN(g.quota_used)}/${fmtN(g.quota_limit)}${g.over_quota ? ' <span class="badge b-red">AŞIM</span>' : ''}</td>
+      <td>${fmtDt(g.last_photo_created_at)}</td>
+    </tr>`).join('');
+  showState('galState','galTable','ok');
+  pager('galPager', r.data.pagination, go=>{galPage=go;loadGallery();});
+}
+
+/* ══════════ SERVICES ══════════ */
+async function loadServices(){
+  showState('svcState', null, 'loading');
+  $('svcContent').style.display = 'none';
+  const r = await apiGet('api/superadmin/app/services.php');
+  if (!r) return;
+  if (!r.ok) { showState('svcState', null, 'error', r.error); return; }
+  const d = r.data;
+  $('svcKpi').innerHTML =
+    kpiCard(d.system_categories.length,'Sistem Kategorisi','stat-card--teal') +
+    kpiCard(d.business_custom_categories.length,'Özel Kategori') +
+    kpiCard(d.uncategorized_services_count,'Kategorisiz Hizmet', d.uncategorized_services_count>0?'stat-card--warn':'') +
+    kpiCard(d.businesses_without_services.length,'Hizmeti Olmayan İşletme', d.businesses_without_services.length>0?'stat-card--bad':'');
+  $('svcSysBody').innerHTML = d.system_categories.map(c =>
+    '<tr><td>' + Number(c.id) + '</td><td><strong>' + esc(c.name) + '</strong></td><td style="font-family:var(--mono);font-size:11px">' + esc(c.slug) + '</td><td>' + fmtN(c.service_count) + '</td><td>' + fmtN(c.business_count) + '</td><td>' + yesNo(Number(c.is_active)===1) + '</td></tr>'
+  ).join('') || '<tr><td colspan="6" class="state">Kayıt yok</td></tr>';
+  $('svcCustomBody').innerHTML = d.business_custom_categories.map(c =>
+    '<tr><td>' + Number(c.id) + '</td><td>' + esc(c.business_name) + '</td><td><strong>' + esc(c.name) + '</strong></td><td>' + fmtN(c.service_count) + '</td></tr>'
+  ).join('') || '<tr><td colspan="4" class="state">Özel kategori yok</td></tr>';
+  $('svcEmptyBody').innerHTML = d.businesses_without_services.map(b =>
+    '<tr><td>' + Number(b.id) + '</td><td><strong>' + esc(b.name) + '</strong></td><td>' + badge(b.status) + '</td><td>' + (b.onboarding_completed ? yesNo(true) : badge('incomplete')) + '</td></tr>'
+  ).join('') || '<tr><td colspan="4" class="state">Tüm işletmelerin hizmeti var 🎉</td></tr>';
+  $('svcTopBody').innerHTML = d.top_services.map(s =>
+    '<tr><td><strong>' + esc(s.name) + '</strong></td><td>' + fmtN(s.business_count) + '</td><td>' + fmtN(s.avg_price !== null ? Math.round(Number(s.avg_price)) : null) + ' ₺</td></tr>'
+  ).join('') || '<tr><td colspan="3" class="state">Kayıt yok</td></tr>';
+  showState('svcState', null, 'ok');
+  $('svcContent').style.display = 'block';
+}
+
+/* ══════════ NOTIFICATIONS ══════════ */
+let ntPage = 1;
+async function loadNotifications(){
+  showState('ntState','ntTable','loading');
+  const p = new URLSearchParams({ page:String(ntPage), limit:'25' });
+  p.set('target', $('ntTarget').value);
+  if ($('ntUnread').checked) p.set('unread','1');
+  const r = await apiGet('api/superadmin/app/notifications.php?' + p.toString());
+  if (!r) return;
+  if (!r.ok) { showState('ntState','ntTable','error', r.error); return; }
+  const ts = r.data.device_token_stats;
+  if (ts) $('ntTokenStats').textContent = 'Cihaz tokenları: ' + ts.active + ' aktif / ' + ts.total + ' toplam (Android ' + ts.android + ', iOS ' + ts.ios + ') — token değerleri gösterilmez';
+  const items = r.data.items || [];
+  if (!items.length) { showState('ntState','ntTable','empty'); pager('ntPager', r.data.pagination, go=>{ntPage=go;loadNotifications();}); return; }
+  $('ntBody').innerHTML = items.map(n => {
+    const who = n.target_type === 'customer'
+      ? esc(n.user_name) + ' <span style="color:var(--muted);font-size:11px">#' + Number(n.user_id) + '</span>'
+      : esc(n.business_name) + ' <span style="color:var(--muted);font-size:11px">#' + Number(n.business_id) + '</span>';
+    const body = n.target_type === 'customer'
+      ? '<strong>' + esc(n.title) + '</strong><br/><span style="color:var(--muted2)">' + esc(n.body) + '</span>'
+      : '<strong>' + esc(n.customer_name) + '</strong> · ' + esc(n.service_name) + ' · ' + badge(n.result);
+    return '<tr><td>' + Number(n.id) + '</td><td>' + badge(n.target_type) + '<br/>' + who + '</td><td>' + badge(n.type) + '</td><td style="white-space:normal;max-width:340px">' + body + '</td><td>' + (n.appointment_id ? 'Randevu #' + Number(n.appointment_id) : '—') + '</td><td>' + yesNo(n.is_read) + '</td><td>' + fmtDt(n.created_at) + '</td></tr>';
+  }).join('');
+  showState('ntState','ntTable','ok');
+  pager('ntPager', r.data.pagination, go=>{ntPage=go;loadNotifications();});
+}
+
+/* ══════════ SUBSCRIPTIONS (Faz 1: salt okunur) ══════════ */
+const SUB_STATUS = {
+  trial:{t:'Deneme',c:'b-amber'}, active:{t:'Aktif',c:'b-green'},
+  overdue:{t:'Ödeme Gecikti',c:'b-red'}, suspended:{t:'Askıda',c:'b-red'},
+  cancelled:{t:'İptal',c:'b-gray'}, unknown:{t:'Tanımlanmadı',c:'b-gray'}
+};
+function subBadge(s){ const m = SUB_STATUS[s] || SUB_STATUS.unknown; return '<span class="badge ' + m.c + '">' + m.t + '</span>'; }
+const VIS_STATUS = {
+  visible:{t:'Görünür',c:'b-green'}, temporary_visible:{t:'Geçici görünür',c:'b-amber'},
+  hidden:{t:'Gizli',c:'b-red'}, unknown:{t:'Bilinmiyor',c:'b-gray'}
+};
+function visBadge(s){ const m = VIS_STATUS[s] || VIS_STATUS.unknown; return '<span class="badge ' + m.c + '">' + m.t + '</span>'; }
+const PAY_METHOD = {manual_iban:'Havale / IBAN', cash:'Nakit', card_manual:'Kart (manuel)', free:'Ücretsiz', comped:'İkram'};
+function payMethod(m){ return m ? esc(PAY_METHOD[m] || m) : '—'; }
+function money(v){ return (v===null||v===undefined) ? '—' : fmtN(v) + ' ₺'; }
+
+let subPage = 1;
+async function loadSubscriptions(){
+  showState('subState','subTable','loading');
+  const p = new URLSearchParams({ page:String(subPage), limit:'25' });
+  if ($('subQ').value.trim()) p.set('q', $('subQ').value.trim());
+  if ($('subStatus').value) p.set('status', $('subStatus').value);
+  if ($('subDue').checked) p.set('due','overdue');
+  if ($('subTrialEnding').checked) p.set('trial_ending','1');
+  const r = await apiGet('api/superadmin/app/subscriptions.php?' + p.toString());
+  if (!r) return;
+  if (!r.ok) { showState('subState','subTable','error', r.error); return; }
+  const items = r.data.items || [];
+  if (!items.length) { showState('subState','subTable','empty'); pager('subPager', r.data.pagination, go=>{subPage=go;loadSubscriptions();}); return; }
+  $('subBody').innerHTML = items.map(s => `
+    <tr class="rowlink" data-id="${Number(s.business_id)}">
+      <td><strong>${esc(s.business_name)}</strong></td>
+      <td>${esc(s.owner_name)}</td>
+      <td>${esc(s.owner_phone_masked)}</td>
+      <td>${esc(s.plan_name || (s.status==='unknown' ? '—' : 'Webey İşletme Paketi'))}</td>
+      <td>${subBadge(s.status)}</td>
+      <td>${visBadge(s.visibility_status)}</td>
+      <td>${yesNo(s.customer_visible)}</td>
+      <td>${s.is_boosted ? badge(s.boost_badge || 'boost') + '<br/><span style="font-size:11px;color:var(--muted)">' + fmtDt(s.boost_ends_at) + '</span>' : '—'}</td>
+      <td>${money(s.monthly_price)}</td>
+      <td>${fmtDt(s.trial_ends_at)}</td>
+      <td>${fmtDt(s.current_period_end)}</td>
+      <td>${fmtDt(s.next_payment_due_at)}</td>
+      <td>${fmtDt(s.last_payment_at)}</td>
+      <td>${payMethod(s.payment_method)}</td>
+      <td>${esc(s.notes_short)}</td>
+    </tr>`).join('');
+  showState('subState','subTable','ok');
+  pager('subPager', r.data.pagination, go=>{subPage=go;loadSubscriptions();});
+}
+$('subBody').addEventListener('click', e => {
+  const tr = e.target.closest('tr[data-id]'); if (tr) openSubModal(Number(tr.dataset.id));
+});
+
+async function openSubModal(businessId){
+  const m = $('subModal'); m.classList.add('open');
+  $('subModalContent').innerHTML = '<div class="state">Yükleniyor…</div>';
+  const r = await apiGet('api/superadmin/app/subscription-detail.php?business_id=' + Number(businessId));
+  if (!r) return;
+  if (!r.ok) { $('subModalContent').innerHTML = '<div class="state state--error">' + esc(r.error) + '</div>'; return; }
+  const d = r.data, b = d.business, s = d.subscription, pl = d.plan;
+  _subDetail = d;
+  const kv = (k,v) => '<div><div class="k">' + esc(k) + '</div><div>' + v + '</div></div>';
+  let html = '<h2 style="margin-bottom:4px">' + esc(b.name) + ' <span style="font-size:12px;color:var(--muted)">#' + Number(b.id) + '</span></h2>';
+  html += '<div style="font-size:12px;color:var(--muted);margin-bottom:10px">İşletme durumu: ' + badge(b.status)
+        + ' · Onboarding: ' + (b.onboarding_completed ? 'tamam' : 'eksik (adım ' + Number(b.onboarding_step) + ')')
+        + ' · Customer: ' + visBadge(b.visibility_status)
+        + ' · Boost: ' + (b.is_boosted ? badge(b.boost_badge || 'boost') : '—')
+        + '</div>';
+  html += '<div class="section-title">Abonelik</div><div class="detail-grid">';
+  if (s) {
+    html += kv('Durum', subBadge(s.status))
+      + kv('Paket', esc(s.plan_name || (pl ? pl.name : '—')))
+      + kv('Aylık ücret', money(s.monthly_price))
+      + kv('Deneme bitiş', fmtDt(s.trial_ends_at))
+      + kv('Dönem', fmtDt(s.current_period_start) + ' → ' + fmtDt(s.current_period_end))
+      + kv('Son ödeme', fmtDt(s.last_payment_at))
+      + kv('Sonraki ödeme', fmtDt(s.next_payment_due_at))
+      + kv('Yöntem', payMethod(s.payment_method))
+      + kv('Not', esc(s.notes));
+  } else {
+    html += kv('Durum', subBadge('unknown'))
+      + kv('Paket', pl ? esc(pl.name) : 'Webey İşletme Paketi')
+      + kv('Aylık ücret', pl ? money(pl.monthly_price) : '2.500 ₺')
+      + kv('Bilgi', 'Bu işletme için henüz abonelik kaydı oluşturulmamış.');
+  }
+  html += '</div>';
+  html += '<div class="section-title">Manuel Ödeme Kayıtları</div>';
+  if (d.payments && d.payments.length) {
+    html += '<div class="tablewrap"><table><thead><tr><th>Tutar</th><th>Yöntem</th><th>Ödeme Tarihi</th><th>Dönem</th><th>Referans</th><th>Not</th></tr></thead><tbody>'
+      + d.payments.map(p => '<tr><td>' + money(p.amount) + '</td><td>' + payMethod(p.method) + '</td><td>' + fmtDt(p.paid_at)
+        + '</td><td>' + fmtDt(p.period_start) + ' → ' + fmtDt(p.period_end) + '</td><td>' + esc(p.reference) + '</td><td>' + esc(p.notes) + '</td></tr>').join('')
+      + '</tbody></table></div>';
+  } else { html += '<div class="state">Ödeme kaydı yok</div>'; }
+  html += '<div class="section-title">İşlem Geçmişi (Audit)</div>';
+  if (d.audit && d.audit.length) {
+    html += '<div class="tablewrap"><table><thead><tr><th>Aksiyon</th><th>Önce</th><th>Sonra</th><th>Aktör</th><th>Tarih</th></tr></thead><tbody>'
+      + d.audit.map(a => '<tr><td>' + esc(a.action) + '</td><td>' + esc(a.from_status) + '</td><td>' + esc(a.to_status)
+        + '</td><td>' + esc(a.actor_user_id) + '</td><td>' + fmtDt(a.created_at) + '</td></tr>').join('')
+      + '</tbody></table></div>';
+  } else { html += '<div class="state">İşlem kaydı yok</div>'; }
+  // ── Yönetim aksiyonları (Faz 2) ──
+  const bid = Number(b.id);
+  const ab = (act, label, cls) => '<button class="btn btn--sm ' + (cls || 'btn--ghost') + '" onclick="subAction(' + bid + ',\'' + act + '\')">' + label + '</button>';
+  html += '<div class="section-title">Yönetim Aksiyonları</div><div class="act-row">'
+    + ab('start_trial', 'Deneme Başlat')
+    + ab('record_payment', 'Ödeme Kaydet', 'btn')
+    + ab('activate', 'Aktif Et')
+    + ab('mark_overdue', 'Gecikti Yap')
+    + ab('suspend', 'Askıya Al')
+    + ab('cancel', 'İptal Et')
+    + ab('update_note', 'Not Güncelle')
+    + '</div>';
+  html += '<div style="margin-top:12px;font-size:12px;color:var(--muted)">'
+    + 'Eski web/iyzico aboneliği: ' + (d.legacy_web_subscription_exists ? '<span class="badge b-amber">var</span>' : '<span class="badge b-gray">yok</span>')
+    + ' · Ödeme tahsilatı Webey ekibince manuel yapılır; bu panel yalnızca durum yönetir.'
+    + '</div>';
+  $('subModalContent').innerHTML = html;
+}
+function closeSubModal(){ $('subModal').classList.remove('open'); }
+
+/* ── Abonelik aksiyon modalı (Faz 2) ── */
+let _subDetail = null;
+let _actCtx = null;
+function closeActModal(){ $('saActModal').classList.remove('open'); _actCtx = null; }
+function subAction(businessId, action){
+  _actCtx = { kind:'sub', businessId: Number(businessId), action };
+  const titles = {start_trial:'Deneme Başlat', activate:'Aktif Et', record_payment:'Ödeme Kaydet', mark_overdue:'Ödemesi Gecikti Yap', suspend:'Askıya Al', cancel:'İptal Et', update_note:'Not Güncelle'};
+  const today = new Date().toISOString().slice(0,10);
+  const curNote = (_subDetail && _subDetail.subscription && _subDetail.subscription.notes) ? String(_subDetail.subscription.notes) : '';
+  let body = '<h2 style="margin-bottom:12px">' + esc(titles[action] || action) + '</h2>';
+  if (action === 'record_payment') {
+    body += '<label class="fld">Tutar (₺)<input type="number" id="actAmount" value="2500" min="0" step="1"></label>'
+      + '<label class="fld">Ödeme yöntemi<select id="actMethod"><option value="manual_iban">Havale / IBAN</option><option value="cash">Nakit</option><option value="card_manual">Kart (manuel)</option><option value="free">Ücretsiz</option><option value="comped">İkram</option></select></label>'
+      + '<label class="fld">Ödeme tarihi<input type="date" id="actPaidAt" value="' + today + '"></label>'
+      + '<label class="fld">Dönem başlangıcı<input type="date" id="actPeriodStart" value="' + today + '"></label>'
+      + '<label class="fld">Dönem bitişi (boşsa +1 ay)<input type="date" id="actPeriodEnd"></label>'
+      + '<label class="fld">Referans (ops.)<input type="text" id="actReference" maxlength="160" placeholder="Havale ref / açıklama"></label>'
+      + '<label class="fld">Not (ops.)<textarea id="actNotes" rows="2" maxlength="2000"></textarea></label>';
+  } else if (action === 'update_note') {
+    body += '<label class="fld">Not<textarea id="actNotes" rows="4" maxlength="2000">' + esc(curNote) + '</textarea></label>';
+  } else if (action === 'suspend' || action === 'cancel') {
+    body += '<p style="font-size:13px;color:var(--muted);margin:0 0 8px">Bu işletmenin aboneliği <strong>' + (action === 'suspend' ? 'askıya alınacak' : 'iptal edilecek') + '</strong>. Müşteri uygulamasındaki görünürlüğe Faz 3’e kadar etki etmez.</p>'
+      + '<label class="fld">Sebep / not (ops.)<textarea id="actNotes" rows="3" maxlength="2000"></textarea></label>';
+  } else if (action === 'start_trial') {
+    body += '<p style="font-size:13px;color:var(--muted)">30 günlük ücretsiz deneme başlatılacak.</p>';
+  } else if (action === 'activate') {
+    body += '<p style="font-size:13px;color:var(--muted)">Abonelik <strong>aktif</strong> edilecek (dönem +1 ay).</p>';
+  } else if (action === 'mark_overdue') {
+    body += '<p style="font-size:13px;color:var(--muted)">Abonelik <strong>ödemesi gecikti</strong> olarak işaretlenecek.</p>';
+  }
+  body += '<div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn--ghost" onclick="closeActModal()">Vazgeç</button><button class="btn" id="actSubmit" onclick="submitAction()">Onayla</button></div>';
+  $('saActContent').innerHTML = body;
+  $('saActModal').classList.add('open');
+}
+async function submitAction(){
+  if (!_actCtx || _actCtx.kind !== 'sub') return;
+  const { businessId, action } = _actCtx;
+  const payload = { business_id: businessId, action };
+  const v = id => { const el = $(id); return el ? el.value.trim() : ''; };
+  if (action === 'record_payment') {
+    payload.amount = Number($('actAmount').value || 0);
+    payload.method = $('actMethod').value;
+    if (v('actPaidAt')) payload.paid_at = v('actPaidAt') + ' 00:00:00';
+    if (v('actPeriodStart')) payload.period_start = v('actPeriodStart') + ' 00:00:00';
+    if (v('actPeriodEnd')) payload.period_end = v('actPeriodEnd') + ' 00:00:00';
+    if (v('actReference')) payload.reference = v('actReference');
+    if (v('actNotes')) payload.notes = v('actNotes');
+  } else if (action === 'update_note' || action === 'suspend' || action === 'cancel') {
+    payload.notes = v('actNotes');
+  }
+  const btn = $('actSubmit'); if (btn){ btn.disabled = true; btn.textContent = 'Gönderiliyor…'; }
+  const r = await apiPost('api/superadmin/app/subscription-action.php', payload);
+  if (!r) return;
+  if (!r.ok) { toast('Hata: ' + (r.error || r.code || 'işlem başarısız')); if (btn){ btn.disabled = false; btn.textContent = 'Onayla'; } return; }
+  toast((r.data && r.data.message) || 'İşlem tamamlandı');
+  closeActModal();
+  await openSubModal(businessId);
+  if (loadedOnce.subscriptions) loadSubscriptions();
+}
+
+/* ── Boost aksiyon modalı (Faz 2) ── */
+let _boostPending = {};
+function boostAction(requestId, action){
+  _actCtx = { kind:'boost', requestId: Number(requestId), action };
+  const info = _boostPending[Number(requestId)] || {};
+  const isApprove = action === 'approve_request';
+  let body = '<h2 style="margin-bottom:8px">' + (isApprove ? 'Boost Talebini Onayla' : 'Boost Talebini Reddet') + '</h2>';
+  body += '<p style="font-size:13px;color:var(--muted);margin:0 0 10px">' + esc(info.business_name || '') + ' — ' + esc(info.package_name || '') + '</p>';
+  if (isApprove) {
+    body += '<p style="font-size:12px;color:var(--muted);margin:0 0 8px">Onaylanınca uygunluk yeniden kontrol edilir ve aktif boost oluşturulur. Müşteri sıralamasına Faz 3’e kadar etki etmez.</p>'
+      + '<label class="fld">Başlangıç (boşsa şimdi)<input type="date" id="boostStart"></label>'
+      + '<label class="fld">Not (ops.)<textarea id="boostNotes" rows="2" maxlength="500"></textarea></label>';
+  } else {
+    body += '<label class="fld">Sebep<textarea id="boostNotes" rows="3" maxlength="500" placeholder="Reddetme sebebi"></textarea></label>';
+  }
+  body += '<div id="boostElig"></div>';
+  body += '<div style="display:flex;gap:8px;margin-top:14px"><button class="btn btn--ghost" onclick="closeActModal()">Vazgeç</button><button class="btn ' + (isApprove ? '' : 'btn--danger') + '" id="boostSubmit" onclick="submitBoostAction()">' + (isApprove ? 'Onayla' : 'Reddet') + '</button></div>';
+  $('saActContent').innerHTML = body;
+  $('saActModal').classList.add('open');
+}
+async function submitBoostAction(){
+  if (!_actCtx || _actCtx.kind !== 'boost') return;
+  const { requestId, action } = _actCtx;
+  const payload = { action, request_id: requestId };
+  const sd = $('boostStart');
+  if (action === 'approve_request' && sd && sd.value) payload.starts_at = sd.value + ' 00:00:00';
+  const nt = $('boostNotes'); if (nt) payload.notes = nt.value.trim();
+  const btn = $('boostSubmit'); if (btn){ btn.disabled = true; btn.textContent = 'Gönderiliyor…'; }
+  const r = await apiPost('api/superadmin/app/boost-action.php', payload);
+  if (!r) return;
+  if (!r.ok) {
+    if (r.code === 'boost_not_eligible' && Array.isArray(r.missing_requirements)) {
+      $('boostElig').innerHTML = '<div class="state state--error" style="text-align:left;margin-top:8px">İşletme uygun değil:<ul style="margin:6px 0 0 16px">'
+        + r.missing_requirements.map(m => '<li>' + esc(m.label) + '</li>').join('') + '</ul></div>';
+    } else {
+      toast('Hata: ' + (r.error || r.code || 'işlem başarısız'));
+    }
+    if (btn){ btn.disabled = false; btn.textContent = (action === 'approve_request') ? 'Onayla' : 'Reddet'; }
+    return;
+  }
+  toast((r.data && r.data.message) || 'İşlem tamamlandı');
+  closeActModal();
+  loadBoost();
+}
+
+/* ══════════ BOOST ══════════ */
+async function loadBoost(){
+  showState('boostState', null, 'loading');
+  $('boostContent').style.display = 'none';
+  const r = await apiGet('api/superadmin/app/boost.php');
+  if (!r) return;
+  if (!r.ok) { showState('boostState', null, 'error', r.error); return; }
+  const d = r.data;
+  $('boostPkgBody').innerHTML = d.packages.map(p =>
+    '<tr><td>' + Number(p.id) + '</td><td><strong>' + esc(p.name) + '</strong></td><td>' + fmtN(p.price) + ' ₺</td><td>' + Number(p.duration_days) + ' gün</td><td>' + Number(p.priority_weight) + '</td><td>' + yesNo(Number(p.is_active)===1) + '</td><td>' + fmtN(p.active_subscription_count) + '</td><td>' + fmtN(p.pending_request_count) + '</td></tr>'
+  ).join('') || '<tr><td colspan="8" class="state">Paket yok</td></tr>';
+  _boostPending = {};
+  d.pending_requests.forEach(x => { _boostPending[Number(x.id)] = x; });
+  $('boostReqBody').innerHTML = d.pending_requests.map(x =>
+    '<tr><td>' + Number(x.id) + '</td><td><strong>' + esc(x.business_name) + '</strong></td><td>' + esc(x.package_name) + '</td><td>' + subBadge(x.subscription_status) + '</td><td>' + visBadge(x.visibility_status) + '</td><td>' + yesNo(x.customer_visible) + '</td><td style="white-space:normal">' + esc(x.note) + '</td><td>' + fmtDt(x.created_at) + '</td>'
+    + '<td style="white-space:nowrap"><button class="btn btn--sm" onclick="boostAction(' + Number(x.id) + ',\'approve_request\')">Onayla</button> <button class="btn btn--sm btn--danger" onclick="boostAction(' + Number(x.id) + ',\'reject_request\')">Reddet</button></td></tr>'
+  ).join('') || '<tr><td colspan="9" class="state">Bekleyen talep yok</td></tr>';
+  $('boostActBody').innerHTML = d.active_subscriptions.map(x =>
+    '<tr><td>' + Number(x.id) + '</td><td><strong>' + esc(x.business_name) + '</strong></td><td>' + esc(x.package_name) + '</td><td>' + subBadge(x.subscription_status) + '</td><td>' + visBadge(x.visibility_status) + '</td><td>' + yesNo(x.customer_visible) + '</td><td>' + badge(x.payment_status) + '</td><td>' + fmtN(x.paid_amount) + ' ₺</td><td>' + fmtDt(x.starts_at) + '</td><td>' + fmtDt(x.ends_at) + '</td></tr>'
+  ).join('') || '<tr><td colspan="10" class="state">Aktif abonelik yok</td></tr>';
+  $('boostExpBody').innerHTML = d.expired_subscriptions.map(x =>
+    '<tr><td>' + Number(x.id) + '</td><td><strong>' + esc(x.business_name) + '</strong></td><td>' + esc(x.package_name) + '</td><td>' + subBadge(x.subscription_status) + '</td><td>' + visBadge(x.visibility_status) + '</td><td>' + yesNo(x.customer_visible) + '</td><td>' + badge(x.status) + '</td><td>' + badge(x.payment_status) + '</td><td>' + fmtDt(x.ends_at) + '</td></tr>'
+  ).join('') || '<tr><td colspan="9" class="state">Kayıt yok</td></tr>';
+  showState('boostState', null, 'ok');
+  $('boostContent').style.display = 'block';
+}
+
+/* ── Init ── */
+loadedOnce.dashboard = true;
+loadDashboard();
+</script>
+</body>
+</html>

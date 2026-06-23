@@ -1,0 +1,586 @@
+/* ====================================================================
+   mobile-admin.css — Admin Sayfaları Global Mobil Düzeltmeleri
+   Tüm admin sayfalarına eklenir: settings, admin-profile, calendar, staff
+   ==================================================================== */
+
+/* ═══════════════════════════════════════════════════════════════════
+   ADMIN ALT NAVİGASYON (settings.html için — app-bar olmayan sayfalar)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.admin-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: calc(66px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: #151619;
+  border-top: 1px solid #2a2d34;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+}
+
+@media (max-width: 768px) {
+  .admin-bottom-nav { display: flex; align-items: center; }
+
+  /* Sayfa altına nav için yer bırak */
+  body.has-admin-bottom-nav {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+.admin-bottom-nav__inner {
+  display: flex;
+  width: 100%;
+  height: 66px;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+}
+
+.admin-bottom-nav__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 52px;
+  border-radius: 12px;
+  padding: 4px 6px;
+  text-decoration: none;
+  color: #b9bec7;
+  transition: color 0.15s ease, background 0.15s ease;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  max-width: 80px;
+}
+
+.admin-bottom-nav__item:hover {
+  background: #1d1f24;
+  color: #fff;
+}
+
+.admin-bottom-nav__item.is-active {
+  color: #a89fff;
+  background: rgba(124, 108, 255, 0.15);
+}
+
+.admin-bottom-nav__icon {
+  font-size: 22px;
+  line-height: 1;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.admin-bottom-nav__item.is-active .admin-bottom-nav__icon {
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+
+.admin-bottom-nav__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SETTINGS SAYFASI MOBİL İYİLEŞTİRMELERİ
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* Settings nav — mobilede yatay scroll ile tab görünümü */
+  .settings-nav {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .settings-nav__title {
+    display: none; /* Mobilde başlık gereksiz */
+  }
+
+  .settings-nav__list {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 4px !important;
+    padding: 8px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .settings-nav__list::-webkit-scrollbar { display: none; }
+
+  .settings-nav__item {
+    flex-shrink: 0;
+    margin: 0 !important;
+  }
+
+  .settings-nav__link {
+    white-space: nowrap;
+    padding: 8px 14px !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #6b7280;
+    background: transparent;
+    border: 1.5px solid transparent;
+    transition: all 0.15s ease;
+  }
+
+  .settings-nav__link.is-active {
+    background: #fff;
+    color: #0d0f1a;
+    border-color: #e4e7ef;
+    box-shadow: 0 1px 4px rgba(0,0,0,.07);
+  }
+
+  .settings-nav__link svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  /* Settings layout mobilede tek kolon */
+  .settings-layout {
+    grid-template-columns: 1fr !important;
+    padding: 12px 12px 16px !important;
+    gap: 0;
+  }
+
+  /* Topbar kompakt */
+  .topbar__inner {
+    padding: 0 14px;
+    gap: 8px;
+  }
+
+  /* Dükkan Ayarları badge'i gizle */
+  .topbar__badge {
+    display: none;
+  }
+
+  /* Kaydet butonu — sağda kalır ama daha kompakt */
+  #saveBtn {
+    padding: 0 14px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  /* Form gridleri mobilede tek kolon */
+  .form-grid-2,
+  .form-grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Section başlıkları */
+  .section-title {
+    font-size: 16px;
+  }
+
+  /* Çalışma saatleri tablosu */
+  .thead {
+    grid-template-columns: 1fr 80px 80px !important;
+    font-size: 12px;
+  }
+  .tr {
+    grid-template-columns: 1fr 80px 80px !important;
+  }
+  .td:first-child,
+  .th:first-child {
+    font-size: 13px;
+  }
+
+  /* Fiyat/hizmet tablosu */
+  .bh-item {
+    grid-template-columns: 44px 1fr 36px !important;
+  }
+
+  /* Fotoğraf yükleme alanı */
+  .uploaders-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Logo/kapak yükleme box'ları */
+  .uploader-box {
+    min-height: 140px;
+  }
+
+  /* Hizmet satırları */
+  .svc-row,
+  .service-row {
+    grid-template-columns: 1fr !important;
+    gap: 8px;
+  }
+
+  /* Kart içleri */
+  .card,
+  .panel,
+  section[class*="sec-"] {
+    border-radius: 14px;
+  }
+
+  /* Genel input büyütme (parmak dostu) */
+  input, textarea, select {
+    font-size: 16px !important; /* iOS zoom engelleme */
+    min-height: 44px;
+  }
+
+  /* Butonlar parmak dostu */
+  .btn, button[type="submit"] {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-layout {
+    padding: 10px 10px 14px !important;
+  }
+
+  #saveBtn span { display: none; }
+  #saveBtn {
+    padding: 0 12px;
+    font-size: 0;
+  }
+  #saveBtn svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ADMIN PROFILE SAYFASI MOBİL İYİLEŞTİRMELERİ
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* Tab kaydırma */
+  .tabs {
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin-bottom: 16px;
+    padding-bottom: 2px;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  
+  .tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 10px 14px;
+    font-size: 13px;
+  }
+
+  /* Plan kartları — 2 sütun */
+  .plans-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px;
+  }
+
+  /* Checkout modal — bottom sheet */
+  .modal.is-open {
+    align-items: flex-end;
+  }
+  .modal__dialog,
+  .modal__dialog--wide {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    max-height: 90vh;
+  }
+
+  /* KV anahtar değer tek kolon */
+  .kv {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Sub meta grid — 2 sütun */
+  .sub-meta-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* İki kolon grid tek kolon */
+  .grid-2col {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Analitik toolbar */
+  .an-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .an-period-wrap {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+  .an-period-wrap::-webkit-scrollbar { display: none; }
+
+  .an-period {
+    flex-shrink: 0;
+    padding: 7px 12px;
+    font-size: 12.5px;
+  }
+
+  /* KPI grid mobilede 2 kolon */
+  .an-kpi-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px;
+  }
+
+  .an-kpi-val {
+    font-size: 22px;
+  }
+
+  /* Grafik kartları tek kolon */
+  .an-row-2 {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  /* Danger zone */
+  .danger-zone-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* Ödeme metot tabları */
+  .pay-method-tabs {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .pay-tab {
+    justify-content: flex-start;
+    padding: 12px 14px;
+  }
+
+  /* Card form row */
+  .card-form__row {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Fatura satırları */
+  .invoice-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .invoice-row__right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Kart satırları */
+  .card-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .card-row__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  /* Toast pozisyonu */
+  .toast {
+    bottom: 82px !important;
+    top: auto !important;
+    left: 16px;
+    right: 16px;
+    width: auto;
+    transform: translateX(0) translateY(8px) !important;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .toast.show {
+    transform: translateX(0) translateY(0) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Plan kartları tek kolon */
+  .plans-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Sub meta tek kolon */
+  .sub-meta-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* KPI tek kolon */
+  .an-kpi-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .sub-status-card__plan-name {
+    font-size: 20px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ORTAK TOPBAR İYİLEŞTİRMELERİ
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  /* Topbar butonlar arasında boşluk */
+  .topbar__inner {
+    gap: 8px;
+  }
+
+  /* Profilimi Gör linki - mobilede kısalt */
+  .topbar a[href*="profile"],
+  #viewProfileBtn {
+    font-size: 12px;
+  }
+
+  /* Ghost butonlar mobilede daha kompakt */
+  .btn--ghost {
+    padding: 7px 12px;
+    font-size: 12.5px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   iOS ZOOM ENGELLEMESİ (tüm admin sayfaları)
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  input[type="time"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal.is-open {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+  }
+
+  .modal__dialog,
+  .modal__dialog--wide {
+    width: calc(100vw - 32px) !important;
+    max-width: min(580px, calc(100vw - 32px)) !important;
+    max-height: calc(100dvh - 32px) !important;
+    border-radius: 20px !important;
+    margin: auto !important;
+  }
+
+  .modal-backdrop {
+    padding: 16px !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .modal-backdrop .modal,
+  .modal-backdrop .modal.modal-lg {
+    width: min(980px, calc(100vw - 32px)) !important;
+    max-width: calc(100vw - 32px) !important;
+    max-height: calc(100dvh - 32px) !important;
+    border-radius: 20px !important;
+    margin: auto !important;
+  }
+
+  .modal-backdrop .modal .content {
+    max-height: calc(100dvh - 180px) !important;
+    overflow-y: auto !important;
+  }
+
+  .modal-backdrop .modal footer {
+    flex-wrap: wrap;
+  }
+
+  .modal-backdrop .modal footer .btn {
+    flex: 1 1 160px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TOUCH HEDEF BÜYÜKLÜĞÜ (parmak dostu minimum 44px)
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .btn,
+  button,
+  [role="button"],
+  a.btn {
+    min-height: 44px;
+  }
+
+  /* Küçük butonlar için istisna */
+  .btn--sm {
+    min-height: 36px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   STAFF / CALENDAR RAIL — MOBİLDE KESİNLİKLE SİYAH
+   (html.is-mobile JS sınıfına bağımlı olmayan fallback)
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1024px) {
+  /* Rail — hem desktop'tan gelen hem dinamik eklenen */
+  body > .rail,
+  body > nav.rail,
+  #rail-mount .rail,
+  #rail-mount nav.rail {
+    background: #151619 !important;
+    border-top: 1px solid #2a2d34 !important;
+    border-right: none !important;
+    color: #b9bec7 !important;
+  }
+
+  /* Rail item'ler */
+  #rail-mount .rail__btn,
+  body > .rail .rail__btn {
+    color: #b9bec7 !important;
+  }
+
+  #rail-mount .rail__btn:hover,
+  body > .rail .rail__btn:hover {
+    background: #1d1f24 !important;
+    color: #fff !important;
+  }
+
+  #rail-mount .rail__btn[aria-current="page"],
+  #rail-mount .rail__btn.is-active,
+  body > .rail .rail__btn[aria-current="page"],
+  body > .rail .rail__btn.is-active {
+    background: rgba(124,108,255,.15) !important;
+    color: #a89fff !important;
+  }
+
+  /* Rail label'lar */
+  #rail-mount .rail__label,
+  body > .rail .rail__label {
+    color: inherit !important;
+  }
+
+  /* Karanlık mod iptali — tüm admin sayfaları */
+  html, body {
+    color-scheme: light only !important;
+  }
+}

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="google-signin-client_id" content="279602177241-o5qmpgshp4g13jlrunnkav6vdu4hiejv.apps.googleusercontent.com" />
+  <title>Profilim – Webey</title>
+
+  <!-- Firebase App Check (reCAPTCHA v3) site key: PROD için gerçek anahtarı yazın -->
+  <meta name="appcheck-key" content="REPLACE_WITH_RECAPTCHA_V3_SITE_KEY_PROD" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- CSS v23 (karanlık mod uyumu + rozet/etiket iyileştirmeleri) -->
+  <link rel="stylesheet" href="css/user-profile.css?v=26" />
+  <link rel="stylesheet" href="css/kuafor.css" />
+  <link rel="stylesheet" href="css/auth-modal.css" />
+<link rel="stylesheet" href="css/wb-transitions.css" />
+  <link rel="stylesheet" href="css/wb-bottom-nav.css" />
+  <link rel="stylesheet" href="css/mobile-user.css" />
+
+  <!-- Navbar her zaman siyah (solid) olsun: koruyucu override (CSS zaten siyah yapıyor; bu sadece emniyet) -->
+  <style>
+    .navbar{ background:rgba(24,26,30,.92)!important; border-bottom:1px solid rgba(255,255,255,.10)!important }
+    .navbar.transparent{ background:rgba(24,26,30,.92)!important }
+  </style>
+</head>
+<body>
+  <!-- Email doğrulama banner — JS ile gösterilir/gizlenir -->
+  <div id="userEmailVerifyBanner" style="
+    display:none;background:#fef3c7;border-bottom:2px solid #fbbf24;
+    padding:12px 20px;font-size:13.5px;color:#92400e;
+    display:none;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  ">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-size:18px;"></span>
+      <span>
+        <strong>Email adresiniz doğrulanmadı.</strong>
+        Doğrulama linkini kontrol edin ya da yeniden gönderelim.
+      </span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button id="userResendVerifyBtn" type="button" style="
+        background:#f59e0b;color:#fff;border:none;border-radius:8px;
+        padding:6px 13px;font-size:12.5px;font-weight:600;cursor:pointer;
+      ">E-postayı Doğrula</button>
+      <button id="userVerifyBannerClose" type="button" style="
+        background:none;border:none;cursor:pointer;color:#92400e;font-size:20px;line-height:1;padding:2px 6px;
+      ">×</button>
+    </div>
+  </div>
+
+  <header id="navbar-mount" role="banner"></header>
+
+  <main class="container page">
+    <div class="layout">
+      <!-- SOL MENÜ -->
+      <aside class="side card">
+        <div class="me hd">
+          <div class="avatar" aria-hidden="true"><i class="fas fa-user" aria-hidden="true"></i></div>
+          <div>
+            <div class="name" id="meName">Kullanıcı</div>
+            <div class="hint" id="meEmail">—</div>
+          </div>
+        </div>
+
+        <nav class="menu" role="navigation" aria-label="Profil menüsü">
+          <button class="mitem" data-goto="appointments">
+            <span><i class="fa-regular fa-calendar-check" aria-hidden="true"></i> Randevular</span>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="mitem" data-goto="notifications">
+            <span><i class="fa-regular fa-bell" aria-hidden="true"></i> Bildirimler<span class="wb-notif-menu-badge wb-notif-badge hidden" aria-live="polite" aria-atomic="true">0</span></span>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <button class="mitem" data-goto="settings">
+            <span><i class="fa-solid fa-gear" aria-hidden="true"></i> Hesap ve Ayarlar</span>
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+          <hr class="sep" />
+          <button class="mitem danger" id="menuLogout">
+            <span><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Çıkış Yap</span>
+            <i class="fas fa-arrow-right-from-bracket" aria-hidden="true"></i>
+          </button>
+        </nav>
+      </aside>
+
+      <!-- SAŞ İÇERİK -->
+      <section class="content">
+        <!-- Randevular -->
+        <section id="page-appointments" class="panel show" aria-labelledby="apptSectionTitle">
+
+          <!-- YAKLAŞAN RANDEVULAR KARTI (sabit yükseklik) -->
+          <div class="card appt-upcoming-card">
+            <div class="hd" id="apptSectionTitle" style="display:flex;align-items:center;justify-content:space-between;">
+              <span><i class="fa-regular fa-calendar-check" style="margin-right:8px;color:var(--brand)"></i>Yaklaşan Randevular</span>
+              <button class="appt-see-all-btn" id="btnSeeAllAppts" type="button">
+                Tümünü Gör <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+            <div class="bd appt-upcoming-body">
+              <!-- Skeleton loader -->
+              <div id="upcomingLoading" class="appt-upcoming-inner">
+                <div class="appt-skeleton-wrap">
+                  <div class="appt skeleton-appt"><div class="left"><div class="skeleton skeleton-rect lg" style="width:55%"></div><div class="skeleton skeleton-rect" style="width:38%;margin-top:8px"></div></div><div class="datebox" aria-hidden="true"><div class="skeleton skeleton-rect" style="width:36px;height:44px;border-radius:8px"></div></div></div>
+                  <div class="appt skeleton-appt"><div class="left"><div class="skeleton skeleton-rect lg" style="width:45%"></div><div class="skeleton skeleton-rect" style="width:30%;margin-top:8px"></div></div><div class="datebox" aria-hidden="true"><div class="skeleton skeleton-rect" style="width:36px;height:44px;border-radius:8px"></div></div></div>
+                </div>
+              </div>
+              <!-- Bos durum -->
+              <div id="upcomingEmpty" class="appt-empty-state hidden">
+                <div class="appt-empty-icon"><i class="fa-regular fa-calendar-xmark"></i></div>
+                <div class="appt-empty-title">Henüz randevunuz yok</div>
+                <div class="appt-empty-sub">Yakınındaki kuaförlere göz atarak ilk randevunu al.</div>
+                <a href="index.html" class="btn-brand" style="margin-top:4px">Kuaför Bul</a>
+              </div>
+              <!-- Liste -->
+              <div id="listUpcoming" class="list appt-upcoming-inner hidden"></div>
+            </div>
+          </div>
+
+          <!-- TUM RANDEVULAR KARTI (filtreli, arama, tarih) -->
+          <div class="card" style="margin-top:20px" id="allApptsCard">
+            <div class="hd" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+              <span><i class="fa-regular fa-clock-rotate-left" style="margin-right:8px;color:var(--brand)"></i>Tüm Randevular</span>
+              <span id="allApptCount" class="appt-count-badge hidden"></span>
+            </div>
+
+            <!-- Filtre Cubugu -->
+            <div class="appt-filter-bar">
+              <!-- Arama -->
+              <div class="appt-search-wrap">
+                <i class="fas fa-search appt-search-icon"></i>
+                <input type="search" id="apptSearch" class="appt-search-input" placeholder="Salon adı ile ara…" autocomplete="off" />
+              </div>
+              <!-- Tarih -->
+              <div class="appt-date-wrap">
+                <input type="date" id="apptDateFilter" class="appt-date-input" title="Tarihe göre filtrele" />
+              </div>
+              <!-- Durum Chips -->
+              <div class="filter-chips" role="group" aria-label="Randevu durumu filtresi">
+                <button class="fchip active" data-filter="all" type="button">Tümü</button>
+                <button class="fchip" data-filter="upcoming" type="button">Gelecek</button>
+                <button class="fchip" data-filter="past" type="button">Geçmiş</button>
+                <button class="fchip fchip--ok" data-filter="approved" type="button">Onaylanan</button>
+                <button class="fchip fchip--warn" data-filter="pending" type="button">Bekleyen</button>
+                <button class="fchip fchip--err" data-filter="cancelled" type="button">İptal</button>
+              </div>
+            </div>
+
+            <div class="bd" style="padding-top:0">
+              <!-- Bos arama sonucu -->
+              <div id="allApptsEmpty" class="appt-empty-state hidden" style="padding:40px 20px">
+                <div class="appt-empty-icon"><i class="fas fa-magnifying-glass"></i></div>
+                <div class="appt-empty-title">Sonuç bulunamadı</div>
+                <div class="appt-empty-sub">Filtre veya arama kriterlerinize uyan randevu yok.</div>
+              </div>
+              <!-- Tum liste -->
+              <div id="listAll" class="list appt-all-list"></div>
+              <!-- Sayfalama -->
+              <div id="apptPagination" class="appt-pagination hidden"></div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- Bildirimler -->
+        <section id="page-notifications" class="panel" aria-labelledby="notifSectionTitle">
+          <div class="card">
+            <div class="hd notif-head" id="notifSectionTitle">
+              <span class="notif-head-title">
+                <i class="fa-regular fa-bell" style="margin-right:8px;color:var(--brand)" aria-hidden="true"></i>
+                Bildirimler
+                <span class="wb-notif-menu-badge wb-notif-badge hidden" style="vertical-align:middle" aria-live="polite" aria-atomic="true">0</span>
+              </span>
+              <button class="wb-notif-mark-all" type="button" onclick="window.wbUserNotif?.markAllRead()">Tümünü okundu işaretle</button>
+            </div>
+            <div class="bd">
+              <!-- Bildirim listesi buraya eklenir -->
+              <div id="wbUserNotifPanel">
+                <div style="text-align:center;padding:40px;color:#9ca3af">Yükleniyor…</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Ayarlar -->
+        <section id="page-settings" class="panel" aria-labelledby="settingsSectionTitle">
+          <!-- Kişisel Bilgiler -->
+          <div class="card">
+            <div class="hd" id="settingsSectionTitle">Kişisel Bilgiler</div>
+            <div class="bd" id="cardPersonal">
+              <div class="grid-2">
+                <div>
+                  <label class="label" for="firstName">Ad</label>
+                  <input id="firstName" class="input" placeholder="Ad" disabled />
+                </div>
+                <div>
+                  <label class="label" for="lastName">Soyad</label>
+                  <input id="lastName" class="input" placeholder="Soyad" disabled />
+                </div>
+              </div>
+
+              <div class="grid-2">
+                <div>
+                  <label class="label" for="birthday">Doğum Günü</label>
+                  <input id="birthday" class="input" placeholder="gg.aa.yyyy" inputmode="numeric" disabled />
+                </div>
+                <div>
+                  <label class="label" for="phone">Telefon</label>
+                  <div style="display:flex;gap:10px;">
+                    <input id="phone" class="input" placeholder="+90 5xx xxx xx xx" disabled />
+                    <button id="btnPhoneChange" class="btn outline" type="button">Telefonu değiştir</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row-actions">
+                <button class="btn outline" id="btnPersonalCancel" style="display:none" type="button">Vazgeç</button>
+                <button class="btn" id="btnPersonalSave" style="display:none" type="button">Kaydet</button>
+                <button class="btn" id="btnPersonalEdit" type="button">Kişisel bilgilerimi düzenle</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Adres Bilgileri -->
+          <div class="card" style="margin-top:16px">
+            <div class="hd">Adres Bilgileri</div>
+            <div class="bd" id="cardAddress">
+              <!-- 3'lü seçim alanı için select-wrap -->
+              <div class="select-wrap">
+                <div>
+                  <label class="label" for="addrCity">İl</label>
+                  <select id="addrCity" class="input" disabled></select>
+                </div>
+                <div>
+                  <label class="label" for="addrDistrict">İlçe</label>
+                  <select id="addrDistrict" class="input" disabled></select>
+                </div>
+                <div>
+                  <label class="label" for="addrNeighborhood">Mahalle</label>
+                  <select id="addrNeighborhood" class="input" disabled></select>
+                </div>
+              </div>
+
+              <div class="row-actions">
+                <button class="btn outline" id="btnAddrCancel" style="display:none" type="button">Vazgeç</button>
+                <button class="btn" id="btnAddrSave" style="display:none" type="button">Kaydet</button>
+                <button class="btn" id="btnAddrEdit" type="button">Adres bilgilerimi güncelle</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sosyal Hesaplar + E-posta -->
+          <div class="card" style="margin-top:16px">
+            <div class="hd">Sosyal Hesaplar</div>
+            <div class="bd">
+              <div class="provider-row">
+                <div class="prov-left">
+                  <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" />
+                  <div>
+                    <div class="prov-name">Google</div>
+                    <div class="hint">Google hesabını bağlayarak kolay giriş yap.</div>
+                  </div>
+                </div>
+                <div class="prov-right">
+                  <span id="googleStatus" class="prov-status">Bağlı değil</span>
+                  <button id="googleConnect" class="btn prov-btn" type="button">Google hesabını bağla</button>
+                  <button id="googleDisconnect" class="btn outline prov-unlink" style="display:none" type="button">Bağlantıyı kaldır</button>
+                </div>
+              </div>
+
+              <!-- E-posta: görüntü + düzenleme satırı -->
+              <div style="margin-top:14px">
+                <label class="label" for="emailInput">E-posta (opsiyonel)</label>
+
+                <!-- Görüntü satırı -->
+                <div class="input-row" id="emailViewRow">
+                  <input id="emailInput" class="input" type="email" placeholder="ornek@posta.com" readonly aria-readonly="true" />
+                  <button id="btnEmailStart" class="btn" type="button">E-posta ekle</button>
+                </div>
+
+                <!-- Düzenleme satırı -->
+                <div class="input-row hidden" id="emailEditRow" aria-live="polite">
+                  <input id="newEmail" class="input" type="email" placeholder="ornek@posta.com" inputmode="email" />
+                  <button id="btnEmailSendVerify" class="btn" type="button">Doğrulama linki gönder</button>
+                  <button id="btnEmailCancel" class="btn outline" type="button">Vazgeç</button>
+                </div>
+
+                <div class="email-actions" style="margin-top:8px">
+                  <span id="emailStatus" class="badge muted">—</span>
+                  <span id="emailHelpText" class="email-help">
+                    Bu e-posta üzerinden randevu bilgileri ve hatırlatma e-postaları alacaksınız.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Güvenlik -->
+          <div class="card" style="margin-top:16px">
+            <div class="hd">Güvenlik</div>
+            <div class="bd">
+              <div class="grid-2">
+                <button id="btnPwByPhone" class="btn" type="button">Şifre değiştir</button>
+              </div>
+              <div style="margin-top:10px;">
+                <a href="sifremi-unuttum.html" style="font-size:13px;color:var(--brand,#0ea5b3);text-decoration:none;">Şifremi unuttum →</a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="foot-main">
+      <div class="foot-col foot-col-brand">
+        <span class="foot-logo">Webey</span>
+        <p class="foot-tagline">Yakınındaki kuaförleri keşfet,<br>saniyeler içinde randevu al.</p>
+        <div class="foot-social">
+          <a class="social-btn" href="https://www.instagram.com/webey"
+             target="_blank" rel="noopener" aria-label="Instagram" style="text-decoration:none">
+            <i class="fab fa-instagram" aria-hidden="true"></i>
+          </a>
+          <a class="social-btn" href="https://www.tiktok.com/@webey"
+             target="_blank" rel="noopener" aria-label="TikTok" style="text-decoration:none">
+            <i class="fab fa-tiktok" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title">Platform</p>
+        <ul class="foot-links">
+          <li><a href="index.html">Kuaför Bul</a></li>
+          <li><a href="isletmeni-listele.html">İşletmeni Listele</a></li>
+          <li><a href="fiyat.html">Fiyatlandırma</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title">Kurumsal</p>
+        <ul class="foot-links">
+          <li><a href="hakkimizda.html">Hakkımızda</a></li>
+          <li><a href="iletisim.html">İletişim</a></li>
+          <li><a href="sss.html">Sık Sorulan Sorular</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title">Yasal</p>
+        <ul class="foot-links">
+          <li><a href="gizlilik-politikasi.html">Gizlilik Politikası</a></li>
+          <li><a href="kullanim-kosullari.html">Kullanım Koşulları</a></li>
+          <li><a href="cerez-politikasi.html">Çerez Politikası</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="copyright">© 2026 Webey. Tüm hakları saklıdır.</span>
+      <span style="font-size:12px;color:rgba(255,255,255,.25)">KVKK Uyumlu &nbsp;·&nbsp; Türkiye&#39;de Geliştirildi </span>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- =========================
+       RANDEVU DETAY MODALI
+       ========================= -->
+  <div id="apptOv" class="modal-ov" aria-hidden="true">
+    <div class="modal appt-modal" role="dialog" aria-modal="true" aria-labelledby="apptTitle">
+      <div id="apptMap" class="appt-modal-map" role="button" tabindex="0" aria-label="Haritayı aç">
+        <iframe id="apptGmFrame" title="Google Maps"></iframe>
+        <button id="apptClose" class="appt-modal-close" aria-label="Kapat">✕</button>
+        <div class="appt-map-toolbar">
+          <a id="apptMapOpen" class="appt-map-action appt-map-action--primary" href="#" target="_blank" rel="noopener">
+            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+            <span>Haritada aç</span>
+          </a>
+          <a id="apptDirectionsOpen" class="appt-map-action" href="#" target="_blank" rel="noopener">
+            <i class="fa-solid fa-route" aria-hidden="true"></i>
+            <span>Yol tarifi</span>
+          </a>
+        </div>
+        <div class="appt-map-card">
+          <img id="apptMapLogo" class="mc-logo" src="" alt="" />
+          <span class="mc-text">
+            <span class="mc-eyebrow">Randevu Noktası</span>
+            <span class="mc-title" id="apptBizName">İşletme</span>
+            <span class="mc-sub" id="apptAddrSub">—</span>
+          </span>
+          <span class="mc-cta">
+            <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="appt-modal-body">
+        <div class="appt-modal-heading">
+          <div>
+            <div class="appt-modal-kicker">Randevu Merkezi</div>
+            <div class="ttl" id="apptTitle">Randevu Detayı</div>
+          </div>
+          <span id="apptStatusBadge" class="status-badge pending">Onay bekliyor</span>
+        </div>
+
+        <div class="appt-modal-meta">
+          <div class="appt-modal-when">
+            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+            <span id="apptWhen">—</span>
+          </div>
+        </div>
+
+        <div class="appt-modal-section">
+          <div class="appt-modal-section-label">
+            <i class="fa-regular fa-list-check" aria-hidden="true"></i>
+            <span>Seçilen Hizmetler</span>
+          </div>
+          <div id="apptServicesWrap" class="svc-chips"></div>
+        </div>
+
+        <div class="appt-modal-actions">
+          <a id="apptBizBtn" class="appt-modal-btn appt-modal-btn--ghost" href="#" aria-label="İşletme sayfasını aç">İşletme sayfası</a>
+          <button id="apptBookAgain" class="appt-modal-btn appt-modal-btn--primary" type="button">Tekrar randevu al</button>
+          <button id="apptCancel" class="appt-modal-btn appt-modal-btn--danger" type="button">Randevuyu iptal et</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       TELEFON DEĞİŞTİR – 1. MODAL (Numara gir + kod iste)
+       ========================= -->
+  <div id="phoneModalOv" class="modal-ov" aria-hidden="true">
+    <div class="modal sm phone" role="dialog" aria-modal="true" aria-labelledby="phoneTitle">
+      <div class="hd">
+        <div class="ttl" id="phoneTitle">Telefonu Değiştir</div>
+        <button id="phoneModalClose" class="x" aria-label="Kapat">✕</button>
+      </div>
+      <div class="ct">
+        <div>
+          <label class="label" for="newPhoneLocal">Yeni Telefon (10 hane)</label>
+          <input id="newPhoneLocal" class="input" inputmode="numeric" placeholder="5xx xxx xx xx" aria-describedby="phoneHelp" />
+          <div id="phoneHelp" class="form-msg">Başında 0 olmadan 10 hane girin.</div>
+        </div>
+
+        <div id="phoneCaptcha" class="captcha" aria-hidden="true"></div>
+        <div id="phoneModalMsg" class="form-msg" aria-live="polite"></div>
+
+        <div class="actions">
+          <button id="btnPhoneGetCode" class="btn" type="button">Telefonu Güncelle</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       TELEFON DOĞRULA – 2. MODAL (Kod gir + kaydet)
+       ========================= -->
+  <div id="phoneCodeModalOv" class="modal-ov" aria-hidden="true">
+    <div class="modal sm phone-code" role="dialog" aria-modal="true" aria-labelledby="phoneCodeTitle">
+      <div class="hd">
+        <div class="ttl" id="phoneCodeTitle">Telefon Doğrulama</div>
+        <button id="phoneCodeModalClose" class="x" aria-label="Kapat">✕</button>
+      </div>
+      <div class="ct">
+        <div>
+          <label class="label" for="phoneCode">SMS Kodu</label>
+          <input id="phoneCode" class="input" inputmode="numeric" placeholder="123456" />
+        </div>
+
+        <div id="phoneCodeMsg" class="form-msg" aria-live="polite"></div>
+
+        <div class="actions">
+          <button id="btnPhoneConfirm" class="btn" type="button">Telefonu Kaydet</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================
+       TELEFONLA ŞİFRE DEĞİŞTİR MODALI
+       ========================= -->
+  <div id="pwResetModalOv" class="modal-ov" aria-hidden="true">
+    <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="pwTitle">
+      <div class="hd">
+        <div class="ttl" id="pwTitle">Şifreyi Değiştir (Telefon)</div>
+        <button id="pwResetClose" class="x" aria-label="Kapat">✕</button>
+      </div>
+      <div class="ct">
+        <div class="code-grid">
+          <div>
+            <label class="label" for="pwResetSmsCode">SMS Kodu</label>
+            <input id="pwResetSmsCode" class="input" inputmode="numeric" placeholder="123456" />
+          </div>
+          <div style="display:flex;align-items:flex-end;">
+            <div id="pwResetCaptcha" class="captcha" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <label class="label" for="pwResetNew">Yeni Şifre</label>
+            <input id="pwResetNew" class="input" type="password" placeholder="En az 8 karakter" />
+          </div>
+          <div>
+            <label class="label" for="pwResetNew2">Yeni Şifre (tekrar)</label>
+            <input id="pwResetNew2" class="input" type="password" placeholder="Tekrar" />
+          </div>
+        </div>
+
+        <div id="pwResetMsg" class="form-msg" aria-live="polite">Telefonunuza kod gönderiliyor…</div>
+
+        <div class="actions">
+          <button id="pwResetConfirm" class="btn" type="button">Şifreyi Güncelle</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR Loader -->
+  <script>
+    (async () => {
+      const mount = document.getElementById('navbar-mount');
+      try {
+        const res = await fetch('navbar.html', { cache: 'no-cache' });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const html = await res.text();
+        const tpl = document.createElement('template');
+        tpl.innerHTML = html.trim();
+        const scripts = Array.from(tpl.content.querySelectorAll('script'));
+        scripts.forEach(s => s.parentNode.removeChild(s));
+        mount.replaceChildren(tpl.content);
+        for (const old of scripts) {
+          const s = document.createElement('script');
+          for (const attr of old.attributes) s.setAttribute(attr.name, attr.value);
+          s.textContent = old.textContent || '';
+          document.body.appendChild(s);
+        }
+      } catch (e) {
+        console.warn('Navbar yüklenemedi:', e);
+      }
+
+      // Navbar yüklendikten sonra siyah (solid) zorlaması
+      const forceSolid = () => {
+        const bar = document.getElementById('mainNavbar');
+        if (!bar) return;
+        bar.classList.add('visible','solid');
+        bar.classList.remove('transparent');
+      };
+      document.addEventListener('navbar:ready', forceSolid, { once:true });
+      setTimeout(forceSolid, 200); // emniyet
+    })();
+  </script>
+
+  <!-- Merkezi API katmanı -->
+  <script src="js/wb-api-shim.js"></script>
+  <!-- Sayfa JS -->
+  <script type="module" src="js/user-profile.js?v36"></script>
+  <noscript>Bu sayfa JavaScript olmadan çalışmaz.</noscript>
+
+  <script>
+    /* Email doğrulama banner — user-profile.html */
+    (async function initUserVerifyBanner() {
+      const banner   = document.getElementById('userEmailVerifyBanner');
+      const resendBtn = document.getElementById('userResendVerifyBtn');
+      const closeBtn  = document.getElementById('userVerifyBannerClose');
+      if (!banner) return;
+
+      let userEmail = '';
+      let emailOk = false;
+      try {
+        const res  = await fetch('/api/session/me.php', { credentials: 'include' });
+        const data = await res.json();
+        if (!data?.ok || data?.data?.role !== 'user') return;
+
+        userEmail = data?.data?.email || '';
+        emailOk = !!(data?.data?.emailOk ?? data?.data?.emailVerified);
+        if (!userEmail) return;
+        if (!emailOk) banner.style.display = 'flex';
+      } catch {}
+
+      closeBtn?.addEventListener('click', () => {
+        banner.style.display = 'none';
+      });
+
+      resendBtn?.addEventListener('click', async () => {
+        if (!userEmail || emailOk) return;
+        window.open('kullanici-email-guncelle.html', '_blank', 'noopener');
+      });
+    })();
+  </script>
+  <script src="js/wb-transitions.js" defer></script>
+  <script src="js/wb-bottom-nav.js" defer></script>
+  <script src="js/wb-user-notifications.js" defer></script>
+</body>
+</html>

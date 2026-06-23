@@ -1,0 +1,53 @@
+{
+  "name": "Webey – Kuaför Randevu",
+  "short_name": "Webey",
+  "description": "Yakınındaki kuaförleri keşfet, saniyeler içinde randevu al.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5b3",
+  "lang": "tr",
+  "dir": "ltr",
+  "categories": ["lifestyle", "health", "beauty"],
+  "icons": [
+    {
+      "src": "img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://webey.com.tr/img/hero-cover.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Webey Ana Sayfa"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Kuaför Bul",
+      "short_name": "Kuaför Bul",
+      "description": "Yakınındaki kuaförleri listele",
+      "url": "/kuafor.html",
+      "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Randevularım",
+      "short_name": "Randevularım",
+      "description": "Randevularını görüntüle",
+      "url": "/user-profile.html",
+      "icons": [{ "src": "img/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

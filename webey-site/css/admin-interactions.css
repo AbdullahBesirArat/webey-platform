@@ -1,0 +1,332 @@
+/* ════════════════════════════════════════════════════════════
+   admin-interactions.css — Admin Sayfaları Mikro İnteraksiyon
+   v1.1 — conflict-free
+   calendar.html · staff.html · settings.html
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Tüm tıklanabilir elementler ── */
+button, .btn, .icon-btn, .btn-icon,
+.apply, .view-chip, .view-item, .pill,
+.date-chip, .settings-nav__link, .staff-item, .chk {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ════════════════════════════════════════════════════════════
+   TOPBAR BUTONLARI
+   ════════════════════════════════════════════════════════════ */
+
+#saveBtn,
+.topbar button,
+.topbar .btn {
+  transition:
+    background    .14s ease,
+    box-shadow    .14s ease,
+    transform     .1s  cubic-bezier(.34,1.56,.64,1),
+    opacity       .14s ease !important;
+}
+#saveBtn:not(:disabled):active,
+.topbar button:active {
+  transform: scale(.96);
+}
+#saveBtn:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+/* ════════════════════════════════════════════════════════════
+   ICON BUTONLAR (tarih oku, kapat, vb.)
+   ════════════════════════════════════════════════════════════ */
+
+.icon-btn {
+  transition:
+    background .12s ease,
+    transform  .1s  cubic-bezier(.34,1.56,.64,1),
+    box-shadow .12s ease !important;
+}
+.icon-btn:hover {
+  background: var(--hover, #f5f6fb);
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+.icon-btn:active {
+  transform: scale(.88);
+  box-shadow: none;
+}
+
+/* ════════════════════════════════════════════════════════════
+   VIEW-CHIP & POPOVER ANİMASYONU
+   ════════════════════════════════════════════════════════════ */
+
+.view-chip {
+  transition: background .12s ease, box-shadow .12s ease, transform .1s ease !important;
+}
+.view-chip:hover { box-shadow: 0 2px 8px rgba(0,0,0,.07); }
+.view-chip:active { transform: scale(.97); }
+
+/* Popover açılma animasyonu — JS tetikler */
+@keyframes wbPopIn {
+  from { opacity: 0; transform: scale(.95) translateY(-5px); }
+  to   { opacity: 1; transform: scale(1)   translateY(0); }
+}
+
+.view-item {
+  transition: background .12s ease !important;
+  border-radius: 10px;
+}
+.view-item:hover { background: var(--hover, #f5f6fb) !important; }
+.view-item.selected {
+  background: var(--accent-light, #eef2ff) !important;
+  color: var(--accent, #4f46e5) !important;
+  font-weight: 700 !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STAFF POPUP
+   ════════════════════════════════════════════════════════════ */
+
+.staff-pop .chk {
+  transition: background .12s ease !important;
+  border-radius: 10px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STAFF LİSTE İTEMLERİ (staff.html)
+   ════════════════════════════════════════════════════════════ */
+
+.staff-item {
+  transition:
+    background .14s ease,
+    box-shadow .14s ease,
+    transform  .1s  cubic-bezier(.34,1.56,.64,1) !important;
+}
+.staff-item:hover {
+  transform: translateX(2px);
+  background: var(--hover, #f5f6fb) !important;
+}
+.staff-item.is-active,
+.staff-item[aria-selected="true"] {
+  background: var(--accent-light, #eef2ff) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   SETTINGS NAV (settings.html sol menü)
+   ════════════════════════════════════════════════════════════ */
+
+.settings-nav__link {
+  transition:
+    background .13s ease,
+    color      .13s ease !important;
+  border-radius: 8px;
+  position: relative;
+}
+.settings-nav__link:hover {
+  background: var(--accent-light, #eef2ff);
+  color: var(--accent, #4f46e5);
+}
+.settings-nav__link.is-active {
+  background: var(--accent-light, #eef2ff) !important;
+  color: var(--accent, #4f46e5) !important;
+  font-weight: 700;
+}
+/* Aktif sol çizgi indicator */
+.settings-nav__link.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 20%; bottom: 20%;
+  width: 3px;
+  background: var(--accent, #4f46e5);
+  border-radius: 0 3px 3px 0;
+  animation: wbNavIndicator .18s cubic-bezier(.22,1,.36,1);
+}
+@keyframes wbNavIndicator {
+  from { transform: scaleY(0); opacity: 0; }
+  to   { transform: scaleY(1); opacity: 1; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   PRIMARY / DANGER BUTONLAR
+   ════════════════════════════════════════════════════════════ */
+
+.apply,
+.btn.primary,
+.btn-primary {
+  transition:
+    background .13s ease,
+    box-shadow .13s ease,
+    transform  .1s  cubic-bezier(.34,1.56,.64,1) !important;
+  will-change: transform;
+}
+.apply:not(:disabled):hover,
+.btn.primary:not(:disabled):hover {
+  filter: brightness(1.06);
+  box-shadow: 0 6px 20px rgba(0,0,0,.18);
+}
+.apply:not(:disabled):active,
+.btn.primary:not(:disabled):active {
+  transform: scale(.96);
+  filter: brightness(.95);
+  box-shadow: none;
+}
+
+.btn.danger, .btn-danger, .btn.no {
+  transition:
+    background .13s ease,
+    box-shadow .13s ease,
+    transform  .1s  cubic-bezier(.34,1.56,.64,1) !important;
+}
+.btn.danger:not(:disabled):active,
+.btn-danger:not(:disabled):active {
+  transform: scale(.96);
+}
+
+/* ════════════════════════════════════════════════════════════
+   RANDEVU KARTLARI (calendar — appointment pills)
+   ════════════════════════════════════════════════════════════ */
+
+.appt,
+.evt,
+[class*="appt-"],
+.cal-event {
+  transition:
+    box-shadow .15s ease,
+    transform  .12s cubic-bezier(.34,1.56,.64,1) !important;
+  cursor: pointer;
+}
+.appt:hover,
+.evt:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 6px 18px rgba(0,0,0,.15) !important;
+  z-index: 5;
+  position: relative;
+}
+.appt:active,
+.evt:active {
+  transform: scale(.98);
+  box-shadow: none !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   BİLDİRİM ZİLİ
+   ════════════════════════════════════════════════════════════ */
+
+#bellBtn, .bell-btn {
+  transition:
+    background .12s ease,
+    transform  .12s cubic-bezier(.34,1.56,.64,1) !important;
+}
+#bellBtn:active, .bell-btn:active {
+  transform: scale(.88);
+}
+
+@keyframes wbBellShake {
+  0%,100% { transform: rotate(0); }
+  20%     { transform: rotate(-12deg); }
+  40%     { transform: rotate(10deg); }
+  60%     { transform: rotate(-8deg); }
+  80%     { transform: rotate(6deg); }
+}
+#bellBtn.has-notif svg,
+.bell-btn.has-notif svg {
+  animation: wbBellShake .5s ease;
+}
+
+/* ════════════════════════════════════════════════════════════
+   FORM ALANLARI
+   ════════════════════════════════════════════════════════════ */
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="password"],
+textarea,
+select {
+  transition:
+    border-color .15s ease,
+    box-shadow   .15s ease !important;
+}
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--accent, #4f46e5) !important;
+  box-shadow: 0 0 0 3px rgba(79,70,229,.14) !important;
+  outline: none;
+}
+
+/* ════════════════════════════════════════════════════════════
+   RAIL NAV BUTONLARI
+   ════════════════════════════════════════════════════════════ */
+
+.rail__btn {
+  transition:
+    background .14s ease,
+    color      .14s ease,
+    transform  .12s cubic-bezier(.34,1.56,.64,1),
+    box-shadow .14s ease !important;
+}
+.rail__btn:hover {
+  background: var(--rail-hover, #1d1f24);
+  color: var(--rail-active, #fff);
+}
+.rail__btn:active { transform: scale(.9); }
+
+/* ════════════════════════════════════════════════════════════
+   LOADING SPINNER (buton loading state için)
+   ════════════════════════════════════════════════════════════ */
+
+@keyframes wbSpin {
+  to { transform: rotate(360deg); }
+}
+
+button.wb-loading,
+.btn.wb-loading {
+  pointer-events: none;
+  opacity: .75;
+}
+button.wb-loading::after,
+.btn.wb-loading::after {
+  content: '';
+  display: inline-block;
+  width: 13px; height: 13px;
+  border: 2px solid rgba(255,255,255,.35);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: wbSpin .65s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* ════════════════════════════════════════════════════════════
+   STATUS BADGE
+   ════════════════════════════════════════════════════════════ */
+
+[class*="status-"], [class*="-status"], .badge, .tag {
+  transition: background .18s ease, color .18s ease !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   HOVER ROW
+   ════════════════════════════════════════════════════════════ */
+
+.wb-row {
+  transition: background .12s ease !important;
+  border-radius: 10px;
+}
+.wb-row:hover { background: var(--hover, #f5f6fb); }
+
+/* ════════════════════════════════════════════════════════════
+   MOBİL (≤768px) — Touch-optimized
+   ════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .icon-btn, .btn-icon {
+    min-width: 44px;
+    min-height: 44px;
+  }
+  /* Mobilde hover efektler devre dışı */
+  .wb-lift:hover    { transform: none; box-shadow: none; }
+  .appt:hover       { transform: none; box-shadow: inherit !important; }
+  .staff-item:hover { transform: none; }
+}

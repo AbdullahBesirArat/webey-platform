@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS `mobile_sessions` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `token_hash` VARCHAR(128) NOT NULL,
+  `user_type` ENUM('customer','business','admin') NOT NULL,
+  `user_id` BIGINT UNSIGNED NOT NULL,
+  `device_name` VARCHAR(120) NULL,
+  `device_id` VARCHAR(120) NULL,
+  `platform` ENUM('ios','android','web','unknown') NOT NULL DEFAULT 'unknown',
+  `app_version` VARCHAR(50) NULL,
+  `ip_address` VARCHAR(64) NULL,
+  `user_agent` VARCHAR(255) NULL,
+  `last_used_at` DATETIME NULL,
+  `expires_at` DATETIME NOT NULL,
+  `revoked_at` DATETIME NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_mobile_sessions_token_hash` (`token_hash`),
+  KEY `idx_mobile_sessions_user` (`user_type`, `user_id`),
+  KEY `idx_mobile_sessions_expires` (`expires_at`),
+  KEY `idx_mobile_sessions_device` (`device_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

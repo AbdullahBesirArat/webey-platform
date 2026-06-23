@@ -1,0 +1,482 @@
+<!-- bar-menu.html — Webey Admin Sidebar v3 -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+<style>
+/* ═══════════════════════ TOKENS ═══════════════════════ */
+:root {
+  --sb-collapsed: 72px;
+  --sb-expanded:  224px;
+  --sb-bg:        #0d0e11;
+  --sb-border:    rgba(255,255,255,0.06);
+  --sb-ink:       #6b7585;
+  --sb-ink-h:     #c4cad6;
+  --sb-accent:    #0ea5b3;
+  --sb-acc-dim:   rgba(14,165,179,0.13);
+  --sb-acc-glow:  rgba(14,165,179,0.28);
+  --sb-ease:      0.22s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ═══════════════════════ SHELL ════════════════════════ */
+.app-bar {
+  position: fixed !important;
+  left: 0 !important; top: 0 !important; bottom: 0 !important;
+  width: var(--sb-collapsed) !important;
+  background: var(--sb-bg) !important;
+  border-right: 1px solid var(--sb-border) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  z-index: 1000 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: width var(--sb-ease), box-shadow var(--sb-ease) !important;
+}
+.app-bar:hover {
+  width: var(--sb-expanded) !important;
+  box-shadow: 6px 0 32px rgba(0,0,0,0.5) !important;
+}
+
+body.has-app-bar {
+  margin-left: var(--sb-collapsed) !important;
+}
+
+/* ═══════════════════════ LOGO ═════════════════════════ */
+.sb-logo {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 64px !important;
+  text-decoration: none !important;
+  flex-shrink: 0 !important;
+  padding: 0 !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+}
+.app-bar:hover .sb-logo {
+  justify-content: flex-start !important;
+  padding: 0 20px !important;
+  gap: 10px !important;
+}
+.sb-logo__mark {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0ea5b3, #0b7e8a);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px var(--sb-acc-glow);
+}
+.sb-logo__mark span {
+  font-weight: 800; font-size: 15px; color: #fff;
+}
+.sb-logo__text {
+  font-size: 16px; font-weight: 800; color: #fff;
+  white-space: nowrap;
+  max-width: 0; overflow: hidden; opacity: 0;
+  transition: max-width var(--sb-ease), opacity var(--sb-ease);
+}
+.app-bar:hover .sb-logo__text {
+  max-width: 120px; opacity: 1;
+}
+
+/* ═══════════════════════ SECTION ══════════════════════ */
+.sb-section {
+  height: 0;
+  overflow: hidden;
+  transition: height var(--sb-ease);
+}
+.app-bar:hover .sb-section {
+  height: 32px;
+}
+.sb-section__label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+  white-space: nowrap;
+  padding: 18px 20px 4px;
+  display: block;
+}
+
+/* ═══════════════════════ LIST ═════════════════════════ */
+.app-bar__list {
+  list-style: none !important;
+  margin: 0 !important;
+  padding: 4px 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 2px !important;
+  flex: 1 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  scrollbar-width: none !important;
+  width: 100% !important;
+}
+.app-bar__list::-webkit-scrollbar { display: none; }
+.app-bar__list > li {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 0 !important;
+}
+.app-bar:hover .app-bar__list > li {
+  padding: 0 8px !important;
+}
+
+/* ═══════════════════════ ITEM ═════════════════════════ */
+.app-bar__item {
+  /* collapsed: kare buton, tam ortada */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 48px !important;
+  height: 46px !important;
+  border-radius: 12px !important;
+  text-decoration: none !important;
+  color: var(--sb-ink) !important;
+  background: transparent !important;
+  border: none !important;
+  cursor: pointer !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+  flex-shrink: 0 !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  transition:
+    color var(--sb-ease),
+    background var(--sb-ease),
+    width var(--sb-ease),
+    border-radius var(--sb-ease) !important;
+}
+
+/* expanded: tam genişlik, soldan hizalı */
+.app-bar:hover .app-bar__item {
+  width: 100% !important;
+  justify-content: flex-start !important;
+  padding: 0 14px !important;
+  gap: 12px !important;
+  border-radius: 12px !important;
+}
+
+.app-bar__item:hover {
+  color: var(--sb-ink-h) !important;
+  background: rgba(255,255,255,0.05) !important;
+}
+
+/* ACTIVE */
+.app-bar__item--active {
+  color: #fff !important;
+  background: var(--sb-acc-dim) !important;
+}
+.app-bar__item--active::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important; top: 20% !important; bottom: 20% !important;
+  width: 3px !important;
+  border-radius: 0 3px 3px 0 !important;
+  background: var(--sb-accent) !important;
+  box-shadow: 0 0 8px var(--sb-acc-glow) !important;
+}
+
+/* ═══════════════════════ ICON ═════════════════════════ */
+.app-bar__icon {
+  font-size: 22px !important;
+  width: 22px !important; height: 22px !important;
+  display: flex !important;
+  align-items: center !important; justify-content: center !important;
+  flex-shrink: 0 !important;
+  line-height: 1 !important;
+  transition: color var(--sb-ease), transform 0.18s cubic-bezier(0.34,1.56,0.64,1) !important;
+}
+.app-bar__item:hover .app-bar__icon { transform: scale(1.1) !important; }
+.app-bar__item--active .app-bar__icon { color: var(--sb-accent) !important; }
+.app-bar__item--active .material-symbols-rounded {
+  font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24 !important;
+}
+
+/* ═══════════════════════ LABEL ════════════════════════ */
+.app-bar__label {
+  font-size: 13.5px !important;
+  font-weight: 500 !important;
+  white-space: nowrap !important;
+  display: block !important;
+  max-width: 0 !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  transition: max-width var(--sb-ease), opacity var(--sb-ease) !important;
+  flex-shrink: 0 !important;
+  /* flex:1 YOK — ikonu itmemesi için */
+}
+.app-bar:hover .app-bar__label {
+  max-width: 160px !important;
+  opacity: 1 !important;
+}
+
+/* ═══════════════════════ BADGE ════════════════════════ */
+.sb-badge {
+  min-width: 17px; height: 17px;
+  border-radius: 9px;
+  background: #ef4444; color: #fff;
+  font-size: 10px; font-weight: 700;
+  display: none; align-items: center; justify-content: center;
+  padding: 0 3px; line-height: 1;
+  position: absolute; top: 6px; right: 6px;
+}
+.sb-badge.show { display: flex; }
+
+/* ═══════════════════════ DIVIDER ══════════════════════ */
+.app-bar__divider {
+  height: 1px !important;
+  background: var(--sb-border) !important;
+  width: 36px !important;
+  margin: 4px auto !important;
+  border: none !important;
+  flex-shrink: 0 !important;
+  transition: width var(--sb-ease), margin var(--sb-ease) !important;
+}
+.app-bar:hover .app-bar__divider {
+  width: calc(100% - 32px) !important;
+  margin: 4px 16px !important;
+}
+
+/* ═══════════════════════ FOOTER ═══════════════════════ */
+.sb-footer {
+  padding: 8px 0 12px !important;
+  border-top: 1px solid var(--sb-border) !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: 100% !important;
+  transition: padding var(--sb-ease) !important;
+}
+.app-bar:hover .sb-footer {
+  padding: 8px 8px 12px !important;
+}
+
+.sb-profile {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 48px !important;
+  height: 46px !important;
+  border-radius: 12px !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  overflow: hidden !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  flex-shrink: 0 !important;
+  color: var(--sb-ink) !important;
+  background: transparent !important;
+  position: relative !important;
+  transition:
+    background var(--sb-ease),
+    width var(--sb-ease) !important;
+}
+.app-bar:hover .sb-profile {
+  width: 100% !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  padding: 0 14px !important;
+}
+.sb-profile:hover { background: rgba(255,255,255,0.05) !important; }
+
+.sb-profile__avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0ea5b3, #0b7e8a);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px; font-weight: 800; color: #fff;
+  box-shadow: 0 2px 8px var(--sb-acc-glow);
+}
+.sb-profile__info {
+  max-width: 0; overflow: hidden; opacity: 0;
+  transition: max-width var(--sb-ease), opacity var(--sb-ease);
+  white-space: nowrap;
+}
+.app-bar:hover .sb-profile__info { max-width: 140px; opacity: 1; }
+.sb-profile__name {
+  font-size: 13px; font-weight: 600; color: #dde2ec; display: block;
+}
+.sb-profile__role {
+  font-size: 11px; color: var(--sb-ink); display: block; margin-top: 1px;
+}
+
+/* ═══════════════════════ MOBİL ════════════════════════ */
+@media (max-width: 768px) {
+  .app-bar {
+    top: auto !important; bottom: 0 !important;
+    left: 0 !important; right: 0 !important;
+    width: 100% !important; height: 64px !important;
+    flex-direction: row !important;
+    border-right: none !important;
+    border-top: 1px solid rgba(255,255,255,0.07) !important;
+    background: rgba(10,11,14,0.97) !important;
+    backdrop-filter: blur(20px) !important;
+    box-shadow: none !important;
+  }
+  .app-bar::before { display: none !important; }
+  .sb-logo, .sb-section, .app-bar__divider, .sb-footer { display: none !important; }
+
+  .app-bar__list {
+    flex-direction: row !important;
+    padding: 0 !important;
+    align-items: stretch !important;
+    justify-content: space-around !important;
+    gap: 0 !important;
+    flex: 1 !important;
+  }
+  .app-bar__list > li {
+    flex: 1 !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .app-bar:hover .app-bar__list > li { padding: 0 !important; }
+
+  .app-bar__item,
+  .app-bar:hover .app-bar__item {
+    flex-direction: column !important;
+    width: 100% !important; max-width: 72px !important;
+    height: 54px !important;
+    padding: 6px 0 !important;
+    gap: 3px !important;
+    border-radius: 14px !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .app-bar__item--active { background: transparent !important; }
+  .app-bar__item--active::before { display: none !important; }
+
+  .app-bar__label,
+  .app-bar:hover .app-bar__label {
+    max-width: 100% !important; opacity: 1 !important;
+    font-size: 10px !important; font-weight: 500 !important;
+    color: var(--sb-ink) !important;
+  }
+  .app-bar__item--active .app-bar__label { color: var(--sb-accent) !important; }
+  .app-bar__icon { font-size: 22px !important; }
+
+  body.has-app-bar {
+    margin-left: 0 !important;
+    padding-bottom: 68px !important;
+  }
+}
+
+/* Material Symbols */
+.material-symbols-rounded {
+  font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' -25, 'opsz' 24;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+</style>
+
+<nav class="app-bar" role="navigation" aria-label="Admin menü">
+
+  <a href="calendar.html" class="sb-logo" title="Webey Admin">
+    <div class="sb-logo__mark"><span>W</span></div>
+    <span class="sb-logo__text">Webey</span>
+  </a>
+
+  <ul class="app-bar__list">
+
+    <div class="sb-section"><span class="sb-section__label">Ana Menü</span></div>
+
+    <li>
+      <a href="calendar.html" class="app-bar__item" data-page="calendar" title="Takvim">
+        <span class="app-bar__icon material-symbols-rounded">calendar_month</span>
+        <span class="app-bar__label">Takvim</span>
+      </a>
+    </li>
+    <li>
+      <a href="staff.html" class="app-bar__item" data-page="staff" title="Personeller">
+        <span class="app-bar__icon material-symbols-rounded">group</span>
+        <span class="app-bar__label">Personeller</span>
+      </a>
+    </li>
+    <li>
+      <a href="settings.html" class="app-bar__item" data-page="settings" title="Dükkan Ayarları">
+        <span class="app-bar__icon material-symbols-rounded">store</span>
+        <span class="app-bar__label">Dükkan</span>
+      </a>
+    </li>
+
+    <li class="app-bar__divider" aria-hidden="true"></li>
+    <div class="sb-section"><span class="sb-section__label">Bilgi</span></div>
+
+    <li>
+      <a href="bildirimler.html" class="app-bar__item" data-page="bildirimler" id="barBellLink" title="Bildirimler">
+        <span class="app-bar__icon material-symbols-rounded">notifications</span>
+        <span class="app-bar__label">Bildirimler</span>
+        <span class="sb-badge" id="barBellCount">0</span>
+      </a>
+    </li>
+
+  </ul>
+
+  <div class="sb-footer">
+    <a href="admin-profile.html" class="sb-profile" data-page="profile" title="Profil">
+      <div class="sb-profile__avatar" id="sbAvatarInitials">A</div>
+      <div class="sb-profile__info">
+        <span class="sb-profile__name" id="sbProfileName">Admin</span>
+        <span class="sb-profile__role">İşletme Sahibi</span>
+      </div>
+    </a>
+  </div>
+
+</nav>
+
+<script>
+(function () {
+  document.body.classList.add('has-app-bar');
+
+  var fileName = window.location.pathname.split('/').pop().split('?')[0] || 'calendar.html';
+  var bodyPage = document.body.dataset.page;
+  var pageMap  = {
+    '': 'calendar',
+    'calendar.html'     : 'calendar',
+    'staff.html'        : 'staff',
+    'settings.html'     : 'settings',
+    'admin-profile.html': 'profile',
+    'bildirimler.html'  : 'bildirimler',
+  };
+  var current = bodyPage || pageMap[fileName] || fileName.replace('.html','');
+
+  document.querySelectorAll('.app-bar__item, .sb-profile').forEach(function(el) {
+    if (el.getAttribute('data-page') === current) {
+      el.classList.add('app-bar__item--active');
+    }
+  });
+
+  /* Bell badge */
+  var bellObs = new MutationObserver(syncBell);
+  function syncBell() {
+    var src  = document.getElementById('bellCount');
+    var dest = document.getElementById('barBellCount');
+    if (!dest) return;
+    var n = src ? parseInt(src.textContent || '0', 10) : 0;
+    dest.textContent = n > 99 ? '99+' : String(n);
+    dest.classList.toggle('show', n > 0);
+  }
+  (function watchBell() {
+    var el = document.getElementById('bellCount');
+    if (el) bellObs.observe(el, { characterData:true, subtree:true, childList:true });
+    else    setTimeout(watchBell, 600);
+  })();
+
+  /* Profil adı */
+  fetch('/api/session/me.php', { credentials:'same-origin' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      if (!j || !j.ok || !j.data) return;
+      var d = j.data;
+      var name = (d.firstName || d.first_name || d.businessName || d.name || 'Admin').trim();
+      var el = document.getElementById('sbProfileName');
+      var av = document.getElementById('sbAvatarInitials');
+      if (el) el.textContent = name;
+      if (av) av.textContent = name.charAt(0).toUpperCase();
+    })
+    .catch(function(){});
+})();
+</script>

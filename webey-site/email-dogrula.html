@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Email Doğrulama – Webey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display:ital@1&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="icon" href="img/favicon.ico" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --brand:#0ea5b3;--brand-dark:#0b8a96;
+      --ink:#0d0d0d;--ink-2:#3d3d3d;--ink-3:#6b6b6b;
+      --surface:#fff;--bg:#f4f3ef;--border:#e8e6e0;
+      --radius:14px;--radius-xl:32px;--shadow-lg:0 20px 52px rgba(0,0,0,.15);
+    }
+    body{
+      font-family:'Inter','Helvetica Neue',Arial,sans-serif;
+      background:var(--bg);color:var(--ink);
+      min-height:100vh;display:grid;place-items:center;
+      padding:24px 16px;-webkit-font-smoothing:antialiased;
+    }
+    .auth-card{
+      width:min(440px,100%);background:var(--surface);
+      border-radius:var(--radius-xl);padding:48px 40px 40px;
+      box-shadow:var(--shadow-lg);border:1px solid var(--border);
+      text-align:center;
+    }
+    @media(max-width:480px){.auth-card{padding:36px 24px 32px;}}
+    .logo-link{display:block;margin-bottom:32px;text-decoration:none;}
+    .logo-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:28px;font-weight:600;color:var(--brand);}
+    .icon-wrap{
+      width:80px;height:80px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      margin:0 auto 24px;font-size:38px;
+    }
+    h1{font-size:22px;font-weight:700;margin-bottom:10px;color:var(--ink);}
+    .subtitle{font-size:14px;color:var(--ink-3);line-height:1.7;margin-bottom:28px;}
+    .btn-primary{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:13px 28px;background:var(--brand);color:#fff;
+      border:none;border-radius:var(--radius);font-family:inherit;
+      font-size:15px;font-weight:700;cursor:pointer;text-decoration:none;
+      transition:background .2s;width:100%;
+    }
+    .btn-primary:hover{background:var(--brand-dark);}
+    .btn-secondary{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      padding:13px 28px;background:transparent;color:var(--ink-2);
+      border:1.5px solid var(--border);border-radius:var(--radius);
+      font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;
+      text-decoration:none;transition:border-color .2s,color .2s;width:100%;margin-top:10px;
+    }
+    .btn-secondary:hover{border-color:var(--brand);color:var(--brand);}
+
+    /* States */
+    .state{display:none;}
+    .state.show{display:block;}
+
+    /* Loading */
+    #stateLoading .spinner-wrap{
+      display:flex;align-items:center;justify-content:center;
+      margin:16px 0 20px;
+    }
+    .spinner{
+      width:40px;height:40px;border-radius:50%;
+      border:3px solid rgba(14,165,179,.15);border-top-color:var(--brand);
+      animation:spin .9s linear infinite;
+    }
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .countdown{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:16px;font-size:13px;color:var(--ink-3);}
+    .countdown strong{color:var(--brand);}
+  </style>
+</head>
+<body>
+  <script>
+    (function () {
+      var token = new URLSearchParams(location.search).get('token') || '';
+      if (token) {
+        location.replace('email-dogrulandi.html?token=' + encodeURIComponent(token));
+      }
+    })();
+  </script>
+  <div class="auth-card">
+    <a href="index.html" class="logo-link"><span class="logo-text">Webey</span></a>
+
+    <!-- Yükleniyor -->
+    <div class="state show" id="stateLoading">
+      <div class="icon-wrap" style="background:rgba(14,165,179,.10);">📧</div>
+      <h1>Doğrulanıyor…</h1>
+      <p class="subtitle">Email adresiniz doğrulanıyor, lütfen bekleyin.</p>
+      <div class="spinner-wrap"><div class="spinner"></div></div>
+    </div>
+
+    <!-- Başarı -->
+    <div class="state" id="stateSuccess">
+      <div class="icon-wrap" style="background:rgba(22,163,74,.10);">✅</div>
+      <h1>Email Doğrulandı!</h1>
+      <p class="subtitle">Harika! Email adresiniz başarıyla doğrulandı. Artık Webey'i tam olarak kullanabilirsiniz.</p>
+      <a href="index.html" class="btn-primary">
+        <i class="fas fa-house"></i> Ana Sayfaya Git
+      </a>
+    </div>
+
+    <!-- Zaten Doğrulanmış -->
+    <div class="state" id="stateAlready">
+      <div class="icon-wrap" style="background:rgba(99,102,241,.10);">🔄</div>
+      <h1>Zaten Doğrulanmış</h1>
+      <p class="subtitle">Bu email adresi daha önce doğrulanmış. Giriş yapabilirsiniz.</p>
+      <a href="index.html" class="btn-primary">Ana Sayfaya Git</a>
+    </div>
+
+    <!-- Geçersiz/Süresi Dolmuş -->
+    <div class="state" id="stateExpired">
+      <div class="icon-wrap" style="background:rgba(239,68,68,.10);">⏰</div>
+      <h1>Link Geçersiz</h1>
+      <p class="subtitle">Bu doğrulama linkinin süresi dolmuş (24 saat) veya zaten kullanılmış. Yeni bir doğrulama emaili isteyin.</p>
+      <form id="resendForm" style="margin-top:4px;">
+        <input
+          type="email" id="resendEmail"
+          placeholder="Email adresiniz"
+          style="width:100%;padding:13px 14px;border:1.5px solid var(--border);
+                 border-radius:var(--radius);font-family:inherit;font-size:14px;
+                 outline:none;margin-bottom:10px;"
+        />
+        <button type="submit" class="btn-primary" id="resendBtn">
+          <i class="fas fa-paper-plane"></i> Yeni Doğrulama Emaili Gönder
+        </button>
+      </form>
+      <div class="countdown" id="resendCountdown" style="display:none;">
+        <i class="fas fa-clock"></i>
+        Tekrar göndermek için <strong id="countdownNum">300</strong> saniye
+      </div>
+      <a href="index.html" class="btn-secondary" style="margin-top:10px;">
+        <i class="fas fa-house"></i> Ana Sayfa
+      </a>
+    </div>
+
+    <!-- Genel Hata -->
+    <div class="state" id="stateError">
+      <div class="icon-wrap" style="background:rgba(239,68,68,.10);">❌</div>
+      <h1>Bir Hata Oluştu</h1>
+      <p class="subtitle">İstek işlenirken bir sorun oluştu. Lütfen sayfayı yenileyip tekrar deneyin.</p>
+      <button onclick="location.reload()" class="btn-primary">
+        <i class="fas fa-rotate"></i> Tekrar Dene
+      </button>
+      <a href="index.html" class="btn-secondary">Ana Sayfa</a>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const token  = params.get('token') || '';
+
+    function showState(id) {
+      document.querySelectorAll('.state').forEach(el => el.classList.remove('show'));
+      document.getElementById(id)?.classList.add('show');
+    }
+
+    async function verify() {
+      if (!token) { showState('stateExpired'); return; }
+
+      try {
+        const csrf1 = await getCsrfToken();
+        const res  = await fetch('api/auth/verify-email.php', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', ...(csrf1?{'X-CSRF-Token':csrf1}:{}) },
+          body: JSON.stringify({ token })
+        });
+        const json = await res.json();
+
+        if (json.ok) {
+          showState(json.already ? 'stateAlready' : 'stateSuccess');
+        } else if (json.code === 'TOKEN_EXPIRED') {
+          showState('stateExpired');
+        } else {
+          showState('stateError');
+        }
+      } catch {
+        showState('stateError');
+      }
+    }
+
+    // Resend form
+    let countdownTimer;
+    function startCountdown(seconds) {
+      const cd  = document.getElementById('resendCountdown');
+      const num = document.getElementById('countdownNum');
+      const btn = document.getElementById('resendBtn');
+      let rem = seconds;
+      cd.style.display = 'flex';
+      btn.style.display = 'none';
+      num.textContent = rem;
+      clearInterval(countdownTimer);
+      countdownTimer = setInterval(() => {
+        rem--;
+        num.textContent = rem;
+        if (rem <= 0) {
+          clearInterval(countdownTimer);
+          cd.style.display = 'none';
+          btn.style.display = 'flex';
+        }
+      }, 1000);
+    }
+
+    document.getElementById('resendForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('resendEmail').value.trim();
+      if (!email) return;
+
+      const btn = document.getElementById('resendBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Gönderiliyor…';
+
+      try {
+        const csrf2 = await getCsrfToken();
+        const res  = await fetch('api/auth/resend-verification.php', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', ...(csrf2?{'X-CSRF-Token':csrf2}:{}) },
+          body: JSON.stringify({ email })
+        });
+        const json = await res.json();
+        if (res.status === 429) {
+          startCountdown(json.wait || 300);
+        } else {
+          startCountdown(300);
+        }
+      } catch {
+        startCountdown(300);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Yeni Doğrulama Emaili Gönder';
+      }
+    });
+
+    // Başlat
+    verify();
+  </script>
+</body>
+</html>

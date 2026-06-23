@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover" />
+  <meta name="theme-color" content="#0ea5b3" />
+  <meta name="robots" content="noindex" />
+  <title>Giriş Yap · Webey</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@1&display=swap" rel="stylesheet">
+
+  <link rel="preload" as="style"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous"
+        onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"/>
+  </noscript>
+
+  <link rel="stylesheet" href="css/index.css" />
+  <link rel="stylesheet" href="css/auth-modal.css" />
+  <link rel="stylesheet" href="css/index-sections.css" />
+  <link rel="stylesheet" href="css/wb-transitions.css" />
+  <link rel="stylesheet" href="css/wb-bottom-nav.css" />
+  <link rel="stylesheet" href="css/mobile-user.css" />
+  <link rel="icon" href="img/favicon.ico" />
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <meta name="google-signin-client_id" content="279602177241-o5qmpgshp4g13jlrunnkav6vdu4hiejv.apps.googleusercontent.com" />
+
+  <style>
+    :root {
+      --kyr-sheet-max: 460px;
+      --kyr-sheet-radius: 28px;
+    }
+
+    body {
+      background: #080e10;
+      color: #f0f4f5;
+      min-height: 100dvh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 55% at 50% -5%, rgba(14, 165, 179, 0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 40% at 5% 100%, rgba(14, 165, 179, 0.10) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .kyr-page {
+      position: relative;
+      z-index: 1;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: calc(env(safe-area-inset-top, 0px) + 20px) 20px
+               calc(env(safe-area-inset-bottom, 0px) + 90px);
+    }
+
+    .kyr-back {
+      align-self: flex-start;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: rgba(240, 244, 245, 0.5);
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 8px 0;
+      transition: color 0.15s;
+      margin-bottom: 24px;
+    }
+
+    .kyr-back:hover {
+      color: #f0f4f5;
+    }
+
+    .kyr-logo {
+      font-family: "DM Serif Display", serif;
+      font-style: italic;
+      font-size: 38px;
+      color: #fff;
+      letter-spacing: 0.2px;
+      margin-bottom: 36px;
+      text-align: center;
+    }
+
+    .kyr-card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 36px 26px 30px;
+      backdrop-filter: blur(12px);
+      animation: kyrFadeUp 0.4s cubic-bezier(.34, 1.3, .64, 1) both;
+    }
+
+    @keyframes kyrFadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .kyr-icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: rgba(14, 165, 179, 0.12);
+      border: 1.5px solid rgba(14, 165, 179, 0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 22px;
+    }
+
+    .kyr-icon i {
+      font-size: 26px;
+      color: #0ea5b3;
+    }
+
+    .kyr-title {
+      font-size: 21px;
+      font-weight: 700;
+      text-align: center;
+      color: #fff;
+      margin-bottom: 9px;
+      line-height: 1.3;
+    }
+
+    .kyr-sub {
+      font-size: 13.5px;
+      color: rgba(240, 244, 245, 0.55);
+      text-align: center;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    .kyr-btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 50px;
+      background: #0ea5b3;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      border: none;
+      border-radius: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: 0 8px 26px rgba(14, 165, 179, 0.35);
+      transition: background 0.18s, transform 0.1s;
+      margin-bottom: 11px;
+      font-family: "Inter", sans-serif;
+    }
+
+    .kyr-btn-primary:hover {
+      background: #0b8a96;
+    }
+
+    .kyr-btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .kyr-btn-ghost {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 50px;
+      background: transparent;
+      color: rgba(240, 244, 245, 0.8);
+      font-size: 14px;
+      font-weight: 600;
+      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 13px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color 0.18s, background 0.18s;
+      font-family: "Inter", sans-serif;
+    }
+
+    .kyr-btn-ghost:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .kyr-divider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 22px 0 18px;
+    }
+
+    .kyr-divider::before,
+    .kyr-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .kyr-divider span {
+      font-size: 11.5px;
+      color: rgba(240, 244, 245, 0.35);
+      white-space: nowrap;
+    }
+
+    .kyr-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .kyr-info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 13px;
+      animation: kyrFadeUp 0.4s cubic-bezier(.34, 1.3, .64, 1) both;
+    }
+
+    .kyr-info-item:nth-child(1) { animation-delay: 0.12s; }
+    .kyr-info-item:nth-child(2) { animation-delay: 0.2s; }
+
+    .kyr-info-ico {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: rgba(14, 165, 179, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .kyr-info-ico i {
+      font-size: 14px;
+      color: #0ea5b3;
+    }
+
+    .kyr-info-txt strong {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+
+    .kyr-info-txt p {
+      font-size: 12px;
+      color: rgba(240, 244, 245, 0.5);
+      line-height: 1.55;
+    }
+
+    body.kayita-yonlendir-page .modal-overlay {
+      background:
+        linear-gradient(180deg, rgba(3, 8, 11, 0.38) 0%, rgba(3, 8, 11, 0.68) 100%),
+        rgba(0, 0, 0, 0.48);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    body.kayita-yonlendir-page .modal-box {
+      width: min(100%, var(--kyr-sheet-max));
+      border-radius: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      box-shadow:
+        0 28px 80px rgba(2, 8, 23, 0.24),
+        0 6px 20px rgba(2, 8, 23, 0.08);
+    }
+
+    body.kayita-yonlendir-page .auth-modal-header {
+      padding: 18px 18px 0;
+    }
+
+    body.kayita-yonlendir-page .auth-container {
+      padding: 14px 22px 22px;
+    }
+
+    body.kayita-yonlendir-page .auth-title {
+      font-size: 28px;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      margin-top: 10px;
+    }
+
+    body.kayita-yonlendir-page .auth-subtitle {
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 32ch;
+      margin: 0 auto 20px;
+    }
+
+    body.kayita-yonlendir-page .auth-tabs {
+      padding: 5px;
+      border-radius: 16px;
+      margin-bottom: 18px;
+      background: linear-gradient(180deg, #f4f5f7 0%, #eceef2 100%);
+    }
+
+    body.kayita-yonlendir-page .auth-tab {
+      min-height: 48px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    body.kayita-yonlendir-page .auth-tab.active {
+      box-shadow:
+        0 1px 2px rgba(15, 23, 42, 0.08),
+        0 10px 24px rgba(14, 165, 179, 0.08);
+    }
+
+    body.kayita-yonlendir-page .auth-input,
+    body.kayita-yonlendir-page .cc-box,
+    body.kayita-yonlendir-page .dob-trigger,
+    body.kayita-yonlendir-page select.auth-input {
+      min-height: 54px;
+      border-radius: 15px;
+      font-size: 15px;
+    }
+
+    body.kayita-yonlendir-page .password-wrap .auth-input {
+      padding-right: 50px;
+    }
+
+    body.kayita-yonlendir-page .phone-hint,
+    body.kayita-yonlendir-page .auth-link,
+    body.kayita-yonlendir-page .error {
+      font-size: 12.5px;
+    }
+
+    body.kayita-yonlendir-page .terms-check {
+      padding: 14px 14px 0;
+      border-top: 1px solid #edf0f4;
+      margin-top: 10px;
+    }
+
+    body.kayita-yonlendir-page .terms-check span {
+      font-size: 12px !important;
+      line-height: 1.6 !important;
+      color: #667085 !important;
+    }
+
+    body.kayita-yonlendir-page .auth-divider {
+      margin: 16px 0 14px;
+    }
+
+    body.kayita-yonlendir-page .auth-google-btn,
+    body.kayita-yonlendir-page .auth-btn {
+      min-height: 54px;
+      border-radius: 15px;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    body.kayita-yonlendir-page .auth-google-btn {
+      padding: 0 18px;
+      justify-content: center;
+    }
+
+    body.kayita-yonlendir-page .field-row-2,
+    body.kayita-yonlendir-page .field-row-3 {
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    body.kayita-yonlendir-page .modal-close,
+    body.kayita-yonlendir-page .modal-back {
+      width: 40px !important;
+      height: 40px !important;
+      background: #f3f4f6 !important;
+      color: #3f4754 !important;
+    }
+
+    @media (max-width: 767px) {
+      body.kayita-yonlendir-page .modal-overlay {
+        display: none;
+        align-items: center !important;
+        justify-items: center !important;
+        place-items: center !important;
+        padding:
+          max(14px, env(safe-area-inset-top, 0px))
+          max(12px, 3.5vw)
+          max(14px, env(safe-area-inset-bottom, 0px)) !important;
+        overflow: auto;
+      }
+
+      body.kayita-yonlendir-page .modal-overlay.active {
+        display: grid;
+      }
+
+      body.kayita-yonlendir-page .modal-box {
+        width: min(100%, var(--kyr-sheet-max)) !important;
+        max-width: min(var(--kyr-sheet-max), calc(100vw - 20px)) !important;
+        margin: 0 auto !important;
+        max-height: min(calc(100dvh - 28px), 760px) !important;
+        border-radius: 24px !important;
+        overflow: hidden auto !important;
+        padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+        animation: kyrSheetIn .24s cubic-bezier(.24, .9, .2, 1) both !important;
+      }
+
+      body.kayita-yonlendir-page .auth-modal-header {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.94) 100%);
+        backdrop-filter: blur(8px);
+        padding: 14px 16px 0;
+      }
+
+      body.kayita-yonlendir-page .auth-container {
+        padding: 12px 16px 10px;
+      }
+
+      body.kayita-yonlendir-page .auth-title {
+        font-size: clamp(26px, 7vw, 32px);
+        margin: 8px 0 8px;
+      }
+
+      body.kayita-yonlendir-page .auth-subtitle {
+        font-size: 13px;
+        line-height: 1.5;
+        margin-bottom: 18px;
+      }
+
+      body.kayita-yonlendir-page .auth-tabs {
+        position: sticky;
+        top: 54px;
+        z-index: 1;
+        margin-inline: 0;
+      }
+
+      body.kayita-yonlendir-page .auth-tab {
+        min-height: 46px;
+        font-size: 14px;
+      }
+
+      body.kayita-yonlendir-page .auth-input,
+      body.kayita-yonlendir-page .cc-box,
+      body.kayita-yonlendir-page .dob-trigger,
+      body.kayita-yonlendir-page select.auth-input,
+      body.kayita-yonlendir-page .auth-google-btn,
+      body.kayita-yonlendir-page .auth-btn {
+        min-height: 52px;
+        font-size: 15px;
+      }
+
+      body.kayita-yonlendir-page .phone-row {
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      body.kayita-yonlendir-page .cc-box {
+        min-width: 98px;
+        justify-content: center;
+        padding-inline: 10px;
+      }
+
+      body.kayita-yonlendir-page .terms-check {
+        padding: 12px 2px 0;
+        gap: 10px !important;
+      }
+
+      body.kayita-yonlendir-page .terms-check input {
+        margin-top: 2px !important;
+      }
+
+      body.kayita-yonlendir-page .auth-divider {
+        margin: 14px 0 12px;
+      }
+
+      body.kayita-yonlendir-page .field-row-2,
+      body.kayita-yonlendir-page .field-row-3 {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    @media (max-width: 420px) {
+      body.kayita-yonlendir-page .modal-overlay {
+        padding-inline: 8px !important;
+      }
+
+      body.kayita-yonlendir-page .modal-box {
+        max-width: calc(100vw - 16px) !important;
+        max-height: min(calc(100dvh - 16px), 760px) !important;
+        border-radius: 22px !important;
+      }
+
+      body.kayita-yonlendir-page .auth-container {
+        padding-inline: 14px;
+      }
+
+      body.kayita-yonlendir-page .auth-title {
+        font-size: clamp(24px, 8vw, 28px);
+      }
+
+      body.kayita-yonlendir-page .auth-tab,
+      body.kayita-yonlendir-page .auth-input,
+      body.kayita-yonlendir-page .cc-box,
+      body.kayita-yonlendir-page .dob-trigger,
+      body.kayita-yonlendir-page .auth-google-btn,
+      body.kayita-yonlendir-page .auth-btn {
+        min-height: 50px;
+      }
+    }
+
+    @keyframes kyrSheetIn {
+      from {
+        opacity: 0;
+        transform: translateY(32px) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body class="kayita-yonlendir-page">
+  <div class="kyr-page">
+    <a href="javascript:history.back()" class="kyr-back">
+      <i class="fas fa-arrow-left"></i> Geri
+    </a>
+
+    <div class="kyr-logo">Webey</div>
+
+    <div class="kyr-card">
+      <div class="kyr-icon">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      <h1 class="kyr-title">Hesabına Giriş Yap</h1>
+      <p class="kyr-sub">Randevularını görüntülemek ve profilini yönetmek için giriş yapman gerekiyor.</p>
+
+      <button class="kyr-btn-primary" id="btnOpenAuth" type="button">
+        <i class="fas fa-sign-in-alt"></i>
+        Giriş Yap / Kayıt Ol
+      </button>
+      <a href="index.html" class="kyr-btn-ghost">
+        <i class="fas fa-house"></i>
+        Ana Sayfaya Dön
+      </a>
+
+      <div class="kyr-divider"><span>nasıl kayıt olabilirim?</span></div>
+
+      <div class="kyr-info-list">
+        <div class="kyr-info-item">
+          <div class="kyr-info-ico"><i class="fas fa-house"></i></div>
+          <div class="kyr-info-txt">
+            <strong>Ana Sayfa</strong>
+            <p>Ana sayfadaki "Giriş Yap / Kayıt Ol" butonuna basarak kaydını tamamlayabilirsin.</p>
+          </div>
+        </div>
+        <div class="kyr-info-item">
+          <div class="kyr-info-ico"><i class="fas fa-scissors"></i></div>
+          <div class="kyr-info-txt">
+            <strong>İşletme Sayfası</strong>
+            <p>Herhangi bir kuaför veya salon sayfasında randevu alırken kayıt akışı otomatik başlar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="authModal" class="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="loginRegisterTitle" aria-hidden="true" hidden>
+    <div class="modal-box">
+      <div class="auth-modal-header">
+        <div class="auth-header-spacer"></div>
+        <div class="auth-steps" aria-hidden="true"></div>
+        <button class="modal-close" type="button" aria-label="Kapat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="auth-container">
+        <h2 id="loginRegisterTitle" class="auth-title">Hoş Geldin</h2>
+        <p class="auth-subtitle">Randevu almak için giriş yap veya kayıt ol.</p>
+
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active" data-tab="login" type="button" role="tab" aria-selected="true">Giriş Yap</button>
+          <button class="auth-tab" data-tab="signup" type="button" role="tab" aria-selected="false">Kayıt Ol</button>
+        </div>
+
+        <form id="loginForm" class="auth-form active" data-form="login" autocomplete="off" role="tabpanel">
+          <input class="auth-input" type="email" name="email" placeholder="E-posta"
+                 inputmode="email" autocomplete="email" required aria-label="E-posta" />
+          <div class="password-wrap">
+            <input class="auth-input" type="password" name="password" placeholder="Şifre"
+                   autocomplete="current-password" aria-label="Şifre" required minlength="8" />
+            <button type="button" class="toggle-eye" aria-label="Şifreyi göster/gizle">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div class="auth-link-row">
+            <a id="forgotLink" href="sifremi-unuttum.html" class="auth-link">Şifremi unuttum</a>
+          </div>
+          <div id="loginError" class="error" aria-live="assertive"></div>
+          <button type="submit" class="auth-btn" id="btnLogin">Giriş Yap</button>
+
+          <div class="auth-divider"><span>veya</span></div>
+          <button type="button" class="auth-google-btn" id="btnGoogleLogin">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Google ile Giriş Yap
+          </button>
+        </form>
+
+        <form id="signupForm" class="auth-form" data-form="signup" autocomplete="one-time-code" role="tabpanel">
+          <input class="auth-input" type="email" name="email" placeholder="E-posta"
+                 inputmode="email" autocomplete="email" required aria-label="E-posta" />
+          <p class="phone-hint">Doğrulama kodu bu e-posta adresine gönderilecek</p>
+          <div id="signupError" class="error" aria-live="assertive"></div>
+          <label class="terms-check" style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;cursor:pointer">
+            <input type="checkbox" id="termsAgree" required style="margin-top:3px;width:16px;height:16px;accent-color:#0ea5b3;flex-shrink:0"/>
+            <span style="font-size:12.5px;color:#6b6b6b;line-height:1.55">
+              <a href="kullanim-kosullari.html" target="_blank" style="color:#0ea5b3;font-weight:600">Kullanım Koşulları</a>'nı,
+              <a href="gizlilik-politikasi.html" target="_blank" style="color:#0ea5b3;font-weight:600">Gizlilik Politikası</a>'nı ve
+              <a href="cerez-politikasi.html" target="_blank" style="color:#0ea5b3;font-weight:600">Çerez Politikası</a>'nı okudum, kabul ediyorum.
+            </span>
+          </label>
+          <button type="submit" class="auth-btn" id="btnSendOtp">Devam Et →</button>
+
+          <div class="auth-divider"><span>veya</span></div>
+          <button type="button" class="auth-google-btn" id="btnGoogleSignup">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Google ile Devam Et
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="otpModal" class="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="otpTitle" aria-hidden="true" hidden>
+    <div class="modal-box">
+      <div class="auth-modal-header">
+        <button class="modal-back" type="button" id="btnBackOtp" aria-label="Geri">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="auth-steps" aria-hidden="true">
+          <div class="auth-step-dot done"></div>
+          <div class="auth-step-dot active"></div>
+          <div class="auth-step-dot"></div>
+        </div>
+        <button class="modal-close" type="button" aria-label="Kapat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="auth-container">
+        <h2 id="otpTitle" class="auth-title">Doğrulama Kodu</h2>
+        <p class="auth-subtitle">E-postana gönderilen 6 haneli kodu gir.</p>
+        <form id="otpForm" class="auth-form active" data-form="otp" autocomplete="one-time-code">
+          <input class="auth-input otp-input" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+                 name="code" placeholder="- - - - - -" required aria-label="Doğrulama kodu"
+                 style="text-align:center;font-size:22px;letter-spacing:10px;font-weight:700" />
+          <div id="otpError" class="error" aria-live="assertive"></div>
+          <button type="submit" class="auth-btn" id="btnVerifyOtp">Doğrula</button>
+          <button type="button" class="resend-otp" id="btnResendOtp"
+                  style="display:block;width:100%;margin-top:10px;background:none;border:none;color:#6366f1;font-size:13.5px;font-weight:600;cursor:pointer;padding:8px;font-family:inherit">
+            Kodu Tekrar Gönder
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="passModal" class="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="passTitle" aria-hidden="true" hidden>
+    <div class="modal-box">
+      <div class="auth-modal-header">
+        <button class="modal-back" type="button" id="btnBackPass" aria-label="Geri">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="auth-steps" aria-hidden="true">
+          <div class="auth-step-dot active"></div>
+          <div class="auth-step-dot"></div>
+          <div class="auth-step-dot"></div>
+        </div>
+        <button class="modal-close" type="button" aria-label="Kapat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="auth-container">
+        <h2 id="passTitle" class="auth-title">Şifre Oluştur</h2>
+        <p class="auth-subtitle">En az 8 karakter, harf ve rakam karıştırabilirsin.</p>
+        <form id="passForm" class="auth-form active" data-form="pass" autocomplete="new-password">
+          <div class="password-wrap">
+            <input class="auth-input" type="password" name="password" placeholder="Şifre"
+                   aria-label="Şifre" required minlength="8" />
+            <button type="button" class="toggle-eye" aria-label="Şifreyi göster/gizle">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div class="pass-strength-wrap">
+            <div class="pass-strength" aria-hidden="true">
+              <div class="pass-strength-bar" id="passStrBar"></div>
+            </div>
+            <div class="pass-strength-meta">
+              <span class="pass-strength-label" id="passStrLabel"></span>
+              <span class="pass-strength-tips" id="passStrTips"></span>
+            </div>
+          </div>
+          <div class="password-wrap">
+            <input class="auth-input" type="password" name="confirm" placeholder="Şifre (tekrar)"
+                   aria-label="Şifre tekrar" required minlength="8" />
+            <button type="button" class="toggle-eye" aria-label="Şifreyi göster/gizle">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div id="passError" class="error" aria-live="assertive"></div>
+          <button type="submit" class="auth-btn" id="btnPassNext" disabled>Devam Et →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="nameModal" class="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="nameTitle" aria-hidden="true" hidden>
+    <div class="modal-box">
+      <div class="auth-modal-header">
+        <button class="modal-back" type="button" id="btnBackName" aria-label="Geri">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="auth-steps" aria-hidden="true">
+          <div class="auth-step-dot done"></div>
+          <div class="auth-step-dot active"></div>
+          <div class="auth-step-dot"></div>
+        </div>
+        <button class="modal-close" type="button" aria-label="Kapat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="auth-container">
+        <h2 id="nameTitle" class="auth-title">Kimlik Bilgileri</h2>
+        <p class="auth-subtitle">Randevu aldığında salon bu bilgileri görecek, lütfen doğru gir.</p>
+        <form id="nameForm" class="auth-form active" data-form="name">
+          <div class="field-row-2">
+            <input class="auth-input" type="text" name="firstName" placeholder="Ad"
+                   autocomplete="given-name" required />
+            <input class="auth-input" type="text" name="lastName" placeholder="Soyad"
+                   autocomplete="family-name" required />
+          </div>
+          <div class="phone-row" style="margin-top:10px;">
+            <div class="cc-box" aria-hidden="true">
+              <span class="flag">🇹🇷</span>
+              <span class="cc">+90</span>
+            </div>
+            <input class="auth-input phone-input" type="tel" name="phone" placeholder="5xx xxx xx xx"
+                   inputmode="numeric" maxlength="13" autocomplete="tel-national"
+                   data-phone required aria-label="Telefon numarası" />
+          </div>
+          <p class="phone-hint">Türkiye numarası · 10 hane · 5xx ile başlamalı</p>
+          <button type="button" id="dobTriggerBtn" class="dob-trigger placeholder"
+                  aria-label="Doğum tarihi seç" aria-haspopup="dialog">
+            <span id="dobDisplay">Doğum Tarihi</span>
+            <i class="fas fa-calendar-alt dob-icon"></i>
+          </button>
+          <input type="text" name="birthday" id="birthdayInput" tabindex="-1"
+                 aria-hidden="true" style="position:absolute;opacity:0;pointer-events:none;width:1px;height:1px" />
+          <div id="nameError" class="error" aria-live="assertive"></div>
+          <button type="submit" class="auth-btn" id="btnNameNext" disabled>Devam Et →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="addressModal" class="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="addressTitle" aria-hidden="true" hidden>
+    <div class="modal-box">
+      <div class="auth-modal-header">
+        <button class="modal-back" type="button" id="btnBackAddress" aria-label="Geri">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="auth-steps" aria-hidden="true">
+          <div class="auth-step-dot done"></div>
+          <div class="auth-step-dot done"></div>
+          <div class="auth-step-dot active"></div>
+        </div>
+        <button class="modal-close" type="button" aria-label="Kapat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="auth-container">
+        <h2 id="addressTitle" class="auth-title">Konumun</h2>
+        <p class="auth-subtitle">Yakınındaki salonları önermek için şehir bilgine ihtiyacımız var.</p>
+        <form id="addressForm" class="auth-form active" data-form="address" autocomplete="off">
+          <div class="field-row-3">
+            <select class="auth-input" id="citySelect" required aria-label="Şehir"></select>
+            <select class="auth-input" id="districtSelect" required aria-label="İlçe"></select>
+            <select class="auth-input" id="neighborhoodSelect" required aria-label="Mahalle"></select>
+          </div>
+          <div id="addressError" class="error" aria-live="assertive"></div>
+          <button type="submit" class="auth-btn" id="btnFinish" disabled>Kaydı Tamamla ✓</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="recaptcha-container" class="sr-only"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module">
+    import { initAuth } from "./js/auth.js";
+
+    (async () => {
+      try {
+        const response = await fetch("/api/session/me.php", { credentials: "same-origin" });
+        const json = await response.json();
+        if (json.ok && json.data?.role === "user") {
+          window.location.replace("user-profile.html");
+          return;
+        }
+      } catch (_) {}
+
+      initAuth();
+    })();
+
+    function openM(id) {
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      modal.removeAttribute("hidden");
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("no-scroll");
+      setTimeout(() => {
+        modal.querySelector('input:not([disabled]):not([tabindex="-1"])')?.focus();
+      }, 60);
+    }
+
+    function closeM() {
+      const open = [...document.querySelectorAll(".modal-overlay.active")];
+      if (!open.length) return;
+      const top = open[open.length - 1];
+      top.classList.remove("active");
+      top.setAttribute("aria-hidden", "true");
+      top.setAttribute("hidden", "");
+      if (!document.querySelector(".modal-overlay.active")) {
+        document.body.classList.remove("no-scroll");
+      }
+    }
+
+    window.AppModals = { openModal: openM, closeModal: closeM };
+
+    document.querySelectorAll(".modal-overlay").forEach((modal) => {
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) closeM();
+      });
+      modal.querySelector(".modal-close")?.addEventListener("click", closeM);
+    });
+
+    document.getElementById("btnOpenAuth")?.addEventListener("click", () => openM("authModal"));
+
+    document.addEventListener("user:loggedin", () => {
+      setTimeout(() => {
+        window.location.href = "user-profile.html";
+      }, 700);
+    });
+  </script>
+
+  <script src="js/wb-bottom-nav.js" defer></script>
+</body>
+</html>

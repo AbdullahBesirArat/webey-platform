@@ -1,0 +1,16 @@
+.env
+db.php
+api/_email_config.php
+api/_sms_config.php
+api/_iyzico_config.php
+api/keys/
+node_modules/
+vendor/
+logs/
+cache/
+tmp/
+uploads/
+.DS_Store
+Thumbs.db
+_iyzico_config.php.example
+AI_GIZLI_BILGILER.local.md

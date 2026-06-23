@@ -1,0 +1,247 @@
+/* ════════════════════════════════════════════════════════════
+   admin-wb.css — Admin Sayfaları için wb-* Override'ları
+   wb-bottom-nav.css + wb-transitions.css üzerine biner
+   ════════════════════════════════════════════════════════════ */
+
+/* ── Progress bar: admin mor teması ── */
+#wb-progress {
+  background: linear-gradient(90deg, #7c6cff, #a89fff);
+  box-shadow: 0 0 10px rgba(124, 108, 255, .5);
+}
+
+/* ══════════════════════════════════════════════
+   ADMIN KOYU TEMA — wb-bottom-nav değişkenleri
+   ══════════════════════════════════════════════ */
+:root {
+  --bn-bg:      #151619;
+  --bn-border:  rgba(255,255,255,.07);
+  --bn-ink:     #8a93a8;
+  --bn-active:  #a89fff;
+  --bn-badge:   #ef4444;
+}
+
+/* ── Koyu nav container ── */
+.wb-bottom-nav {
+  background: #151619 !important;
+  border-top: 1px solid rgba(255,255,255,.07) !important;
+  box-shadow: 0 -4px 24px rgba(0,0,0,.35) !important;
+}
+
+/* Aktif üst çizgi: turkuaz */
+.wb-bottom-nav .wb-bn-item.is-active::before {
+  background: #0ea5b3 !important;
+}
+
+/* Aktif renk: turkuaz */
+.wb-bottom-nav .wb-bn-item.is-active,
+.wb-bottom-nav .wb-bn-item[aria-current="page"] {
+  color: #0ea5b3 !important;
+}
+
+/* Ripple: turkuaz */
+.wb-bottom-nav .wb-bn-item::after {
+  background: #0ea5b3 !important;
+}
+
+/* CTA bubble */
+.wb-bn-cta-bubble {
+  background: #0ea5b3 !important;
+  box-shadow: 0 4px 16px rgba(14,165,179,.38), 0 1px 4px rgba(14,165,179,.2) !important;
+}
+
+/* CTA label rengi */
+.wb-bn-item.wb-bn-cta .wb-bn-label {
+  color: #0ea5b3 !important;
+}
+
+/* ── İkon: Material Symbols için boyut ── */
+.wb-bn-icon {
+  font-size: 22px;
+}
+
+/* ══════════════════════════════════════════════
+   APP-BAR (admin-profile) — mobilde wb animasyonları
+   ══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Aktif item animasyonu */
+  .app-bar__item--active .app-bar__icon {
+    transform: translateY(-2px) scale(1.1);
+    display: block;
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  /* Press ripple */
+  .app-bar__item {
+    position: relative;
+    overflow: hidden;
+  }
+  .app-bar__item::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border-radius: 12px;
+    background: #a89fff;
+    opacity: 0;
+    transform: scale(0);
+    transition: transform .3s ease, opacity .3s ease;
+    pointer-events: none;
+  }
+  .app-bar__item:active::after {
+    transform: scale(1);
+    opacity: .1;
+    transition: none;
+  }
+
+  /* Aktif üst çizgi */
+  .app-bar__item--active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 25%;
+    right: 25%;
+    height: 2.5px;
+    background: #a89fff;
+    border-radius: 0 0 3px 3px;
+    animation: bnSlideIn .2s ease;
+  }
+
+  @keyframes bnSlideIn {
+    from { transform: scaleX(0); opacity: 0; }
+    to   { transform: scaleX(1); opacity: 1; }
+  }
+
+}
+
+/* ══════════════════════════════════════════════
+   RAIL (calendar + staff) — mobilde wb animasyonları
+   ══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+
+  .rail__btn {
+    position: relative;
+    overflow: hidden;
+    transition: background .15s, color .15s;
+  }
+
+  /* Press ripple — rail */
+  .rail__btn::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 10px;
+    background: #a89fff;
+    opacity: 0;
+    transform: scale(0);
+    transition: transform .3s ease, opacity .3s ease;
+    pointer-events: none;
+  }
+  .rail__btn:active::after {
+    transform: scale(1);
+    opacity: .12;
+    transition: none;
+  }
+
+  /* Aktif ikon hafif yukarı */
+  .rail__btn[aria-current="page"] .ico,
+  .rail__btn.is-active .ico {
+    transform: translateY(-2px) scale(1.08);
+    transition: transform .2s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  /* Aktif üst çizgi (yatay bottom bar modunda) */
+  .rail__btn[aria-current="page"]::before,
+  .rail__btn.is-active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 25%;
+    right: 25%;
+    height: 2.5px;
+    width: auto;
+    background: #a89fff;
+    border-radius: 0 0 3px 3px;
+    animation: bnSlideIn .2s ease;
+    /* Masaüstündeki sol çizgiyi kapat */
+    inset: unset;
+    top: 0; left: 25%; right: 25%; bottom: unset;
+    border-radius: 0 0 3px 3px;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   SAYFA GEÇİŞ ANİMASYONLARI — Admin özel
+   ══════════════════════════════════════════════ */
+
+/* Ana içerik: yumuşak giriş */
+.wb-page-in {
+  animation: wbAdminPageIn .35s cubic-bezier(.22,1,.36,1) both;
+}
+
+@keyframes wbAdminPageIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Kart ve bölümler için scroll reveal gecikmeleri — admin */
+.wb-reveal[data-delay="1"] { transition-delay: .08s; }
+.wb-reveal[data-delay="2"] { transition-delay: .16s; }
+.wb-reveal[data-delay="3"] { transition-delay: .24s; }
+.wb-reveal[data-delay="4"] { transition-delay: .32s; }
+
+/* ══════════════════════════════════════════════
+   BODY PADDING — admin'in kendi nav'ı var, wb'nin
+   otomatik padding'ini geride bırak
+   ══════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* wb-bottom-nav.css'in eklediği padding'i iptal et;
+     admin sayfalar kendi nav yüksekliğini yönetiyor */
+  body {
+    padding-bottom: 0 !important;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   RAIL ÇAKIŞMA ÇÖZÜMİ (calendar + staff)
+   Mobilde rail body bottom bar haline geliyor.
+   wb-bottom-nav da var → rail'i gizle, wb-bn kullan
+   ══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  /* Rail'i gizle — wb-bottom-nav üstleniyor */
+  html.is-mobile .rail,
+  html.is-mobile body > .rail,
+  html.is-mobile #rail-mount .rail,
+  html.is-mobile #rail-mount nav.rail {
+    display: none !important;
+  }
+
+  /* Rail gizlenince body margin-left sıfırla */
+  html.is-mobile body.has-rail {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* wb-bottom-nav zaten gösteriliyor (≤767px) */
+  /* 768-1024 arası için de göster */
+  .wb-bottom-nav {
+    display: flex !important;
+  }
+
+  /* body padding bottom — rail yerine wb-bn yüksekliği */
+  html.is-mobile body {
+    padding-bottom: calc(var(--bn-h) + var(--bn-safe) + 4px) !important;
+  }
+
+  /* FAB yukarıda kalsın */
+  html.is-mobile .fab,
+  html.is-mobile .fab-main,
+  html.is-mobile #fabBtn {
+    bottom: calc(var(--bn-h) + var(--bn-safe) + 20px) !important;
+  }
+}

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="robots" content="noindex,nofollow"/><meta name="theme-color" content="#07080d"/>
+  <title>Adım 4 – Çalışma Saatleri | Webey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    :root{--bg:#07080d;--bg2:#0d0f17;--bg3:#111420;--teal:#0ea5b3;--teal-d:#0b8a96;--teal-g:rgba(14,165,179,.35);--teal-s:rgba(14,165,179,.10);--ink:#fff;--ink2:rgba(255,255,255,.68);--ink3:rgba(255,255,255,.40);--border:rgba(255,255,255,.08);--border-t:rgba(14,165,179,.22);--on:#22c55e;--on-g:rgba(34,197,94,.2);--danger:#ef4444;--danger-s:rgba(239,68,68,.12);--warn:#f59e0b;--warn-s:rgba(245,158,11,.12);--input-bg:rgba(255,255,255,.04);--radius:20px;--radius-sm:12px;--shadow:0 0 0 1px var(--border-t),0 32px 80px rgba(0,0,0,.6),0 0 60px rgba(14,165,179,.06);--ring:rgba(14,165,179,.3);}
+    *,*::before,*::after{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0;min-height:100dvh;font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;align-items:center;padding:clamp(16px,3vw,28px) clamp(12px,4vw,20px);padding-top:calc(env(safe-area-inset-top,0px) + 16px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px);-webkit-font-smoothing:antialiased;}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(14,165,179,.12),transparent 65%);}
+    .page-logo{display:block;text-align:center;margin-bottom:20px;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:#fff;text-decoration:none;position:relative;z-index:1;}.page-logo em{color:var(--teal);font-style:normal;}
+    .sn{width:min(600px,100%);margin:0 auto 20px;display:flex;align-items:flex-start;position:relative;z-index:1;}
+    .sn-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:0 0 auto;}
+    .sn-line{flex:1 1 0;height:2px;background:var(--border);margin-top:14px;border-radius:2px;min-width:6px;transition:background .35s;}.sn-line.done{background:var(--on);}
+    .sn-bubble{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:2px solid var(--border);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink3);transition:all .3s;}
+    .sn-item.done .sn-bubble{background:var(--on);border-color:var(--on);color:#fff;}
+    .sn-item.active .sn-bubble{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 4px var(--teal-s);}
+    .sn-label{font-size:9.5px;font-weight:700;color:var(--ink3);letter-spacing:.05em;text-align:center;white-space:nowrap;text-transform:uppercase;line-height:1;}
+    .sn-item.done .sn-label,.sn-item.active .sn-label{color:var(--ink2);}
+    @media(max-width:480px){.sn-label{display:none}.sn-bubble{width:24px;height:24px;font-size:10px}.sn-line{margin-top:11px}}
+    .card,.container{width:min(600px,100%);background:var(--bg2);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border-t);padding:28px 28px 32px;position:relative;z-index:1;}
+    @media(max-width:560px){.card,.container{padding:20px 18px 28px;}}
+    .top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+    .back-btn{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--ink2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;}
+    .back-btn:hover{border-color:var(--border-t);color:var(--teal);background:var(--teal-s);}
+    .back-btn:focus-visible{outline:2px solid var(--teal);}
+    h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    h2{font-size:clamp(17px,3.5vw,20px);font-weight:700;letter-spacing:-.1px;margin:0 0 8px;color:#fff;}
+    .title{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    .subtitle,.sub{color:var(--ink2);margin:0 0 22px;font-size:14px;line-height:1.55;}
+    .row,.form-row,.field,.field-row{margin-bottom:16px;}
+    label{display:block;font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:7px;letter-spacing:.08em;text-transform:uppercase;}
+    input[type="text"],input[type="tel"],input[type="email"],input[type="password"],input[type="number"],input[type="time"],select,textarea{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;}
+    input::placeholder,textarea::placeholder{color:var(--ink3);}
+    input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    input[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+    textarea{height:auto;padding:12px 14px;resize:vertical;}
+    select option{background:var(--bg3);color:#fff;}
+    .btn{width:100%;min-height:50px;border-radius:999px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-top:10px;}
+    .btn:hover:not([disabled]){opacity:.92;}
+    .btn:active:not([disabled]){transform:scale(.98);}
+    .btn[disabled]{opacity:.4;cursor:not-allowed;}
+    .btn-primary{background:var(--teal);color:#fff;box-shadow:0 6px 22px var(--teal-g);}
+    .btn-primary:hover:not([disabled]){background:var(--teal-d);box-shadow:0 10px 28px var(--teal-g);transform:translateY(-1px);}
+    .btn-ghost{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ghost:hover:not([disabled]){background:rgba(255,255,255,.09);color:#fff;}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ok{background:var(--on);color:#fff;}
+    .btn-danger{background:rgba(239,68,68,.15);color:var(--danger);border:1px solid rgba(239,68,68,.25);}
+    .btn-row{display:flex;gap:10px;margin-top:14px;}
+    .btn-row .btn{margin-top:0;flex:1;}
+    @media(max-width:440px){.btn-row{flex-direction:column;}}
+    .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--bg3);color:#fff;border:1px solid var(--border);padding:11px 22px;border-radius:999px;font-size:13.5px;font-weight:600;display:none;z-index:10000;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.4);}
+    .toast.show{display:block;animation:toastPop 2.4s ease both;}
+    .toast.err{background:#7f1d1d;border-color:var(--danger);}
+    @keyframes toastPop{0%{opacity:0;transform:translate(-50%,10px)}12%{opacity:1;transform:translate(-50%,0)}88%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
+    .help{font-size:12px;color:var(--ink3);margin-top:5px;line-height:1.4;}
+    .error-text{font-size:12px;color:var(--danger);margin-top:5px;display:none;}
+    .error-text.show{display:block;}
+    .warn-text{font-size:12px;color:var(--warn);margin-top:5px;display:none;}
+    .warn-text.show{display:block;}
+    .section-divider{height:1px;background:var(--border);margin:20px 0;}
+    /* Toggle switch */
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+    .toggle-row:last-child{border-bottom:none;}
+    .toggle-label{font-size:14px;font-weight:600;color:var(--ink);}
+    .toggle-sub{font-size:12px;color:var(--ink3);}
+    .sw{position:relative;width:46px;height:26px;flex-shrink:0;}
+    .sw input{opacity:0;width:0;height:0;}
+    .sw-slider{position:absolute;inset:0;background:rgba(255,255,255,.15);border-radius:999px;cursor:pointer;transition:.25s;}
+    .sw-slider::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s;}
+    .sw input:checked~.sw-slider{background:var(--teal);}
+    .sw input:checked~.sw-slider::before{transform:translateX(20px);}
+    /* Day rows (register6) */
+    .day-row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+    .day-row:last-child{border-bottom:none;}
+    .day-name{font-size:14px;font-weight:600;min-width:80px;}
+    .time-pair{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .time-pair input[type="time"]{width:110px;height:40px;flex-shrink:0;}
+    .time-sep{font-size:13px;color:var(--ink3);}
+    /* Register6: day list rows */
+    #hoursList .row{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;border-radius:var(--radius-sm);padding-left:4px;padding-right:4px;}
+    #hoursList .row:last-child{border-bottom:none;}
+    #hoursList .row:hover{background:rgba(255,255,255,.04);}
+    #hoursList .toggle{width:40px;height:24px;border-radius:999px;background:rgba(255,255,255,.12);border:none;cursor:pointer;position:relative;flex-shrink:0;transition:background .2s;}
+    #hoursList .toggle[aria-checked="true"]{background:var(--teal);}
+    #hoursList .toggle .knob{position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.3);}
+    #hoursList .toggle[aria-checked="true"] .knob{transform:translateX(16px);}
+    #hoursList .day{font-size:14px;font-weight:600;min-width:90px;flex-shrink:0;}
+    #hoursList .hours{font-size:13px;color:var(--ink2);flex:1;}
+    #hoursList .hours.closed{color:var(--ink3);}
+    #hoursList .spacer{flex:1;}
+    #hoursList .edit-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--ink3);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .15s;flex-shrink:0;}
+    #hoursList .edit-btn:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-s);}
+    /* Chipbar */
+    .chipbar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+    .chipbar button{padding:6px 14px;border-radius:999px;border:1.5px solid var(--border);background:transparent;color:var(--ink2);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.04em;}
+    .chipbar button:hover,.chipbar button.active{border-color:var(--teal);color:var(--teal);background:var(--teal-s);}
+    /* days grid */
+    .days-grid{display:flex;flex-direction:column;gap:4px;margin-bottom:6px;}
+    .dayItem{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);border:1px solid var(--border);cursor:pointer;font-size:14px;font-weight:500;transition:border-color .15s;}
+    .dayItem:hover{border-color:var(--border-t);background:var(--teal-s);}
+    .dayItem input[type="checkbox"]{accent-color:var(--teal);width:16px;height:16px;}
+    /* Close-day toggle in edit modal */
+    .close-day-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-top:1px solid var(--border);margin-top:10px;}
+    .close-day-label{font-size:13px;color:var(--ink2);}
+    .close-day-sw{position:relative;width:40px;height:22px;flex-shrink:0;}
+    .close-day-sw input{opacity:0;width:0;height:0;position:absolute;}
+    .close-day-track{position:absolute;inset:0;border-radius:999px;background:rgba(255,255,255,.12);cursor:pointer;transition:.2s;}
+    .close-day-track::before{content:"";position:absolute;width:16px;height:16px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+    .close-day-sw input:checked~.close-day-track{background:var(--danger);}
+    .close-day-sw input:checked~.close-day-track::before{transform:translateX(18px);}
+    /* Modal header redesign */
+    .m-head{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+    .m-back{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--ink2);display:grid;place-items:center;cursor:pointer;flex-shrink:0;transition:all .15s;font-size:14px;}
+    .m-back:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-s);}
+    .m-title{font-size:16px;font-weight:700;color:#fff;}
+    .muted{color:var(--ink2);font-size:13px;}
+    .time-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;}
+    .select-wrap{position:relative;}
+    .select-wrap select{padding-right:32px;}
+    .select-wrap .fa-chevron-down{position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:11px;color:var(--ink3);}
+    .sel-label{font-size:10px;font-weight:700;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px;}
+    /* Service & staff cards */
+    .item-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .item-name{font-size:15px;font-weight:600;}
+    .item-detail{font-size:13px;color:var(--ink2);}
+    .item-actions{display:flex;gap:6px;flex-shrink:0;}
+    .icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--ink3);display:grid;place-items:center;cursor:pointer;transition:all .15s;font-size:14px;}
+    .icon-btn:hover{color:#fff;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);}
+    .icon-btn.del:hover{color:var(--danger);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.06);}
+    /* Avatar */
+    .avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700;flex-shrink:0;}
+    /* Modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.active{display:flex;}
+    /* Çalışma saatleri modal overlay */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;}
+    .overlay.show{display:flex;}
+    .modal{background:var(--bg2);border:1px solid var(--border-t);border-radius:var(--radius);padding:24px;width:min(480px,100%);max-height:90dvh;overflow-y:auto;box-sizing:border-box;}
+    .modal-footer{display:flex;gap:10px;margin-top:20px;}
+    .modal-footer .btn{margin-top:0;flex:1;}
+    /* Picker */
+    .picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:2000;display:none;flex-direction:column;}
+    .picker-overlay.active{display:flex;}
+    .picker-sheet{background:var(--bg2);border-top:1px solid var(--border-t);border-radius:20px 20px 0 0;padding:20px;margin-top:auto;max-height:70dvh;display:flex;flex-direction:column;}
+    .picker-title{font-size:16px;font-weight:700;margin-bottom:12px;color:#fff;}
+    .picker-search{width:100%;height:44px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;margin-bottom:10px;}
+    .picker-search:focus{border-color:var(--teal);}
+    .picker-list{overflow-y:auto;flex:1;}
+    .picker-item{display:block;width:100%;text-align:left;padding:13px 14px;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--ink2);font-family:inherit;font-size:15px;cursor:pointer;transition:background .15s;}
+    .picker-item:hover,.picker-item.selected{background:var(--teal-s);color:#fff;}
+    .picker-cancel{margin-top:10px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--ink2);font-family:inherit;font-size:15px;font-weight:600;border-radius:999px;height:48px;cursor:pointer;transition:all .15s;}
+    .picker-cancel:hover{background:rgba(255,255,255,.09);color:#fff;}
+    .picker-empty{padding:20px;text-align:center;color:var(--ink3);font-size:14px;}
+    /* Grid */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media(max-width:420px){.grid-2{grid-template-columns:1fr;}}
+    /* Add form */
+    .add-form{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px;}
+    /* Staff owner card */
+    .owner-card{background:var(--teal-s);border:1px solid var(--border-t);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+    .owner-badge{font-size:11px;font-weight:700;background:var(--teal);color:#fff;border-radius:999px;padding:2px 8px;}
+    /* Success card (register9) */
+    .success-hero{text-align:center;padding:16px 0 28px;}
+    .success-icon{width:72px;height:72px;border-radius:24px;background:var(--on-g);border:1px solid rgba(34,197,94,.3);display:grid;place-items:center;margin:0 auto 20px;font-size:28px;color:var(--on);}
+    .feature-list{list-style:none;padding:0;margin:0;}
+    .feature-list li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--ink2);}
+    .feature-list li:last-child{border-bottom:none;}
+    .feature-list li i{color:var(--teal);width:20px;text-align:center;flex-shrink:0;}
+    /* Checkbox */
+    input[type="checkbox"]{accent-color:var(--teal);width:16px;height:16px;}
+    /* Tag chips */
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600;background:var(--teal-s);border:1px solid var(--border-t);color:var(--teal);margin:3px;}
+    .tag.inactive{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--ink3);}
+    /* Select trigger button for address page */
+    .select-trigger{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:var(--ink3);font-family:inherit;outline:none;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:border-color .15s;}
+    .select-trigger.filled{color:#fff;}
+    .select-trigger:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    .select-trigger[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+  </style>
+</head>
+<body>
+  <a href="index.html" class="page-logo">Web<em>ey</em></a>
+  <nav class="sn" aria-label="Kayıt adımları (7 adım)">
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Şifre</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Profil</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Adres</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item active" aria-current=step><div class="sn-bubble">4</div><span class="sn-label">Saatler</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">5</div><span class="sn-label">Hizmetler</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">6</div><span class="sn-label">Personel</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">7</div><span class="sn-label">Bitiş</span></div>
+  </nav>
+  
+  
+<main class="card" role="main">
+    <div class="top">
+      <button class="back-btn" id="btnBack" type="button" aria-label="Geri"><i class="fa-solid fa-arrow-left"></i></button>
+    </div>
+
+    <div class="header">
+      <h1>Çalışma saatleriniz</h1>
+      <p>Müşteriler ne zaman randevu alabilir?</p>
+    </div>
+
+    <section class="list" id="hoursList" aria-live="polite">
+      <div class="row on" data-day="Pazartesi"  data-from="10:00" data-to="19:00">
+        <button class="toggle" role="switch" aria-checked="true" type="button" aria-label="Pazartesi aç/kapat"><div class="knob"></div></button>
+        <div class="day">Pazartesi</div><div class="hours">10:00 - 19:00</div>
+        <button class="edit-btn chev" type="button" aria-label="Pazartesi düzenle"><i class="fa-solid fa-pen-to-square"></i> Düzenle</button>
+      </div>
+      <div class="row on" data-day="Salı" data-from="10:00" data-to="19:00">
+        <button class="toggle" role="switch" aria-checked="true" type="button" aria-label="Salı aç/kapat"><div class="knob"></div></button>
+        <div class="day">Salı</div><div class="hours">10:00 - 19:00</div>
+        <button class="edit-btn chev" type="button" aria-label="Salı düzenle"><i class="fa-solid fa-pen-to-square"></i> Düzenle</button>
+      </div>
+      <div class="row on" data-day="Çarşamba" data-from="10:00" data-to="19:00">
+        <button class="toggle" role="switch" aria-checked="true" type="button" aria-label="Çarşamba aç/kapat"><div class="knob"></div></button>
+        <div class="day">Çarşamba</div><div class="hours">10:00 - 19:00</div>
+        <button class="edit-btn chev" type="button" aria-label="Çarşamba düzenle"><i class="fa-solid fa-pen-to-square"></i> Düzenle</button>
+      </div>
+      <div class="row on" data-day="Perşembe" data-from="10:00" data-to="19:00">
+        <button class="toggle" role="switch" aria-checked="true" type="button" aria-label="Perşembe aç/kapat"><div class="knob"></div></button>
+        <div class="day">Perşembe</div><div class="hours">10:00 - 19:00</div>
+        <button class="edit-btn chev" type="button" aria-label="Perşembe düzenle"><i class="fa-solid fa-pen-to-square"></i> Düzenle</button>
+      </div>
+      <div class="row on" data-day="Cuma" data-from="10:00" data-to="19:00">
+        <button class="toggle" role="switch" aria-checked="true" type="button" aria-label="Cuma aç/kapat"><div class="knob"></div></button>
+        <div class="day">Cuma</div><div class="hours">10:00 - 19:00</div>
+        <button class="edit-btn chev" type="button" aria-label="Cuma düzenle"><i class="fa-solid fa-pen-to-square"></i> Düzenle</button>
+      </div>
+      <div class="row" data-day="Cumartesi">
+        <button class="toggle" role="switch" aria-checked="false" type="button" aria-label="Cumartesi aç/kapat"><div class="knob"></div></button>
+        <div class="day">Cumartesi</div><div class="hours closed">Kapalı</div>
+        <button class="edit-btn chev" type="button" aria-label="Cumartesi düzenle"><i class="fa-solid fa-pen-to-square"></i> Düzenle</button>
+      </div>
+      <div class="row" data-day="Pazar">
+        <button class="toggle" role="switch" aria-checked="false" type="button" aria-label="Pazar aç/kapat"><div class="knob"></div></button>
+        <div class="day">Pazar</div><div class="hours closed">Kapalı</div>
+        <button class="edit-btn chev" type="button" aria-label="Pazar düzenle"><i class="fa-solid fa-pen-to-square"></i> Düzenle</button>
+      </div>
+    </section>
+
+    <div class="footer">
+      <button id="saveBtn" class="btn" type="button">DEVAM ET</button>
+    </div>
+  </main>
+
+  <div class="overlay" id="editOverlay" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="modal">
+      <div class="m-head">
+        <button id="editBackBtn" class="m-back" type="button" aria-label="Kapat"><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="m-title" id="editTitle">Gün</div>
+      </div>
+      <div class="m-body">
+        <div class="field" id="timeFields">
+          <span class="sel-label muted" style="position:static;margin:0 0 6px;display:block;">Açılış – kapanış</span>
+          <div class="time-row">
+            <div class="select-wrap">
+              <span class="sel-label">Açılış</span>
+              <select id="openSel"></select>
+              <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+            </div>
+            <div class="select-wrap">
+              <span class="sel-label">Kapanış</span>
+              <select id="closeSel"></select>
+              <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+            </div>
+          </div>
+          <p class="muted" id="minInfo">Kapanış, açılıştan en az 30 dakika sonra olmalı.</p>
+        </div>
+        <div class="close-day-row">
+          <span class="close-day-label"><i class="fa-solid fa-ban" style="color:var(--danger);margin-right:6px;"></i>Bu günü kapat</span>
+          <label class="close-day-sw"><input type="checkbox" id="closeDayToggle"><span class="close-day-track"></span></label>
+        </div>
+      </div>
+      <div class="m-foot">
+        <button id="editCancelBtn" class="btn btn-secondary" type="button">İPTAL</button>
+        <button id="editSaveBtn" class="btn" type="button">KAYDET</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="copyOverlay" aria-modal="true" role="dialog" aria-hidden="true">
+    <div class="modal">
+      <div class="m-head">
+        <button id="copyBackBtn" class="m-back" type="button" aria-label="Kapat"><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="m-title">Saatleri kopyala</div>
+      </div>
+      <div class="m-body">
+        <p class="muted" id="copyInfo" style="margin-top:0">Bu saatleri diğer günlere kopyalamak ister misiniz?</p>
+        <div class="chipbar">
+          <button type="button" data-preset="all">Tümü</button>
+          <button type="button" data-preset="weekday">Hafta içi</button>
+          <button type="button" data-preset="weekend">Hafta sonu</button>
+          <button type="button" data-preset="clear">Temizle</button>
+        </div>
+        <div id="daysGrid" class="days-grid"></div>
+      </div>
+      <div class="m-foot">
+        <button id="copySkipBtn" class="btn btn-secondary" type="button">KOPYALAMA</button>
+        <button id="copyApplyBtn" class="btn" type="button">KOPYALA</button>
+      </div>
+    </div>
+  </div>
+
+  
+
+  <!-- ✅ Firebase kaldırıldı, MySQL Session + PHP API ile kontrol -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module">
+    const $=(s,r=document)=>r.querySelector(s);
+
+    // ===== API (MySQL + PHP) =====
+    const API_BASE = (window.API_BASE || "/api").replace(/\/+$/, "");
+    const apiUrl = (path) => {
+      if (!path.startsWith("/")) path = "/" + path;
+      return API_BASE + path;
+    };
+
+        // ── CSRF Token Yönetimi ─────────────────────────────────────
+    let __wbCsrf = null;
+    async function getCsrfToken() {
+      if (__wbCsrf) return __wbCsrf;
+      try { const r=await fetch("/api/csrf.php",{credentials:"include"}); const j=await r.json(); __wbCsrf=j?.data?.token||null; } catch {}
+      return __wbCsrf;
+    }
+    // ─────────────────────────────────────────────────────────────
+    async function postJson(path, body){
+      const csrf = await getCsrfToken();
+      const hdrs = {"Content-Type":"application/json","Accept":"application/json"};
+      if (csrf) hdrs["X-CSRF-Token"] = csrf;
+      const res = await fetch(apiUrl(path), {
+        method:"POST",
+        credentials:"include",
+        headers: hdrs,
+        body: JSON.stringify(body && typeof body==="object" ? body : {})
+      });
+      const data = await res.json().catch(()=> ({}));
+      if(!res.ok){
+        const err = new Error(data?.error || data?.message || `İstek başarısız (${res.status})`);
+        err.status = res.status;
+        err.response = data;
+        throw err;
+      }
+      return data;
+    }
+
+    const DAYS_TR=["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"];
+    const DAY_ID = {
+      "Pazartesi":"mon","Salı":"tue","Çarşamba":"wed","Perşembe":"thu","Cuma":"fri","Cumartesi":"sat","Pazar":"sun"
+    };
+    const ID_DAY = { mon:"Pazartesi", tue:"Salı", wed:"Çarşamba", thu:"Perşembe", fri:"Cuma", sat:"Cumartesi", sun:"Pazar" };
+
+    const STORAGE_KEY="step6";       // UI taslak (lokal)
+    const K_DATA="onboardingData";   // finalde admin-register8'de gönderilecek payload
+
+    const K_EMAIL  = "pending_admin_email";
+    const K_FLOW   = "admin_onboarding_flow";
+    const K_METHOD = "admin_onboarding_method";
+    const K_LAST   = "admin_onboarding_last_step";
+    const K_TOTAL  = "admin_onboarding_total";
+
+    const TOTAL_STEPS = 7;
+    const CURRENT_STEP = 4; // ✅ çalışma saatleri (admin-register6)
+
+    function stepToHref(n){
+      const s = Math.max(1, Math.min(TOTAL_STEPS, Number(n)||1));
+      if (s <= 1) return "admin-register1.html";
+      if (s === 2) return "admin-register2.html";
+      if (s === 3) return "admin-register5.html";
+      if (s === 4) return "admin-register6.html";
+      if (s === 5) return "admin-register7.html";
+      if (s === 6) return "admin-register8.html";
+      return "admin-register9.html";
+    }
+
+    function getOnboardingData(){
+      try{ return JSON.parse(localStorage.getItem(K_DATA) || "{}"); }catch{ return {}; }
+    }
+    function patchOnboardingData(patch){
+      const cur=getOnboardingData();
+      const next={ ...cur, ...patch };
+      localStorage.setItem(K_DATA, JSON.stringify(next));
+      return next;
+    }
+
+    async function requireSessionOrRedirect(){
+      try{
+        // register5-7 arası session YOK — sadece localStorage kontrolü yapılır
+        const flow  = (localStorage.getItem(K_FLOW)||"").trim().toLowerCase();
+        const email = (localStorage.getItem(K_EMAIL)||"").trim();
+        const pw    = (localStorage.getItem("_reg_pw")||"").trim();
+        if(flow !== "admin" || !email){
+          location.replace("admin-register-login.html#login");
+          return null;
+        }
+        return { ok: true };
+      }catch{
+        location.replace("admin-register-login.html#login");
+        return null;
+      }
+    }
+
+    function guardFlow(){
+      const email  = (localStorage.getItem(K_EMAIL)||"").trim().toLowerCase();
+      const flow   = (localStorage.getItem(K_FLOW)||"").trim().toLowerCase();
+      const method = (localStorage.getItem(K_METHOD)||"").trim().toLowerCase();
+      const last   = Number(localStorage.getItem(K_LAST)||"0");
+
+      if(!email || flow!=="admin" || !method){
+        location.replace("admin-register-login.html#login");
+        return false;
+      }
+
+      if(last < CURRENT_STEP){
+        location.replace(stepToHref(last || 1));
+        return false;
+      }
+      if(last > CURRENT_STEP){
+        location.replace(stepToHref(last));
+        return false;
+      }
+
+      // önceki adım (adres) local kayıt kontrolü
+      const hasStep5 = !!localStorage.getItem("step5");
+      const hasAddr  = !!getOnboardingData()?.address;
+      if(!hasStep5 && !hasAddr){
+        location.replace("admin-register5.html");
+        return false;
+      }
+
+      if(!localStorage.getItem(K_TOTAL)){
+        localStorage.setItem(K_TOTAL, String(TOTAL_STEPS));
+      }
+      return true;
+    }
+
+    let allowLeave=false;
+    let DIRTY=false;
+
+    window.addEventListener("beforeunload",e=>{
+      if(!allowLeave && DIRTY){
+        e.preventDefault(); e.returnValue="";
+      }
+    });
+
+    /* toast */
+    const toast=$("#toast");
+    const showToast=(msg,err=false)=>{
+      toast.textContent=msg;
+      toast.className="toast"+(err?" err":"")+" show";
+      setTimeout(()=>toast.className="toast",2200);
+    };
+
+    /* time selects */
+    const openSel=$("#openSel"), closeSel=$("#closeSel");
+
+    function buildTimeOptions(sel){
+      sel.innerHTML="";
+      const start=6*60, end=23*60+30;
+      for(let m=start; m<=end; m+=30){
+        const h=Math.floor(m/60), mm=m%60;
+        const t=`${String(h).padStart(2,"0")}:${mm===0?"00":"30"}`;
+        const opt=document.createElement("option"); opt.value=t; opt.textContent=t; sel.appendChild(opt);
+      }
+    }
+    buildTimeOptions(openSel); buildTimeOptions(closeSel);
+
+    const toMinutes=(hhmm)=>{const [h,m]=hhmm.split(":").map(Number); return h*60+m;};
+
+    function enforceMin(){
+      const min=toMinutes(openSel.value)+30;
+      [...closeSel.options].forEach(o=>{
+        const ok=toMinutes(o.value)>=min;
+        o.disabled=!ok; o.hidden=!ok;
+      });
+      if(toMinutes(closeSel.value)<min){
+        const firstValid=[...closeSel.options].find(o=>!o.disabled);
+        if(firstValid) closeSel.value=firstValid.value;
+      }
+    }
+    openSel.addEventListener("change", ()=>{ enforceMin(); DIRTY=true; });
+
+    function getRow(day){ return [...document.querySelectorAll(".row")].find(r=>r.dataset.day===day); }
+
+    function applyHours(row, from, to, {silent=false}={}){
+      row.dataset.from=from; row.dataset.to=to;
+      row.classList.add("on");
+      row.querySelector(".toggle").setAttribute("aria-checked","true");
+      const h=row.querySelector(".hours"); h.textContent=`${from} - ${to}`; h.classList.remove("closed");
+      if(!silent){ DIRTY=true; autoSave(); }
+    }
+
+    function markClosed(row, {silent=false}={}){
+      row.classList.remove("on");
+      row.querySelector(".toggle").setAttribute("aria-checked","false");
+      const h=row.querySelector(".hours"); h.textContent="Kapalı"; h.classList.add("closed");
+      delete row.dataset.from; delete row.dataset.to;
+      if(!silent){ DIRTY=true; autoSave(); }
+    }
+
+    function collectCanonical(){
+      const map={};
+      document.querySelectorAll(".row").forEach(r=>{
+        const dayTR=r.dataset.day;
+        const id=DAY_ID[dayTR];
+        const isOpen=r.classList.contains("on");
+        map[id]=isOpen
+          ? {open:true, from:r.dataset.from||"10:00", to:r.dataset.to||"19:00"}
+          : {open:false};
+      });
+      return map;
+    }
+
+    function collectTR(){
+      const map={};
+      document.querySelectorAll(".row").forEach(r=>{
+        const day=r.dataset.day;
+        const isOpen=r.classList.contains("on");
+        map[day]=isOpen
+          ? {open:true, from:r.dataset.from||"10:00", to:r.dataset.to||"19:00"}
+          : {open:false};
+      });
+      return map;
+    }
+
+    function canonicalToTR(canon){
+      const out = {};
+      if(!canon || typeof canon !== "object") return out;
+      Object.keys(canon).forEach(id=>{
+        const tr = ID_DAY[id];
+        if(!tr) return;
+        out[tr] = canon[id];
+      });
+      return out;
+    }
+
+    function autoSave(){
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ workingHours: collectTR() }));
+      patchOnboardingData({ workingHours: collectCanonical() });
+    }
+
+    /* hydrate */
+    (function hydrate(){
+      try{
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)||"null");
+        if(saved?.workingHours){
+          const hours = saved.workingHours;
+          DAYS_TR.forEach(d=>{
+            const row=getRow(d); if(!row) return;
+            const v=hours[d];
+            if(v && v.open) applyHours(row, v.from||"10:00", v.to||"19:00", {silent:true});
+            else markClosed(row, {silent:true});
+          });
+          return;
+        }
+      }catch{}
+
+      try{
+        const data = getOnboardingData();
+        if(!data?.workingHours) return;
+
+        const hoursTR = canonicalToTR(data.workingHours);
+        if(!Object.keys(hoursTR).length) return;
+
+        DAYS_TR.forEach(d=>{
+          const row=getRow(d); if(!row) return;
+          const v=hoursTR[d];
+          if(v && v.open) applyHours(row, v.from||"10:00", v.to||"19:00", {silent:true});
+          else markClosed(row, {silent:true});
+        });
+      }catch{}
+    })();
+
+    /* toggles + row click */
+    document.querySelectorAll(".row").forEach(row=>{
+      const toggle=row.querySelector(".toggle");
+
+      const flip=(e)=>{
+        if(e) e.stopPropagation();
+        const willOpen=!row.classList.contains("on");
+        if(willOpen){
+          const from=row.dataset.from||"10:00";
+          const to=row.dataset.to||"19:00";
+          applyHours(row, from, to);
+        }else{
+          markClosed(row);
+        }
+      };
+
+      toggle.addEventListener("click", flip);
+
+      // Tüm satır tıklaması sadece edit-btn'den gelsin
+      row.addEventListener("click", (e)=>{
+        if(e.target.closest(".toggle")) return;
+        if(e.target.closest(".edit-btn")) { openEdit(row); return; }
+      });
+    });
+
+    /* edit modal */
+    const editOverlay=$("#editOverlay");
+    let editingDay=null, lastFrom=null, lastTo=null;
+    function bodyLock(lock){ document.documentElement.style.overflow = lock ? "hidden" : ""; }
+
+    const closeDayToggle=$("#closeDayToggle");
+    const timeFields=$("#timeFields");
+
+    function syncCloseDay(isClosed){
+      timeFields.style.display = isClosed ? "none" : "";
+      const saveBtn=$("#editSaveBtn");
+      saveBtn.textContent = isClosed ? "KAPAT" : "KAYDET";
+    }
+    closeDayToggle.addEventListener("change",()=> syncCloseDay(closeDayToggle.checked));
+
+    function openEdit(row){
+      editingDay=row.dataset.day;
+      $("#editTitle").textContent=editingDay;
+      const isClosed = !row.classList.contains("on");
+      closeDayToggle.checked = isClosed;
+      syncCloseDay(isClosed);
+      if(!isClosed){
+        openSel.value=row.dataset.from||"10:00";
+        closeSel.value=row.dataset.to||"19:00";
+        enforceMin();
+      }
+      editOverlay.classList.add("show");
+      editOverlay.setAttribute("aria-hidden","false");
+      bodyLock(true);
+      if(!isClosed) openSel.focus({preventScroll:true});
+    }
+    function closeEdit(){
+      editOverlay.classList.remove("show");
+      editOverlay.setAttribute("aria-hidden","true");
+      bodyLock(false);
+    }
+    $("#editCancelBtn").addEventListener("click", closeEdit);
+    $("#editBackBtn").addEventListener("click", closeEdit);
+    editOverlay.addEventListener("mousedown",(e)=>{ if(e.target===editOverlay) closeEdit(); });
+
+    /* copy modal */
+    const copyOverlay=$("#copyOverlay"), daysGrid=$("#daysGrid");
+
+    function renderCopyDays(except){
+      daysGrid.innerHTML="";
+      DAYS_TR.filter(d=>d!==except).forEach(d=>{
+        const lbl=document.createElement("label");
+        lbl.className="dayItem";
+        lbl.innerHTML=`<input type="checkbox" value="${d}"><span>${d}</span>`;
+        daysGrid.appendChild(lbl);
+      });
+    }
+
+    function setPreset(p){
+      const checks=[...daysGrid.querySelectorAll('input[type="checkbox"]')];
+      if(p==="clear"){ checks.forEach(c=>c.checked=false); return; }
+      const target = p==="all" ? checks
+        : p==="weekday" ? checks.filter(c=>!["Cumartesi","Pazar"].includes(c.value))
+        : checks.filter(c=>["Cumartesi","Pazar"].includes(c.value));
+      checks.forEach(c=>c.checked=false); target.forEach(c=>c.checked=true);
+    }
+
+    document.addEventListener('click',(e)=>{
+      const b=e.target.closest('.chipbar button'); if(!b) return;
+      if(b.dataset.preset) setPreset(b.dataset.preset);
+    });
+
+    function openCopy(){
+      copyOverlay.classList.add("show");
+      copyOverlay.setAttribute("aria-hidden","false");
+      bodyLock(true);
+    }
+    function closeCopy(){
+      copyOverlay.classList.remove("show");
+      copyOverlay.setAttribute("aria-hidden","true");
+      bodyLock(false);
+    }
+
+    $("#copyBackBtn").addEventListener("click", closeCopy);
+    $("#copySkipBtn").addEventListener("click", closeCopy);
+    copyOverlay.addEventListener("mousedown",(e)=>{ if(e.target===copyOverlay) closeCopy(); });
+
+    document.addEventListener("keydown", (e)=>{
+      if(e.key==="Escape"){
+        if(editOverlay.classList.contains("show")) closeEdit();
+        if(copyOverlay.classList.contains("show")) closeCopy();
+      }
+    });
+
+    document.querySelectorAll(".chev").forEach(btn=>{
+      btn.addEventListener("click", (e)=>{ e.stopPropagation(); openEdit(btn.closest(".row")); });
+    });
+
+    $("#editSaveBtn").addEventListener("click",()=>{
+      const row=getRow(editingDay);
+      if(closeDayToggle.checked){
+        markClosed(row);
+        closeEdit();
+        return;
+      }
+      lastFrom=openSel.value; lastTo=closeSel.value;
+      applyHours(row, lastFrom, lastTo);
+      closeEdit();
+      renderCopyDays(editingDay);
+      $("#copyInfo").textContent=`${editingDay} için ${lastFrom} - ${lastTo} saatlerini diğer günlere kopyalamak ister misiniz?`;
+      setPreset("clear");
+      openCopy();
+    });
+
+    $("#copyApplyBtn").addEventListener("click",()=>{
+      const targets=[...daysGrid.querySelectorAll('input[type="checkbox"]:checked')].map(i=>i.value);
+      targets.forEach(d=>{
+        const row=getRow(d);
+        applyHours(row, lastFrom, lastTo);
+      });
+      closeCopy();
+      showToast("Saatler kopyalandı");
+    });
+
+    /* ✅ back: çıkmadan önce local'e kaydet */
+    $("#btnBack").addEventListener("click",e=>{
+      e.preventDefault();
+      autoSave();
+      allowLeave=true;
+      DIRTY=false;
+      location.replace("admin-register5.html");
+    });
+
+    /* DEVAM ET -> SADECE LOCAL KAYIT -> step 5 */
+    const saveBtn=$("#saveBtn");
+    const setLoading=(on)=>{
+      saveBtn.disabled=!!on;
+      if(on){
+        saveBtn.dataset._t = saveBtn.innerHTML;
+        saveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Kaydediliyor…';
+      }else if(saveBtn.dataset._t){
+        saveBtn.innerHTML = saveBtn.dataset._t;
+        delete saveBtn.dataset._t;
+      }
+    };
+
+    saveBtn.addEventListener("click", ()=>{
+      autoSave();
+      setLoading(true);
+
+      localStorage.setItem(K_LAST,"5"); // sıradaki: hizmetler
+      allowLeave=true;
+      DIRTY=false;
+      location.replace("admin-register7.html");
+    });
+
+    // Boot
+    (async function boot(){
+      const me = await requireSessionOrRedirect();
+      if(!me) return;
+
+      const ok = guardFlow();
+      if(!ok) return;
+
+      autoSave(); // sayfa açılır açılmaz canonical yaz
+    })();
+  </script>
+
+</body>
+</html>

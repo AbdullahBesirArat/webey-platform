@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Webey — Yönetici Paneli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════════ */
+:root {
+  --bg:       #0a0b0f;
+  --surface:  #111318;
+  --surface2: #191c24;
+  --border:   rgba(255,255,255,.08);
+  --border2:  rgba(255,255,255,.13);
+  --text:     #e8eaf0;
+  --muted:    #6b7280;
+  --muted2:   #9ca3af;
+  --teal:     #0ea5b3;
+  --teal-d:   #0891b2;
+  --teal-glow:rgba(14,165,179,.18);
+  --green:    #22c55e;
+  --red:      #ef4444;
+  --amber:    #f59e0b;
+  --purple:   #a78bfa;
+  --r:        12px;
+  --r-sm:     8px;
+  --font:     'Space Grotesk', system-ui, sans-serif;
+  --mono:     'Space Mono', monospace;
+  --sh:       0 4px 24px rgba(0,0,0,.4);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font:500 14px/1.6 var(--font);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* ══════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════ */
+.shell{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{
+  width:220px;flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;
+  overflow:hidden;
+}
+.sidebar__brand{
+  padding:20px 20px 14px;
+  border-bottom:1px solid var(--border);
+}
+.sidebar__logo{
+  font-size:18px;font-weight:700;
+  color:var(--teal);letter-spacing:-.02em;
+}
+.sidebar__badge{
+  display:inline-block;margin-left:6px;
+  font-size:9px;font-weight:700;letter-spacing:.08em;
+  background:var(--teal);color:#fff;
+  padding:2px 6px;border-radius:999px;vertical-align:2px;
+}
+.sidebar__nav{flex:1;padding:10px 0;overflow-y:auto}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 18px;cursor:pointer;
+  border-radius:0;border:none;background:none;
+  color:var(--muted2);font:600 13px/1 var(--font);
+  width:100%;text-align:left;transition:.15s;
+  border-left:2px solid transparent;
+}
+.nav-item .material-symbols-rounded{font-size:18px}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.nav-item.active{
+  color:var(--teal);
+  border-left-color:var(--teal);
+  background:rgba(14,165,179,.08);
+}
+.sidebar__footer{
+  padding:14px 18px;border-top:1px solid var(--border);
+  font-size:12px;color:var(--muted);
+}
+.sidebar__footer strong{display:block;color:var(--muted2);margin-bottom:2px}
+
+/* Main */
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 28px;border-bottom:1px solid var(--border);
+  background:var(--surface);position:sticky;top:0;z-index:50;
+}
+.topbar__title{font-size:15px;font-weight:700;color:var(--text)}
+.topbar__sub{font-size:12px;color:var(--muted)}
+.topbar__right{display:flex;align-items:center;gap:10px}
+
+.content{padding:24px 28px;flex:1}
+
+/* ══════════════════════════════════════════════
+   SECTIONS / PAGES
+══════════════════════════════════════════════ */
+.page{display:none}
+.page.active{display:block}
+
+/* ══════════════════════════════════════════════
+   STATS CARDS
+══════════════════════════════════════════════ */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:14px;margin-bottom:24px;
+}
+.stat-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  padding:18px 20px;
+  position:relative;overflow:hidden;
+  transition:.2s;
+}
+.stat-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--glow,transparent) 0%,transparent 60%);
+  pointer-events:none;
+}
+.stat-card:hover{border-color:var(--border2);transform:translateY(-2px);box-shadow:var(--sh)}
+.stat-card__icon{
+  width:36px;height:36px;border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:12px;font-size:18px;
+}
+.stat-card__val{
+  font:700 28px/1 var(--mono);
+  color:var(--text);margin-bottom:4px;
+  letter-spacing:-.02em;
+}
+.stat-card__label{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.stat-card__sub{
+  margin-top:8px;font-size:11.5px;color:var(--muted2);
+  display:flex;gap:8px;flex-wrap:wrap;
+}
+.stat-card__sub span{
+  background:rgba(255,255,255,.05);
+  border-radius:999px;padding:2px 8px;
+}
+
+/* Renk temalı kartlar */
+.stat-card--teal{--glow:rgba(14,165,179,.12)}
+.stat-card--teal .stat-card__icon{background:rgba(14,165,179,.15);color:var(--teal)}
+.stat-card--green{--glow:rgba(34,197,94,.10)}
+.stat-card--green .stat-card__icon{background:rgba(34,197,94,.12);color:var(--green)}
+.stat-card--purple{--glow:rgba(167,139,250,.10)}
+.stat-card--purple .stat-card__icon{background:rgba(167,139,250,.12);color:var(--purple)}
+.stat-card--amber{--glow:rgba(245,158,11,.10)}
+.stat-card--amber .stat-card__icon{background:rgba(245,158,11,.12);color:var(--amber)}
+.stat-card--red{--glow:rgba(239,68,68,.10)}
+.stat-card--red .stat-card__icon{background:rgba(239,68,68,.12);color:var(--red)}
+
+/* ══════════════════════════════════════════════
+   GRID 2-COL
+══════════════════════════════════════════════ */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px}
+@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+
+/* ══════════════════════════════════════════════
+   PANEL / CARD
+══════════════════════════════════════════════ */
+.panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;
+}
+.panel__head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--border);
+}
+.panel__title{
+  font-size:13px;font-weight:700;color:var(--text);
+  display:flex;align-items:center;gap:8px;
+}
+.panel__title .material-symbols-rounded{font-size:17px;color:var(--teal)}
+.panel__body{padding:16px 18px}
+.panel--full{margin-bottom:24px}
+
+/* ══════════════════════════════════════════════
+   MINI CHART (sparkline using divs)
+══════════════════════════════════════════════ */
+.sparkline{display:flex;align-items:flex-end;gap:2px;height:44px;padding:0 2px}
+.sparkline__bar{
+  flex:1;min-width:4px;border-radius:2px 2px 0 0;
+  background:var(--teal);opacity:.5;transition:.2s;
+}
+.sparkline__bar:hover{opacity:1}
+.sparkline__bar.today{background:var(--teal);opacity:1}
+
+/* ══════════════════════════════════════════════
+   TABLE
+══════════════════════════════════════════════ */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{
+  text-align:left;padding:10px 12px;
+  font-size:11px;font-weight:700;letter-spacing:.05em;
+  color:var(--muted);text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+}
+td{
+  padding:11px 12px;border-bottom:1px solid rgba(255,255,255,.04);
+  vertical-align:middle;
+}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,.02)}
+
+/* ══════════════════════════════════════════════
+   BADGE
+══════════════════════════════════════════════ */
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 8px;border-radius:999px;
+  font-size:11px;font-weight:700;letter-spacing:.04em;
+}
+.badge--green{background:rgba(34,197,94,.12);color:#4ade80}
+.badge--red{background:rgba(239,68,68,.12);color:#f87171}
+.badge--amber{background:rgba(245,158,11,.12);color:#fbbf24}
+.badge--teal{background:rgba(14,165,179,.12);color:#22d3ee}
+.badge--gray{background:rgba(255,255,255,.07);color:var(--muted2)}
+.badge--purple{background:rgba(167,139,250,.12);color:#c4b5fd}
+
+/* ══════════════════════════════════════════════
+   FORM / INPUT
+══════════════════════════════════════════════ */
+.form-group{margin-bottom:14px}
+.form-group label{
+  display:block;font-size:12px;font-weight:600;
+  color:var(--muted2);margin-bottom:6px;letter-spacing:.03em;
+}
+.inp{
+  width:100%;padding:10px 13px;
+  background:var(--surface2);
+  border:1px solid var(--border2);
+  border-radius:var(--r-sm);
+  color:var(--text);font:500 14px var(--font);
+  transition:.15s;outline:none;
+}
+.inp:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--teal-glow)}
+.inp::placeholder{color:var(--muted)}
+.inp--mono{font-family:var(--mono);font-size:15px;letter-spacing:.05em}
+select.inp{cursor:pointer}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-row--3{grid-template-columns:1fr 1fr 1fr}
+@media(max-width:560px){.form-row,.form-row--3{grid-template-columns:1fr}}
+
+.hint{font-size:12px;color:var(--muted);margin-top:5px}
+
+/* ══════════════════════════════════════════════
+   BUTTON
+══════════════════════════════════════════════ */
+.btn{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:9px 16px;border-radius:var(--r-sm);
+  font:600 13px var(--font);cursor:pointer;
+  border:1px solid transparent;transition:.15s;
+  text-decoration:none;
+}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn--teal{background:var(--teal);color:#fff}
+.btn--teal:hover:not(:disabled){background:var(--teal-d);box-shadow:0 4px 16px var(--teal-glow)}
+.btn--outline{background:transparent;border-color:var(--border2);color:var(--muted2)}
+.btn--outline:hover{border-color:var(--teal);color:var(--teal)}
+.btn--danger{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);color:var(--red)}
+.btn--danger:hover{background:rgba(239,68,68,.2)}
+.btn--sm{padding:6px 12px;font-size:12px}
+.btn .material-symbols-rounded{font-size:16px}
+
+/* ══════════════════════════════════════════════
+   PROMO SECTION
+══════════════════════════════════════════════ */
+.promo-form{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--r);padding:20px;margin-bottom:20px;
+}
+.promo-form__title{
+  font-size:13px;font-weight:700;color:var(--text);
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.promo-form__title .material-symbols-rounded{color:var(--teal);font-size:17px}
+
+/* Promo kod önizleme */
+.code-preview{
+  background:var(--bg);border:1px dashed var(--teal);
+  border-radius:var(--r-sm);padding:14px 18px;
+  font:700 22px var(--mono);color:var(--teal);
+  letter-spacing:.1em;text-align:center;
+  margin-bottom:14px;display:none;
+}
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+#toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);
+  padding:12px 22px;border-radius:var(--r);
+  font:600 13.5px var(--font);color:#fff;
+  z-index:9999;pointer-events:none;
+  opacity:0;transition:.25s;
+  max-width:min(90vw,400px);text-align:center;
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#toast.ok{background:#111;border:1px solid rgba(14,165,179,.4)}
+#toast.err{background:#1a0808;border:1px solid rgba(239,68,68,.4);color:#fca5a5}
+
+/* ══════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════ */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(0,0,0,.6);
+  backdrop-filter:blur(6px);z-index:1000;
+  display:none;align-items:center;justify-content:center;
+}
+.modal-bg.open{display:flex}
+.modal-box{
+  background:var(--surface);border:1px solid var(--border2);
+  border-radius:var(--r);padding:24px;width:min(480px,calc(100vw - 32px));
+  box-shadow:var(--sh);animation:mi .2s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes mi{from{opacity:0;transform:scale(.95) translateY(8px)}}
+.modal-box h2{font-size:15px;font-weight:700;margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;color:var(--text)}
+.modal-box h2 .material-symbols-rounded{color:var(--teal);font-size:19px}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+
+/* ══════════════════════════════════════════════
+   EMPTY STATE
+══════════════════════════════════════════════ */
+.empty{
+  text-align:center;padding:32px 16px;
+  color:var(--muted);font-size:13px;
+}
+.empty .material-symbols-rounded{font-size:36px;display:block;margin-bottom:8px;opacity:.4}
+
+/* ══════════════════════════════════════════════
+   LOADING SHIMMER
+══════════════════════════════════════════════ */
+.shimmer{
+  background:linear-gradient(90deg,var(--surface2) 25%,rgba(255,255,255,.05) 50%,var(--surface2) 75%);
+  background-size:200% 100%;
+  animation:shim 1.4s infinite;
+  border-radius:6px;
+}
+@keyframes shim{to{background-position:-200% 0}}
+
+/* Responsive */
+@media(max-width:680px){
+  .sidebar{display:none}
+  .content{padding:16px}
+  .topbar{padding:12px 16px}
+}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- Confirm modal -->
+<div id="confirmModal" class="modal-bg">
+  <div class="modal-box">
+    <h2><span class="material-symbols-rounded">warning</span><span id="confirmTitle">Emin misiniz?</span></h2>
+    <p id="confirmMsg" style="color:var(--muted2);font-size:13.5px;line-height:1.7"></p>
+    <div class="modal-footer">
+      <button class="btn btn--outline" onclick="closeConfirm()">İptal</button>
+      <button id="confirmOkBtn" class="btn btn--danger">Onayla</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <!-- ── Sidebar ── -->
+  <aside class="sidebar">
+    <div class="sidebar__brand">
+      <div class="sidebar__logo">webey<span class="sidebar__badge">SA</span></div>
+      <div style="font-size:11px;color:var(--muted);margin-top:3px">Süper Admin</div>
+    </div>
+    <nav class="sidebar__nav">
+      <button class="nav-item active" data-page="overview" onclick="switchPage('overview',this)">
+        <span class="material-symbols-rounded">dashboard</span>Genel Bakış
+      </button>
+      <button class="nav-item" data-page="admins" onclick="switchPage('admins',this)">
+        <span class="material-symbols-rounded">store</span>İşletmeler
+      </button>
+      <button class="nav-item" data-page="promo" onclick="switchPage('promo',this)">
+        <span class="material-symbols-rounded">confirmation_number</span>Promosyon Kodları
+      </button>
+      <button class="nav-item" data-page="purge" onclick="switchPage('purge',this)">
+        <span class="material-symbols-rounded">delete_forever</span>Kullanıcı Sil
+      </button>
+      <a class="nav-item" href="superadmin-app.html" style="text-decoration:none">
+        <span class="material-symbols-rounded">smartphone</span>App Verileri
+      </a>
+    </nav>
+    <div class="sidebar__footer">
+      <strong id="saSelf">—</strong>
+      <span>Süper Yönetici</span><br/>
+      <a href="admin-register-login.html" style="color:var(--red);font-size:11px;text-decoration:none">Çıkış Yap</a>
+    </div>
+  </aside>
+
+  <!-- ── Main ── -->
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <div class="topbar__title" id="pageTitle">Genel Bakış</div>
+        <div class="topbar__sub" id="pageDate"></div>
+      </div>
+      <div class="topbar__right">
+        <button class="btn btn--outline btn--sm" onclick="loadStats()" title="Yenile">
+          <span class="material-symbols-rounded">refresh</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ══════════════════════════════════
+           PAGE: OVERVIEW
+      ══════════════════════════════════ -->
+      <div id="page-overview" class="page active">
+
+        <!-- KPI Kartları -->
+        <div class="stats-grid" id="kpiGrid">
+          <!-- Shimmer placeholder -->
+          <div class="stat-card" style="height:110px"><div class="shimmer" style="height:100%;border-radius:var(--r)"></div></div>
+          <div class="stat-card" style="height:110px"><div class="shimmer" style="height:100%;border-radius:var(--r)"></div></div>
+          <div class="stat-card" style="height:110px"><div class="shimmer" style="height:100%;border-radius:var(--r)"></div></div>
+          <div class="stat-card" style="height:110px"><div class="shimmer" style="height:100%;border-radius:var(--r)"></div></div>
+          <div class="stat-card" style="height:110px"><div class="shimmer" style="height:100%;border-radius:var(--r)"></div></div>
+        </div>
+
+        <div class="grid2">
+          <!-- Kullanıcı Trend -->
+          <div class="panel">
+            <div class="panel__head">
+              <div class="panel__title"><span class="material-symbols-rounded">trending_up</span>Son 30 Gün — Yeni Üye</div>
+            </div>
+            <div class="panel__body">
+              <div id="sparklineWrap" class="sparkline"></div>
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px">
+                <span id="sparkStart">—</span><span>Bugün</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Abonelik özeti -->
+          <div class="panel">
+            <div class="panel__head">
+              <div class="panel__title"><span class="material-symbols-rounded">payments</span>Abonelikler</div>
+            </div>
+            <div class="panel__body" id="subSummary">
+              <div class="shimmer" style="height:80px;border-radius:8px"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Son Kayıt Adminler -->
+        <div class="panel panel--full">
+          <div class="panel__head">
+            <div class="panel__title"><span class="material-symbols-rounded">recent_actors</span>Son Kaydolan İşletmeler</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>E-posta</th>
+                  <th>İşletme</th>
+                  <th>Abonelik</th>
+                  <th>Kayıt</th>
+                  <th>Son Giriş</th>
+                </tr>
+              </thead>
+              <tbody id="recentAdminsBody">
+                <tr><td colspan="5" class="shimmer" style="height:38px"></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /overview -->
+
+
+      <!-- ══════════════════════════════════
+           PAGE: ADMINS
+      ══════════════════════════════════ -->
+      <div id="page-admins" class="page">
+        <div class="panel panel--full" style="margin-bottom:16px">
+          <div class="panel__head">
+            <div class="panel__title"><span class="material-symbols-rounded">schedule</span>Admin Kayıt Tarihi Aracı</div>
+            <span class="badge badge--amber">Size özel</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1.2fr .9fr .8fr .8fr auto;gap:12px;align-items:end">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Admin ID</label>
+              <input id="dateShiftAdminId" class="inp" type="number" min="1" placeholder="Örn: 1" />
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Yön</label>
+              <select id="dateShiftDirection" class="inp">
+                <option value="backward">Geri Al</option>
+                <option value="forward">İleri Al</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Miktar</label>
+              <input id="dateShiftAmount" class="inp" type="number" min="1" max="3650" value="1" />
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Birim</label>
+              <select id="dateShiftUnit" class="inp">
+                <option value="month">Ay</option>
+                <option value="day">Gün</option>
+                <option value="year">Yıl</option>
+              </select>
+            </div>
+            <button id="dateShiftBtn" class="btn btn--teal" type="button" onclick="adjustAdminCreatedAt()">
+              <span class="material-symbols-rounded">update</span>Hemen Güncelle
+            </button>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-top:10px">
+            Bu araç girilen admin ID için kullanıcı, admin ve bağlı işletme kayıt tarihini birlikte ileri ya da geri alır.
+          </div>
+          <div id="dateShiftResult" style="display:none;margin-top:12px;padding:12px 14px;border-radius:10px;background:var(--surface2);font-size:12px;color:var(--muted2)"></div>
+        </div>
+        <div class="panel panel--full">
+          <div class="panel__head">
+            <div class="panel__title"><span class="material-symbols-rounded">store</span>Tüm İşletme Adminleri</div>
+            <span id="adminCount" class="badge badge--teal">—</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>E-posta</th>
+                  <th>İşletme</th>
+                  <th>İşletme Durumu</th>
+                  <th>Abonelik</th>
+                  <th>Bitiş</th>
+                  <th>Kayıt</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="adminsBody">
+                <tr><td colspan="7"><div class="shimmer" style="height:38px;margin:4px 0"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel panel--full" style="margin-top:16px">
+          <div class="panel__head">
+            <div class="panel__title"><span class="material-symbols-rounded">group</span>Tüm Kullanıcılar</div>
+            <span id="userCount" class="badge badge--teal">—</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>E-posta</th>
+                  <th>Ad</th>
+                  <th>Telefon</th>
+                  <th>Kayıt</th>
+                  <th>Son Giriş</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="usersBody">
+                <tr><td colspan="7"><div class="shimmer" style="height:38px;margin:4px 0"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /admins -->
+
+      <div id="page-purge" class="page">
+        <div class="panel panel--full">
+          <div class="panel__head">
+            <div class="panel__title"><span class="material-symbols-rounded">delete_forever</span>Kullanıcıyı Kalıcı Sil</div>
+            <span class="badge badge--red">Dikkat</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 180px 180px;gap:12px;align-items:end">
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Kullanıcı ID</label>
+              <input id="purgeUserId" class="inp" type="number" min="1" placeholder="Örn: 123" />
+            </div>
+            <div>
+              <label style="display:block;font-size:12px;color:var(--muted);margin-bottom:6px">Silme Onayı</label>
+              <input id="purgeConfirmText" class="inp" type="text" placeholder="SIL" maxlength="3" />
+            </div>
+            <button id="purgePreviewBtn" class="btn btn--outline" type="button" onclick="previewDeleteUser()">
+              <span class="material-symbols-rounded">search</span>Önizleme Getir
+            </button>
+          </div>
+          <div style="margin-top:12px;font-size:12px;color:var(--muted)">
+            Girilen kullanıcının hesap, işletme, müşteri ve bağlı test verileri kalıcı olarak silinir. İşlem geri alınamaz.
+          </div>
+          <div id="purgePreviewBox" style="margin-top:16px;padding:16px;border:1px solid var(--border);border-radius:14px;background:var(--surface2)">
+            <div style="font-size:13px;color:var(--muted)">Silmek istediğiniz kullanıcının ID bilgisini girip önce önizleme alın.</div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:14px">
+            <button id="purgeDeleteBtn" class="btn btn--danger" type="button" onclick="deleteUserById()" disabled>
+              <span class="material-symbols-rounded">delete</span>Kullanıcıyı Sil
+            </button>
+          </div>
+        </div>
+      </div><!-- /purge -->
+
+
+      <!-- ══════════════════════════════════
+           PAGE: PROMO
+      ══════════════════════════════════ -->
+      <div id="page-promo" class="page">
+
+        <!-- Promo KPI Kartları -->
+        <div class="stats-grid" id="promoKpiGrid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));margin-bottom:20px">
+          <div class="stat-card" style="height:90px"><div class="shimmer" style="height:100%;border-radius:var(--r)"></div></div>
+          <div class="stat-card" style="height:90px"><div class="shimmer" style="height:100%;border-radius:var(--r)"></div></div>
+          <div class="stat-card" style="height:90px"><div class="shimmer" style="height:100%;border-radius:var(--r)"></div></div>
+          <div class="stat-card" style="height:90px"><div class="shimmer" style="height:100%;border-radius:var(--r)"></div></div>
+        </div>
+
+        <!-- Yeni Kod Formu -->
+        <div class="promo-form">
+          <div class="promo-form__title">
+            <span class="material-symbols-rounded">add_circle</span>Yeni Promosyon Kodu Oluştur
+          </div>
+
+          <div id="codePreview" class="code-preview"></div>
+
+          <div class="form-row form-row--3">
+            <div class="form-group">
+              <label>Kod <span style="color:var(--red)">*</span></label>
+              <div style="display:flex;gap:6px">
+                <input id="pCode" class="inp inp--mono" placeholder="WEBEY2026" maxlength="32"
+                       oninput="previewCode(this.value)" style="text-transform:uppercase;flex:1"/>
+                <button class="btn btn--outline btn--sm" type="button" onclick="generateCode()" title="Rastgele kod üret" style="white-space:nowrap;flex-shrink:0">
+                  <span class="material-symbols-rounded" style="font-size:15px">shuffle</span>
+                </button>
+              </div>
+              <div class="hint">Harf ve rakam, 4-32 karakter</div>
+            </div>
+            <div class="form-group">
+              <label>Geçerli Plan</label>
+              <select id="pPlan" class="inp" onchange="updateExpiresForPlan()">
+                <option value="">Tüm Planlar</option>
+                <option value="monthly_1">1 Aylık (₺1.150)</option>
+                <option value="monthly_3">3 Aylık (₺2.865)</option>
+                <option value="monthly_6">6 Aylık (₺4.620)</option>
+                <option value="yearly_1">1 Yıllık (₺6.900)</option>
+                <option value="yearly_2">2 Yıllık (₺11.040)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>İndirim Tipi</label>
+              <select id="pDiscType" class="inp" onchange="updateDiscountUI()">
+                <option value="free">Tamamen Ücretsiz</option>
+                <option value="percent">Yüzde İndirim (%)</option>
+                <option value="fixed">Sabit TL İndirim</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" id="discValueGroup" style="display:none">
+              <label id="discValueLabel">İndirim Değeri</label>
+              <input id="pDiscValue" class="inp" type="number" min="1" placeholder="50"/>
+            </div>
+            <div class="form-group">
+              <label>Maksimum Kullanım</label>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                <input id="pMaxUses" class="inp" type="number" min="1" placeholder="Sınırsız (boş bırak)" style="flex:1;min-width:120px"/>
+                <button type="button" id="singleUseBtn" class="btn btn--outline btn--sm"
+                        onclick="toggleSingleUse()"
+                        title="Kod sadece 1 işletme tarafından kullanılabilir"
+                        style="white-space:nowrap;flex-shrink:0;display:flex;align-items:center;gap:5px">
+                  <span class="material-symbols-rounded" style="font-size:15px">lock</span>
+                  Tek Kullanımlık
+                </button>
+              </div>
+              <div class="hint" id="singleUseHint" style="display:none;color:var(--amber)">
+                 Bu kod yalnızca <strong>bir işletme</strong> tarafından kullanılabilir
+              </div>
+            </div>
+            <div class="form-group" id="expiresGroup">
+              <label>Bitiş Tarihi</label>
+              <input id="pExpires" class="inp" type="datetime-local"/>
+              <div class="hint" id="expiresHint">Boş = süresiz</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>İç Not (isteğe bağlı)</label>
+            <input id="pNote" class="inp" placeholder="Bu kodu neden oluşturdunuz? (kullanıcıya gösterilmez)" maxlength="255"/>
+          </div>
+
+          <button class="btn btn--teal" onclick="createPromo()" id="createBtn">
+            <span class="material-symbols-rounded">add</span>Kodu Oluştur
+          </button>
+        </div>
+
+        <!-- Mevcut Kodlar -->
+        <div class="panel panel--full">
+          <div class="panel__head">
+            <div class="panel__title"><span class="material-symbols-rounded">confirmation_number</span>Mevcut Kodlar</div>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <input id="promoSearch" class="inp" placeholder="Kod ara…" style="width:150px;padding:6px 10px;font-size:12px"
+                     oninput="filterPromos()"/>
+              <select id="promoFilterStatus" class="inp" style="width:130px;padding:6px 10px;font-size:12px" onchange="filterPromos()">
+                <option value="">Tüm Durumlar</option>
+                <option value="active">Aktif</option>
+                <option value="inactive">Pasif</option>
+                <option value="expired">Süresi Dolmuş</option>
+                <option value="exhausted">Kotası Dolmuş</option>
+                <option value="single"> Tek Kullanım</option>
+              </select>
+              <select id="promoFilterPlan" class="inp" style="width:130px;padding:6px 10px;font-size:12px" onchange="filterPromos()">
+                <option value="">Tüm Planlar</option>
+                <option value="monthly_1">1 Aylık</option>
+                <option value="monthly_3">3 Aylık</option>
+                <option value="monthly_6">6 Aylık</option>
+                <option value="yearly_1">1 Yıllık</option>
+                <option value="yearly_2">2 Yıllık</option>
+              </select>
+              <select id="promoFilterDisc" class="inp" style="width:130px;padding:6px 10px;font-size:12px" onchange="filterPromos()">
+                <option value="">Tüm İndirimler</option>
+                <option value="free">Ücretsiz</option>
+                <option value="percent">Yüzde (%)</option>
+                <option value="fixed">Sabit (₺)</option>
+              </select>
+              <span id="promoCount" class="badge badge--teal">—</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Kod</th>
+                  <th>Plan</th>
+                  <th>İndirim</th>
+                  <th>Kullanım</th>
+                  <th>Son Kullanım</th>
+                  <th>Bitiş</th>
+                  <th>Oluşturma</th>
+                  <th>Not</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="promoBody">
+                <tr><td colspan="9"><div class="shimmer" style="height:38px;margin:4px 0"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /promo -->
+
+      <!-- ══ PROMO KULLANIM DETAY MODAL ══ -->
+      <div id="promoUsesModal" class="modal-bg">
+        <div class="modal-box" style="width:min(700px,calc(100vw - 24px));max-height:85vh;display:flex;flex-direction:column;gap:0">
+          <h2>
+            <span class="material-symbols-rounded">bar_chart</span>
+            <span id="promoUsesTitle">Kullanım Detayları</span>
+          </h2>
+          <div id="promoUsesSummary" style="
+            display:grid;grid-template-columns:repeat(4,1fr);gap:10px;
+            margin-bottom:16px;padding:14px;
+            background:var(--surface2);border-radius:var(--r-sm);
+          "></div>
+          <div style="flex:1;overflow-y:auto;min-height:0">
+            <div id="promoUsesBody"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn--outline" onclick="closePromoUses()">Kapat</button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- ══ İŞLETME DETAY MODAL ══ -->
+      <div id="bizDetailModal" class="modal-bg">
+        <div class="modal-box" style="width:min(760px,calc(100vw - 24px));max-height:88vh;display:flex;flex-direction:column;gap:0">
+          <h2>
+            <span class="material-symbols-rounded">store</span>
+            <span id="bizDetailTitle">İşletme Detayı</span>
+          </h2>
+          <!-- Üst kart: kullanıcı + işletme bilgisi -->
+          <div id="bizDetailInfo" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px"></div>
+          <!-- Aktif plan özeti -->
+          <div id="bizDetailActive" style="margin-bottom:14px"></div>
+          <!-- Plan geçmişi tablosu -->
+          <div style="flex:1;overflow-y:auto;min-height:0">
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">
+              Tüm Plan Geçmişi
+            </div>
+            <div id="bizDetailSubs"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn--outline" onclick="closeBizDetail()">Kapat</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+</div>
+
+<script>
+'use strict';
+
+/* ══════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════ */
+let _stats = null;
+let _promos = [];
+let _confirmCb = null;
+let _purgePreview = null;
+
+/* ══════════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtN = n => Number(n||0).toLocaleString('tr-TR');
+const fmtD = s => s ? new Date(s.replace(' ','T')).toLocaleString('tr-TR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+const fmtDate = s => s ? new Date(s.replace(' ','T')).toLocaleDateString('tr-TR',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+
+function toast(msg, ok=true) {
+  const el = $('toast');
+  el.textContent = msg;
+  el.className = 'show ' + (ok ? 'ok' : 'err');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.className = '', 3200);
+}
+
+/* ══════════════════════════════════════════════
+   NAV
+══════════════════════════════════════════════ */
+const PAGE_TITLES = {overview:'Genel Bakış',admins:'İşletme Adminleri',promo:'Promosyon Kodları',purge:'Kullanıcı Sil'};
+
+function switchPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  $('page-' + id)?.classList.add('active');
+  btn?.classList.add('active');
+  $('pageTitle').textContent = PAGE_TITLES[id] || id;
+  if (id === 'promo') loadPromos();
+  if (id === 'admins') renderAdmins();
+  if (id === 'purge') resetDeleteUserPreview(false);
+}
+
+/* ══════════════════════════════════════════════
+   API
+══════════════════════════════════════════════ */
+/* ── CSRF Token cache ── */
+let _csrfToken = null;
+async function getCsrfToken() {
+  if (_csrfToken) return _csrfToken;
+  try {
+    const r = await fetch('api/csrf.php', { credentials:'include', cache:'no-store' });
+    const j = await r.json();
+    if (j?.ok && j?.data?.token) _csrfToken = j.data.token;
+  } catch {}
+  return _csrfToken || '';
+}
+
+async function apiFetch(url, opts={}) {
+  const method = (opts.method || 'GET').toUpperCase();
+  const headers = { 'Content-Type': 'application/json' };
+
+  // POST/PUT/DELETE → CSRF token header ekle
+  if (!['GET','HEAD','OPTIONS'].includes(method)) {
+    const token = await getCsrfToken();
+    if (token) headers['X-CSRF-Token'] = token;
+  }
+
+  const res = await fetch(url, { credentials:'include', headers, ...opts });
+
+  // 403 sadece auth hatası ise redirect — CSRF hatası olabilir, token sıfırla
+  if (res.status === 403) {
+    _csrfToken = null; // token bayatlamış olabilir, sıfırla
+    const j = await res.json().catch(() => ({}));
+    if (j?.code === 'csrf_invalid') {
+      // Token yenile ve bir kez tekrar dene
+      await getCsrfToken();
+      const retry = await fetch(url, {
+        credentials:'include',
+        headers: { 'Content-Type':'application/json', 'X-CSRF-Token': _csrfToken || '' },
+        ...opts
+      });
+      if (retry.ok || retry.status !== 403) {
+        try { return await retry.json(); } catch { return { ok: false }; }
+      }
+    }
+    window.location.href = 'admin-register-login.html';
+    return null;
+  }
+  try { return await res.json(); }
+  catch { return { ok: false, error: `Sunucu hatası (HTTP ${res.status}) — PHP hata logu kontrol edin` }; }
+}
+const apiGet  = url => apiFetch(url);
+const apiPost = (url, body) => apiFetch(url, {method:'POST', body:JSON.stringify(body)});
+
+/* ══════════════════════════════════════════════
+   STATS
+══════════════════════════════════════════════ */
+async function loadStats() {
+  const data = await apiGet('api/superadmin/stats.php');
+  if (!data?.ok) { toast('Veriler yüklenemedi', false); return; }
+  _stats = data.data;
+  renderKPI(_stats);
+  renderSparkline(_stats.user_trend);
+  renderSubSummary(_stats.subscriptions);
+  renderRecentAdmins(_stats.recent_admins);
+}
+
+function renderKPI(d) {
+  $('kpiGrid').innerHTML = `
+    <div class="stat-card stat-card--teal">
+      <div class="stat-card__icon"><span class="material-symbols-rounded">store</span></div>
+      <div class="stat-card__val">${fmtN(d.users.admins)}</div>
+      <div class="stat-card__label">Admin / İşletme</div>
+      <div class="stat-card__sub">
+        <span>+${d.users.new_today} bugün</span>
+        <span>+${d.users.new_week} bu hafta</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--purple">
+      <div class="stat-card__icon"><span class="material-symbols-rounded">people</span></div>
+      <div class="stat-card__val">${fmtN(d.users.users)}</div>
+      <div class="stat-card__label">Müşteri Üye</div>
+      <div class="stat-card__sub">
+        <span>+${d.users.new_month} bu ay</span>
+        <span>${fmtN(d.users.total)} toplam</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--green">
+      <div class="stat-card__icon"><span class="material-symbols-rounded">calendar_month</span></div>
+      <div class="stat-card__val">${fmtN(d.appointments.total)}</div>
+      <div class="stat-card__label">Toplam Randevu</div>
+      <div class="stat-card__sub">
+        <span>${fmtN(d.appointments.today)} bugün</span>
+        <span>${fmtN(d.appointments.this_week)} bu hafta</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--amber">
+      <div class="stat-card__icon"><span class="material-symbols-rounded">workspace_premium</span></div>
+      <div class="stat-card__val">${fmtN(d.subscriptions.active)}</div>
+      <div class="stat-card__label">Aktif Abonelik</div>
+      <div class="stat-card__sub">
+        <span>₺${fmtN(d.subscriptions.mrr)} MRR</span>
+        <span>${fmtN(d.subscriptions.trialing)} deneme</span>
+      </div>
+    </div>
+    <div class="stat-card stat-card--red">
+      <div class="stat-card__icon"><span class="material-symbols-rounded">confirmation_number</span></div>
+      <div class="stat-card__val">${fmtN(d.promos.total_uses)}</div>
+      <div class="stat-card__label">Promo Kullanımı</div>
+      <div class="stat-card__sub">
+        <span>${fmtN(d.promos.active)} aktif kod</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderSparkline(trend) {
+  const wrap = $('sparklineWrap');
+  if (!trend?.length) { wrap.innerHTML = '<div class="empty" style="height:44px">Veri yok</div>'; return; }
+  const max = Math.max(...trend.map(t=>t.count), 1);
+  const today = new Date().toISOString().slice(0,10);
+  wrap.innerHTML = trend.map(t => {
+    const h = Math.max(8, Math.round((t.count / max) * 100));
+    const isToday = t.day === today;
+    return `<div class="sparkline__bar ${isToday?'today':''}" style="height:${h}%" title="${t.day}: ${t.count} yeni üye"></div>`;
+  }).join('');
+  if (trend.length > 0) $('sparkStart').textContent = fmtDate(trend[0].day);
+}
+
+function renderSubSummary(s) {
+  $('subSummary').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      ${[
+        {l:'Aktif',    v:s.active,    c:'--green'},
+        {l:'Deneme',   v:s.trialing,  c:'--teal'},
+        {l:'İptal',    v:s.cancelled, c:'--red'},
+        {l:'Süresi Dolmuş', v:s.expired, c:'--amber'},
+      ].map(r=>`
+        <div style="text-align:center;padding:10px;background:var(--surface2);border-radius:8px">
+          <div style="font:700 20px var(--mono);color:var(${r.c})">${fmtN(r.v)}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px">${r.l}</div>
+        </div>`).join('')}
+    </div>
+    <div style="margin-top:12px;padding:12px;background:var(--surface2);border-radius:8px;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:12px;color:var(--muted)">Tahmini Aylık Gelir (MRR)</span>
+      <span style="font:700 18px var(--mono);color:var(--amber)">₺${fmtN(s.mrr)}</span>
+    </div>
+  `;
+}
+
+function renderRecentAdmins(rows) {
+  if (!rows?.length) { $('recentAdminsBody').innerHTML = '<tr><td colspan="5" class="empty">Kayıt yok</td></tr>'; return; }
+  $('recentAdminsBody').innerHTML = rows.map(r => `
+    <tr>
+      <td style="font-size:13px">${esc(r.email)}</td>
+      <td>${r.biz_name ? `<span style="font-weight:600">${esc(r.biz_name)}</span>` : '<span style="color:var(--muted)">—</span>'}</td>
+      <td>${subBadge(r.sub_status, r.sub_plan)}</td>
+      <td style="color:var(--muted2);font-size:12px">${fmtDate(r.created_at)}</td>
+      <td style="color:var(--muted2);font-size:12px">${r.last_login_at ? fmtDate(r.last_login_at) : '<span style="color:var(--muted)">Hiç</span>'}</td>
+    </tr>
+  `).join('');
+}
+
+function subBadge(status, plan) {
+  if (!status) return '<span class="badge badge--gray">Yok</span>';
+  const map = {active:'badge--green',trialing:'badge--teal',cancelled:'badge--red',expired:'badge--amber'};
+  const cls = map[status] || 'badge--gray';
+  const planLabel = plan ? plan.replace('monthly_','').replace('yearly_','') + (plan.startsWith('y')?'Y':'A') : '';
+  return `<span class="badge ${cls}">${status}${planLabel?' · '+planLabel:''}</span>`;
+}
+
+function renderAdmins() {
+  // FIX #4: _stats henüz yüklenmemişse (sayfaya direkt admins sekmesiyle gelinirse)
+  // önce loadStats() çağır, o tamamlanınca tekrar render et.
+  if (!_stats) {
+    $('adminsBody').innerHTML = '<tr><td colspan="8"><div class="shimmer" style="height:38px;margin:4px 0"></div></td></tr>';
+    loadStats().then(() => renderAdmins());
+    return;
+  }
+  const rows = _stats.all_admins ?? _stats.recent_admins ?? [];
+  $('adminCount').textContent = rows.length + ' admin';
+  $('adminsBody').innerHTML = rows.map(r => `
+    <tr style="cursor:pointer" onclick="openBizDetail(${r.id},'${esc(r.email)}')">
+      <td style="color:var(--muted);font-size:12px;font-family:var(--mono)">#${r.id}</td>
+      <td style="font-size:13px">${esc(r.email)}</td>
+      <td>${r.biz_name ? `<span style="font-weight:600;color:var(--teal)">${esc(r.biz_name)}</span>` : '<span style="color:var(--muted)">Henüz Yok</span>'}</td>
+      <td><span class="badge ${r.biz_status==='active'?'badge--green':r.biz_status==='suspended'?'badge--red':'badge--gray'}">${esc(r.biz_status||'—')}</span></td>
+      <td>${subBadge(r.sub_status, r.sub_plan)}</td>
+      <td style="color:var(--muted2);font-size:12px">${r.sub_end ? fmtDate(r.sub_end) : '—'}</td>
+      <td style="color:var(--muted2);font-size:12px">${fmtDate(r.created_at)}</td>
+      <td><span class="badge badge--teal" style="font-size:11px;cursor:pointer">Detay →</span></td>
+    </tr>
+  `).join('');
+
+  const users = _stats.all_users ?? [];
+  $('userCount').textContent = users.length + ' kullanıcı';
+  $('usersBody').innerHTML = users.length ? users.map(u => `
+    <tr>
+      <td style="color:var(--muted);font-size:12px;font-family:var(--mono)">#${u.id}</td>
+      <td style="font-size:13px">${esc(u.email)}</td>
+      <td>${u.name ? esc(u.name) : '<span style="color:var(--muted)">—</span>'}</td>
+      <td style="color:var(--muted2);font-size:12px">${u.customer_phone ? esc(u.customer_phone) : '—'}</td>
+      <td style="color:var(--muted2);font-size:12px">${fmtDate(u.created_at)}</td>
+      <td style="color:var(--muted2);font-size:12px">${u.last_login_at ? fmtDate(u.last_login_at) : 'Hiç'}</td>
+      <td>
+        <button class="btn btn--outline btn--sm" type="button" onclick="quickDeleteUser(${u.id})">
+          <span class="material-symbols-rounded" style="font-size:14px">delete</span>Sil
+        </button>
+      </td>
+    </tr>
+  `).join('') : '<tr><td colspan="7" class="empty">Kullanıcı bulunamadı</td></tr>';
+}
+
+async function quickDeleteUser(userId) {
+  const purgeNav = document.querySelector('.nav-item[data-page="purge"]');
+  switchPage('purge', purgeNav);
+  if ($('purgeUserId')) $('purgeUserId').value = String(userId);
+  if ($('purgeConfirmText')) $('purgeConfirmText').value = '';
+  await previewDeleteUser();
+  $('purgeConfirmText')?.focus();
+}
+
+function resetDeleteUserPreview(clearInputs = false) {
+  _purgePreview = null;
+  if (clearInputs) {
+    if ($('purgeUserId')) $('purgeUserId').value = '';
+    if ($('purgeConfirmText')) $('purgeConfirmText').value = '';
+  }
+  if ($('purgeDeleteBtn')) $('purgeDeleteBtn').disabled = true;
+  if ($('purgePreviewBox')) {
+    $('purgePreviewBox').innerHTML = '<div style="font-size:13px;color:var(--muted)">Silmek istediğiniz kullanıcının ID bilgisini girip önce önizleme alın.</div>';
+  }
+}
+
+function renderDeletePreview(data) {
+  const user = data?.user || {};
+  const business = data?.business;
+  const customer = data?.customer;
+  const counts = data?.counts || {};
+  const canDelete = !!data?.canDelete;
+  const items = [
+    ['Abonelik', counts.subscriptions],
+    ['Kart', counts.paymentCards],
+    ['Promo Kullanımı', counts.promoUses],
+    ['Push', counts.pushSubscriptions],
+    ['Bildirim', counts.userNotifications],
+    ['Müşteri Randevusu', counts.customerAppointments],
+    ['İşletme Randevusu', counts.businessAppointments],
+    ['Hizmet', counts.services],
+    ['Personel', counts.staff],
+    ['Fatura', counts.invoices]
+  ];
+
+  $('purgePreviewBox').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px">
+      <div style="padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Hesap</div>
+        <div style="font-weight:700">${esc(user.email || '—')}</div>
+        <div style="font-size:12px;color:var(--muted2);margin-top:4px">ID: #${esc(user.id || '0')} · Rol: ${esc(user.role || '—')}</div>
+        ${user.name ? `<div style="font-size:12px;color:var(--muted);margin-top:4px">${esc(user.name)}</div>` : ''}
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">Kayıt: ${fmtD(user.createdAt)}</div>
+        <div style="font-size:11px;color:var(--muted)">Son giriş: ${fmtD(user.lastLoginAt)}</div>
+      </div>
+      <div style="padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">İşletme</div>
+        ${business ? `
+          <div style="font-weight:700;color:var(--teal)">${esc(business.name || 'İşletme')}</div>
+          <div style="font-size:12px;color:var(--muted2);margin-top:4px">ID: #${esc(business.id || '0')} · ${esc(business.status || '—')}</div>
+        ` : '<div style="font-size:13px;color:var(--muted)">Bağlı işletme yok</div>'}
+      </div>
+      <div style="padding:14px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)">
+        <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Müşteri</div>
+        ${customer ? `
+          <div style="font-weight:700">${esc(customer.email || '—')}</div>
+          <div style="font-size:12px;color:var(--muted2);margin-top:4px">ID: #${esc(customer.id || '0')}</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">${esc(customer.phone || 'Telefon yok')}</div>
+        ` : '<div style="font-size:13px;color:var(--muted)">Bağlı müşteri kaydı yok</div>'}
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:14px">
+      ${items.map(([label, value]) => `
+        <div style="padding:12px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05)">
+          <div style="font:700 20px var(--mono);color:var(--amber)">${fmtN(value)}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px">${label}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="margin-top:14px;padding:12px 14px;border-radius:12px;background:${canDelete ? 'rgba(239,68,68,.08)' : 'rgba(245,158,11,.12)'};border:1px solid ${canDelete ? 'rgba(239,68,68,.25)' : 'rgba(245,158,11,.2)'};font-size:12px;color:${canDelete ? 'var(--text)' : 'var(--amber)'}">
+      ${canDelete
+        ? 'Bu kullanıcı silinebilir. İşlemi başlatmak için yan kutuya SIL yazıp kırmızı butonu kullanın.'
+        : 'Bu kullanıcı silinemez. Aktif superadmin hesabı veya superadmin rolü koruma altındadır.'}
+    </div>
+  `;
+  $('purgeDeleteBtn').disabled = !canDelete;
+}
+
+async function previewDeleteUser() {
+  const userId = Number($('purgeUserId')?.value || 0);
+  if (!userId) {
+    toast('Lütfen geçerli bir kullanıcı ID girin.', false);
+    resetDeleteUserPreview(false);
+    return;
+  }
+
+  const btn = $('purgePreviewBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-rounded">hourglass_top</span>Yükleniyor...';
+  $('purgeDeleteBtn').disabled = true;
+  $('purgePreviewBox').innerHTML = '<div class="shimmer" style="height:120px;border-radius:12px"></div>';
+
+  try {
+    const data = await apiGet(`api/superadmin/delete-user.php?user_id=${encodeURIComponent(userId)}`);
+    if (!data?.ok) {
+      _purgePreview = null;
+      $('purgePreviewBox').innerHTML = `<div style="font-size:13px;color:var(--red)">${esc(data?.error || 'Kullanıcı bulunamadı')}</div>`;
+      toast(data?.error || 'Önizleme alınamadı', false);
+      return;
+    }
+    _purgePreview = data.data;
+    renderDeletePreview(data.data);
+  } catch (e) {
+    _purgePreview = null;
+    $('purgePreviewBox').innerHTML = '<div style="font-size:13px;color:var(--red)">Bağlantı hatası oluştu.</div>';
+    toast('Bağlantı hatası', false);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-rounded">search</span>Önizleme Getir';
+  }
+}
+
+async function deleteUserById() {
+  const userId = Number($('purgeUserId')?.value || 0);
+  const confirmText = ($('purgeConfirmText')?.value || '').trim().toUpperCase();
+
+  if (!userId) {
+    toast('Lütfen geçerli bir kullanıcı ID girin.', false);
+    return;
+  }
+  if (!_purgePreview || Number(_purgePreview?.user?.id || 0) !== userId) {
+    toast('Önce bu kullanıcı için önizleme alın.', false);
+    return;
+  }
+  if (confirmText !== 'SIL') {
+    toast('Silme işlemi için SIL yazılmalı.', false);
+    return;
+  }
+  if (_purgePreview?.canDelete === false) {
+    toast('Bu kullanıcı güvenlik nedeniyle silinemez.', false);
+    return;
+  }
+
+  confirm2(`Kullanıcı #${userId} kalıcı olarak silinsin mi? Bu işlem geri alınamaz.`, async () => {
+    const btn = $('purgeDeleteBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-rounded">hourglass_top</span>Siliniyor...';
+    try {
+      const data = await apiPost('api/superadmin/delete-user.php', { user_id: userId, confirm_text: confirmText });
+      if (!data?.ok) {
+        toast(data?.error || 'Kullanıcı silinemedi', false);
+        return;
+      }
+      toast(`Kullanıcı #${userId} silindi`);
+      resetDeleteUserPreview(true);
+      await loadStats();
+      renderAdmins();
+    } catch (e) {
+      toast('Bağlantı hatası', false);
+    } finally {
+      btn.innerHTML = '<span class="material-symbols-rounded">delete</span>Kullanıcıyı Sil';
+      btn.disabled = !_purgePreview;
+    }
+  });
+}
+
+async function adjustAdminCreatedAt() {
+  const adminId = Number($('dateShiftAdminId')?.value || 0);
+  const direction = $('dateShiftDirection')?.value || 'backward';
+  const amount = Number($('dateShiftAmount')?.value || 0);
+  const unit = $('dateShiftUnit')?.value || 'month';
+  const btn = $('dateShiftBtn');
+  const result = $('dateShiftResult');
+
+  if (!adminId) {
+    toast('Lütfen admin ID girin.', false);
+    return;
+  }
+  if (!amount) {
+    toast('Lütfen geçerli bir miktar girin.', false);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="material-symbols-rounded">hourglass_top</span>Güncelleniyor...';
+
+  try {
+    const data = await apiPost('api/superadmin/adjust-admin-created-at.php', {
+      admin_id: adminId,
+      direction,
+      amount,
+      unit
+    });
+
+    if (!data?.ok) {
+      toast(data?.error || 'Tarih güncellenemedi.', false);
+      return;
+    }
+
+    const a = data.data?.admin || {};
+    if (result) {
+      result.style.display = 'block';
+      result.innerHTML = `
+        <div style="font-weight:700;color:var(--text);margin-bottom:6px">${esc(a.email || ('Admin #' + adminId))}</div>
+        <div><strong>Kullanıcı kayıt:</strong> ${fmtDate(a.beforeCreatedAt)} → ${fmtDate(a.afterCreatedAt)}</div>
+        <div><strong>Admin kayıt:</strong> ${fmtDate(a.beforeAdminCreatedAt)} → ${fmtDate(a.afterAdminCreatedAt)}</div>
+        <div><strong>İşletme:</strong> ${a.businessName ? esc(a.businessName) : '—'}</div>
+        <div><strong>İşletme kayıt:</strong> ${fmtDate(a.beforeBusinessCreatedAt)} → ${fmtDate(a.afterBusinessCreatedAt)}</div>
+      `;
+    }
+
+    toast('Admin kayıt tarihi güncellendi.');
+    await loadStats();
+    renderAdmins();
+  } catch (_) {
+    toast('Bağlantı hatası.', false);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span class="material-symbols-rounded">update</span>Hemen Güncelle';
+  }
+}
+
+/* ══════════════════════════════════════════════
+   PROMO
+══════════════════════════════════════════════ */
+function updateDiscountUI() {
+  const type = $('pDiscType')?.value;
+  const grp  = $('discValueGroup');
+  const lbl  = $('discValueLabel');
+  if (!grp) return;
+  if (type === 'free') {
+    grp.style.display = 'none';
+  } else {
+    grp.style.display = '';
+    lbl.textContent = type === 'percent' ? 'İndirim Yüzdesi (%)' : 'İndirim Tutarı (₺)';
+  }
+}
+
+function previewCode(val) {
+  const clean = val.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const el = $('codePreview');
+  if (clean.length >= 4) {
+    el.style.display = '';
+    el.textContent = clean;
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+const PLAN_FULL = {monthly_1:'1 Aylık',monthly_3:'3 Aylık',monthly_6:'6 Aylık',yearly_1:'1 Yıllık',yearly_2:'2 Yıllık'};
+const PLAN_SHORT = {monthly_1:'1A',monthly_3:'3A',monthly_6:'6A',yearly_1:'1Y',yearly_2:'2Y'};
+
+async function loadPlanCatalog() {
+  const data = await apiGet('api/billing/plans.php');
+  if (!data?.ok) return;
+
+  const plans = data.data?.plans || {};
+  const order = data.data?.order || Object.keys(plans);
+
+  Object.keys(PLAN_FULL).forEach(key => delete PLAN_FULL[key]);
+  Object.keys(PLAN_SHORT).forEach(key => delete PLAN_SHORT[key]);
+  Object.keys(PLAN_MONTHS).forEach(key => delete PLAN_MONTHS[key]);
+
+  const options = order.map(key => {
+    const plan = plans[key];
+    if (!plan) return '';
+    PLAN_FULL[key] = plan.display_label || String(plan.label || key).replace(/\s+Plan$/u, '');
+    PLAN_SHORT[key] = plan.badge_label || key;
+    PLAN_MONTHS[key] = Number(plan.months) || 0;
+    return `<option value="${key}">${PLAN_FULL[key]} (₺${fmtN(plan.price)})</option>`;
+  }).join('');
+
+  if ($('pPlan')) $('pPlan').innerHTML = `<option value="">Tüm Planlar</option>${options}`;
+  if ($('promoFilterPlan')) $('promoFilterPlan').innerHTML = `<option value="">Plan</option>${options}`;
+}
+
+async function loadPromos() {
+  const data = await apiGet('api/superadmin/promo/list.php');
+  if (!data?.ok) return;
+  _promos = data.data?.codes ?? data.data ?? [];
+  renderPromoKPIs(_promos);
+  filterPromos();
+}
+
+function renderPromoKPIs(promos) {
+  const total      = promos.length;
+  const active     = promos.filter(p => p.is_active && !p.is_expired && !p.is_exhausted).length;
+  const totalUse   = promos.reduce((s,p) => s + (p.used_count||0), 0);
+  const inactive   = promos.filter(p => !p.is_active || p.is_expired || p.is_exhausted).length;
+  const singleAvail = promos.filter(p => p.max_uses === 1 && p.used_count === 0 && p.is_active && !p.is_expired).length;
+  const singleUsed  = promos.filter(p => p.max_uses === 1 && p.used_count >= 1).length;
+  $('promoKpiGrid').innerHTML = `
+    <div class="stat-card stat-card--teal">
+      <div class="stat-card__icon"><span class="material-symbols-rounded">confirmation_number</span></div>
+      <div class="stat-card__val" style="font-size:22px">${fmtN(total)}</div>
+      <div class="stat-card__label">Toplam Kod</div>
+    </div>
+    <div class="stat-card stat-card--green">
+      <div class="stat-card__icon"><span class="material-symbols-rounded">check_circle</span></div>
+      <div class="stat-card__val" style="font-size:22px">${fmtN(active)}</div>
+      <div class="stat-card__label">Aktif Kod</div>
+    </div>
+    <div class="stat-card stat-card--purple">
+      <div class="stat-card__icon"><span class="material-symbols-rounded">people</span></div>
+      <div class="stat-card__val" style="font-size:22px">${fmtN(totalUse)}</div>
+      <div class="stat-card__label">Toplam Kullanım</div>
+    </div>
+    <div class="stat-card stat-card--amber">
+      <div class="stat-card__icon"><span class="material-symbols-rounded">lock</span></div>
+      <div class="stat-card__val" style="font-size:22px">${fmtN(singleAvail)}<span style="font-size:13px;opacity:.6">/${fmtN(singleAvail+singleUsed)}</span></div>
+      <div class="stat-card__label">Tek Kullanım (Müsait)</div>
+    </div>
+  `;
+}
+
+function filterPromos() {
+  const q      = ($('promoSearch')?.value||'').toLowerCase();
+  const status = $('promoFilterStatus')?.value || '';
+  const plan   = $('promoFilterPlan')?.value || '';
+  const disc   = $('promoFilterDisc')?.value || '';
+  const filtered = _promos.filter(p => {
+    if (q && !p.code.toLowerCase().includes(q) && !(p.note||'').toLowerCase().includes(q)) return false;
+    if (plan && p.plan !== plan) return false;
+    if (disc && p.discount_type !== disc) return false;
+    if (status) {
+      const isLive   = p.is_active && !p.is_expired && !p.is_exhausted;
+      const isSingle = p.max_uses === 1;
+      if (status === 'active'    && !isLive) return false;
+      if (status === 'inactive'  && isLive) return false;
+      if (status === 'expired'   && !p.is_expired) return false;
+      if (status === 'exhausted' && !p.is_exhausted) return false;
+      if (status === 'single'    && !isSingle) return false;
+    }
+    return true;
+  });
+  $('promoCount').textContent = filtered.length + ' / ' + _promos.length + ' kod';
+  renderPromos(filtered);
+}
+
+function renderPromos(list) {
+  list = list ?? _promos;
+  if (!list.length) {
+    $('promoBody').innerHTML = '<tr><td colspan="9"><div class="empty"><span class="material-symbols-rounded">confirmation_number</span>Sonuç bulunamadı</div></td></tr>';
+    return;
+  }
+  $('promoBody').innerHTML = list.map(p => {
+    const isSingle    = p.max_uses === 1;
+    const isExpired   = p.is_expired;
+    const isExhausted = p.is_exhausted;
+    const isLive      = p.is_active && !isExpired && !isExhausted;
+    const badCls = !p.is_active ? 'badge--gray' : isExpired||isExhausted ? 'badge--red' : 'badge--green';
+    const badLbl = !p.is_active ? 'Pasif' : isExpired ? 'Süresi Doldu' : isExhausted ? 'Dolu' : 'Aktif';
+    const discLabel = p.discount_type === 'free' ? 'Ücretsiz'
+      : p.discount_type === 'percent' ? `%${p.discount_value}`
+      : `₺${fmtN(p.discount_value)}`;
+    const planLabel  = PLAN_SHORT[p.plan] || 'Tüm';
+    const uses       = p.max_uses ? `${p.used_count}/${p.max_uses}` : `${p.used_count}/Ş`;
+    const usePct     = p.max_uses ? Math.min(100, p.used_count / p.max_uses * 100) : 0;
+    const singleBadge = isSingle
+      ? `<span title="Tek kullanımlık — yalnızca 1 işletme kullanabilir"
+               style="display:inline-flex;align-items:center;gap:2px;background:rgba(var(--amber-rgb,239,182,50),.15);
+                      color:var(--amber);border-radius:4px;padding:1px 5px;font-size:10px;
+                      font-weight:700;letter-spacing:.04em;margin-left:4px">
+          <span class="material-symbols-rounded" style="font-size:11px">lock</span>TEK
+        </span>`
+      : '';
+    const usedBadge  = (isSingle && p.used_count >= 1)
+      ? `<span style="display:inline-flex;align-items:center;gap:2px;background:rgba(var(--red-rgb,239,68,68),.15);
+                color:var(--red);border-radius:4px;padding:1px 5px;font-size:10px;font-weight:700;margin-left:4px">
+           <span class="material-symbols-rounded" style="font-size:11px">lock</span>KULLANILDI
+         </span>`
+      : '';
+    const lastUsedHtml = p.last_used_at
+      ? `<div style="font-size:12px;color:var(--text)">${fmtDate(p.last_used_at)}</div>
+         <div style="font-size:11px;color:var(--muted);margin-top:1px">${esc(p.last_used_by_email||'')}</div>`
+      : '<span style="color:var(--muted);font-size:12px">—</span>';
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:3px">
+          <span style="font:700 14px var(--mono);color:var(--teal);letter-spacing:.06em;cursor:pointer"
+                onclick="openPromoUses(${p.id},'${esc(p.code)}')" title="Kullanımları gör">${esc(p.code)}</span>
+          ${isSingle && p.used_count === 0 ? singleBadge : ''}
+          ${usedBadge}
+        </div>
+        <span class="badge ${badCls}" style="font-size:10px;margin-top:3px">${badLbl}</span>
+      </td>
+      <td><span class="badge badge--gray" style="font-size:11px">${esc(planLabel)}</span></td>
+      <td style="font-weight:600;color:var(--amber)">${discLabel}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:6px">
+          <div style="flex:1;max-width:70px;height:4px;background:rgba(255,255,255,.1);border-radius:99px;overflow:hidden">
+            <div style="height:100%;border-radius:99px;background:var(--teal);width:${usePct}%"></div>
+          </div>
+          <span style="font-size:12px;color:var(--muted2);font-family:var(--mono)">${uses}</span>
+          ${p.used_count > 0 ? `<button class="btn btn--outline btn--sm" style="padding:3px 7px" onclick="openPromoUses(${p.id},'${esc(p.code)}')"><span class="material-symbols-rounded" style="font-size:13px">people</span></button>` : ''}
+        </div>
+      </td>
+      <td>${lastUsedHtml}</td>
+      <td style="color:var(--muted2);font-size:12px">${p.expires_at ? fmtDate(p.expires_at) : '<span style="color:var(--muted)">Ş</span>'}</td>
+      <td style="color:var(--muted2);font-size:12px">${fmtDate(p.created_at)}</td>
+      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px" title="${esc(p.note||'')}">
+        ${p.note ? esc(p.note) : '—'}
+      </td>
+      <td>
+        <button class="btn btn--outline btn--sm promo-toggle-btn"
+                data-id="${p.id}"
+                data-code="${esc(p.code)}"
+                data-action="${isLive ? 'deactivate' : 'activate'}"
+                title="${isLive ? 'Kodu Pasife Al' : 'Kodu Aktifleştir'}"
+                style="margin-right:6px">
+          <span class="material-symbols-rounded" style="font-size:14px">${isLive ? 'visibility_off' : 'check_circle'}</span>
+        </button>
+        <button class="btn btn--danger btn--sm promo-del-btn"
+                data-id="${p.id}"
+                data-code="${esc(p.code)}"
+                data-uses="${p.used_count}"
+                ${p.can_delete ? '' : 'disabled'}
+                title="${p.can_delete ? 'Kodu Sil' : 'Kullanılmış kodlar silinemez; pasife alın'}"
+                style="${p.can_delete ? '' : 'opacity:.45;cursor:not-allowed'}">
+          <span class="material-symbols-rounded" style="font-size:14px">delete</span>
+        </button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+/* ══ PROMO KULLANIM DETAY MODAL ══ */
+async function openPromoUses(id, code) {
+  $('promoUsesTitle').textContent = `"${code}" — Kullanım Detayları`;
+  $('promoUsesSummary').innerHTML = '<div class="shimmer" style="height:50px;grid-column:1/-1;border-radius:6px"></div>';
+  $('promoUsesBody').innerHTML    = '<div class="shimmer" style="height:80px;border-radius:6px;margin:8px 0"></div>';
+  $('promoUsesModal').classList.add('open');
+
+  const data = await apiGet(`api/superadmin/promo/uses.php?promo_id=${id}`);
+  if (!data?.ok) { $('promoUsesBody').innerHTML = '<div class="empty">Veriler yüklenemedi</div>'; return; }
+
+  const { code: promo, uses, total } = data.data;
+  const discLabel = promo.discount_type === 'free' ? 'Tamamen Ücretsiz'
+    : promo.discount_type === 'percent' ? `%${promo.discount_value} İndirim`
+    : `₺${fmtN(promo.discount_value)} İndirim`;
+  const planFull = promo.plan ? (PLAN_FULL[promo.plan]||promo.plan) : 'Tüm Planlar';
+  const usePct = promo.max_uses ? Math.min(100, total / promo.max_uses * 100) : 0;
+
+  $('promoUsesSummary').innerHTML = `
+    <div style="text-align:center">
+      <div style="font:700 20px var(--mono);color:var(--teal)">${total}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">Toplam Kullanım</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font:700 13px var(--font);color:var(--amber)">${discLabel}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">İndirim</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font:700 13px var(--font);color:var(--purple)">${planFull}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">Geçerli Plan</div>
+    </div>
+    <div style="text-align:center">
+      <div style="font:700 13px var(--font);color:${promo.is_active?'var(--green)':'var(--red)'}">
+        ${promo.is_active ? 'Aktif' : 'Pasif'}
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">
+        ${promo.max_uses ? `${total}/${promo.max_uses} kota kullanıldı` : 'Sınırsız kota'}
+      </div>
+    </div>
+    ${promo.max_uses ? `<div style="grid-column:1/-1">
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:5px">
+        <span>Kota Doluluk Oranı</span><span>${Math.round(usePct)}%</span>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,.1);border-radius:99px">
+        <div style="height:100%;border-radius:99px;background:var(--teal);width:${usePct}%;transition:.3s"></div>
+      </div>
+    </div>` : ''}
+  `;
+
+  if (!uses.length) {
+    $('promoUsesBody').innerHTML = '<div class="empty" style="padding:28px"><span class="material-symbols-rounded">people</span>Bu kod henüz kimse tarafından kullanılmadı</div>';
+    return;
+  }
+
+  const SUB_STATUS_CLS = {trialing:'badge--teal',active:'badge--green',cancelled:'badge--red',expired:'badge--amber',past_due:'badge--red'};
+  const th = s => `<th style="text-align:left;padding:8px 10px;font-size:11px;font-weight:700;letter-spacing:.05em;color:var(--muted);text-transform:uppercase;border-bottom:1px solid var(--border)">${s}</th>`;
+  const td = (s,extra='') => `<td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.04);${extra}">${s}</td>`;
+
+  $('promoUsesBody').innerHTML = `
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr>${['#','Kullanıcı','Abonelik','Dönem','Kullanım Tarihi'].map(th).join('')}</tr></thead>
+      <tbody>
+        ${uses.map((u,i) => `<tr>
+          ${td(`<span style="color:var(--muted);font-family:var(--mono);font-size:12px">${i+1}</span>`)}
+          ${td(`<div style="font-weight:600">${esc(u.user_email||'—')}</div>
+                ${u.user_name ? `<div style="font-size:11px;color:var(--muted)">${esc(u.user_name)}${u.user_phone?' · '+esc(u.user_phone):''}</div>` : ''}`)}
+          ${td(u.sub_id ? `
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="badge ${SUB_STATUS_CLS[u.sub_status]||'badge--gray'}" style="font-size:10px">${u.sub_status||'?'}</span>
+              <span style="font-weight:600">${PLAN_FULL[u.sub_plan]||u.sub_plan||'?'}</span>
+            </div>
+            <div style="font-size:11px;color:var(--amber);margin-top:2px">₺${fmtN(u.sub_price||0)}</div>
+          ` : '<span style="color:var(--muted);font-size:12px">—</span>')}
+          ${td(u.sub_start ? `<span style="font-size:12px;color:var(--muted2)">${fmtDate(u.sub_start)} → ${fmtDate(u.sub_end)}</span>` : '—')}
+          ${td(`<span style="font-size:12px;color:var(--muted2)">${fmtD(u.used_at)}</span>`)}
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function closePromoUses() { $('promoUsesModal').classList.remove('open'); }
+$('promoUsesModal').addEventListener('click', e => { if(e.target===$('promoUsesModal')) closePromoUses(); });
+
+const PLAN_MONTHS = { monthly_1: 1, monthly_3: 3, monthly_6: 6, yearly_1: 12, yearly_2: 24 };
+
+function updateExpiresForPlan() {
+  const plan = $('pPlan')?.value || '';
+  const group = $('expiresGroup');
+  const input = $('pExpires');
+  const hint  = $('expiresHint');
+  if (!group || !input) return;
+
+  const months = PLAN_MONTHS[plan];
+  if (months) {
+    // Plan seçiliyse: otomatik hesapla, input'u gizle
+    const d = new Date();
+    d.setMonth(d.getMonth() + months);
+    // datetime-local formatı: YYYY-MM-DDTHH:mm
+    const pad = n => String(n).padStart(2,'0');
+    input.value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    group.style.opacity = '0.5';
+    input.disabled = true;
+    hint.textContent = `Şimdiden ${months} ay sonrası otomatik ayarlandı`;
+  } else {
+    // "Tüm Planlar" seçiliyse: manuel giriş
+    input.value = '';
+    input.disabled = false;
+    group.style.opacity = '1';
+    hint.textContent = 'Boş = süresiz';
+  }
+}
+
+async function createPromo() {
+  const code  = ($('pCode')?.value||'').trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  const plan  = $('pPlan')?.value || '';
+  const dtype = $('pDiscType')?.value || 'free';
+  const dval  = $('pDiscValue')?.value || '';
+  const maxU  = $('pMaxUses')?.value || '';
+  const exp   = $('pExpires')?.value || '';  // disabled olsa bile value okunur
+  const note  = $('pNote')?.value || '';
+
+  if (code.length < 4) { toast('Kod en az 4 karakter olmalı', false); return; }
+
+  const btn = $('createBtn');
+  btn.disabled = true; btn.textContent = 'Oluşturuluyor...';
+
+  const payload = {
+    code, plan: plan||null, discount_type: dtype,
+    discount_value: dtype !== 'free' ? parseFloat(dval)||null : undefined,
+    max_uses: maxU ? parseInt(maxU) : null,
+    expires_at: exp || null,
+    note,
+  };
+
+  const data = await apiPost('api/superadmin/promo/create.php', payload);
+  btn.disabled = false; btn.innerHTML = '<span class="material-symbols-rounded">add</span>Kodu Oluştur';
+
+  if (data?.ok) {
+    toast(`✅ "${data.data.code}" kodu oluşturuldu!`);
+    // Formu temizle
+    ['pCode','pPlan','pDiscValue','pMaxUses','pExpires','pNote'].forEach(id=>{const el=$(id);if(el){el.value='';el.disabled=false;}});
+    if($('expiresGroup')){ $('expiresGroup').style.opacity='1'; }
+    if($('expiresHint')){ $('expiresHint').textContent='Boş = süresiz'; }
+    $('codePreview').style.display = 'none';
+    $('pDiscType').value = 'free'; updateDiscountUI();
+    // Tek kullanım toggle'ı sıfırla
+    _singleUse = false;
+    const sb = $('singleUseBtn');
+    if (sb) { sb.style.background=''; sb.style.color=''; sb.style.borderColor=''; }
+    if ($('singleUseHint')) $('singleUseHint').style.display = 'none';
+    loadPromos();
+  } else {
+    toast(data?.error || 'Oluşturulamadı', false);
+  }
+}
+
+async function deletePromo(id, code, usedCount) {
+  if (Number(usedCount) > 0) {
+    toast('Kullanılmış kodlar silinemez; pasife alın.', false);
+    return;
+  }
+  usedCount = 0;
+  const usedMsg = Number(usedCount) > 0
+    ? `\n\nBu kodu ${usedCount} işletme kullandı.\nHepsinin aboneliği ANINDA iptal olacak.`
+    : '';
+  if (!window.confirm(`"${code}" kodunu silmek istiyor musunuz?${usedMsg}`)) return;
+
+  try {
+    const data = await apiPost('api/superadmin/promo/delete.php', { id: Number(id) });
+    if (data?.ok) {
+      toast('Kod silindi');
+      loadPromos();
+    } else {
+      toast((data?.error || 'Silinemedi'), false);
+    }
+  } catch(e) {
+    toast('Bağlantı hatası', false);
+  }
+}
+
+/* ══════════════════════════════════════════════
+   CONFIRM MODAL
+══════════════════════════════════════════════ */
+async function togglePromo(id, code, action) {
+  const verb = action === 'activate' ? 'aktifleştirmek' : 'pasife almak';
+  if (!window.confirm(`"${code}" kodunu ${verb} istiyor musunuz?`)) return;
+
+  try {
+    const data = await apiPost('api/superadmin/promo/toggle.php', { id: Number(id), action });
+    if (data?.ok) {
+      toast(data.message || 'Kod güncellendi');
+      loadPromos();
+    } else {
+      toast((data?.error || 'Güncellenemedi'), false);
+    }
+  } catch (e) {
+    toast('Bağlantı hatası', false);
+  }
+}
+
+function confirm2(msg, cb) {
+  $('confirmMsg').textContent = msg;
+  $('confirmModal').classList.add('open');
+  _confirmCb = cb;
+}
+function closeConfirm() { $('confirmModal').classList.remove('open'); _confirmCb = null; }
+$('confirmOkBtn').addEventListener('click', () => {
+  const cb = _confirmCb;
+  closeConfirm();
+  cb?.();
+});
+$('confirmModal').addEventListener('click', e => { if(e.target === $('confirmModal')) closeConfirm(); });
+
+/* ══════════════════════════════════════════════
+   TEK KULLANIMLIK TOGGLE
+══════════════════════════════════════════════ */
+let _singleUse = false;
+
+function toggleSingleUse() {
+  _singleUse = !_singleUse;
+  const btn  = $('singleUseBtn');
+  const hint = $('singleUseHint');
+  const inp  = $('pMaxUses');
+
+  if (_singleUse) {
+    inp.value    = '1';
+    inp.disabled = true;
+    inp.style.opacity = '0.4';
+    btn.style.background   = 'rgba(var(--amber-rgb,239,182,50),.2)';
+    btn.style.color        = 'var(--amber)';
+    btn.style.borderColor  = 'var(--amber)';
+    if (hint) hint.style.display = 'block';
+  } else {
+    inp.value    = '';
+    inp.disabled = false;
+    inp.style.opacity = '1';
+    btn.style.background  = '';
+    btn.style.color       = '';
+    btn.style.borderColor = '';
+    if (hint) hint.style.display = 'none';
+  }
+}
+
+
+/* ══════════════════════════════════════════════
+   RASTGELE KOD ÜRETME
+══════════════════════════════════════════════ */
+function generateCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // karışık I,0,1 yok
+  const len = 8;
+  let code = '';
+  // Mevcut kodları al
+  const existing = new Set(_promos.map(p => p.code));
+  let attempts = 0;
+  do {
+    code = Array.from({length: len}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+    attempts++;
+  } while (existing.has(code) && attempts < 100);
+
+  const el = $('pCode');
+  el.value = code;
+  previewCode(code);
+  el.focus();
+}
+
+/* ══════════════════════════════════════════════
+   İŞLETME DETAY MODAL
+══════════════════════════════════════════════ */
+async function openBizDetail(userId, email) {
+  $('bizDetailTitle').textContent = email;
+  $('bizDetailInfo').innerHTML = '<div class="shimmer" style="height:60px;grid-column:1/-1;border-radius:8px"></div>';
+  $('bizDetailActive').innerHTML = '';
+  $('bizDetailSubs').innerHTML = '<div class="shimmer" style="height:80px;border-radius:8px"></div>';
+  $('bizDetailModal').classList.add('open');
+
+  const data = await apiGet(`api/superadmin/business-detail.php?user_id=${userId}`);
+  if (!data?.ok) {
+    $('bizDetailSubs').innerHTML = '<div class="empty">Veriler yüklenemedi</div>';
+    return;
+  }
+
+  const { user, subs, active_sub, total_paid, sub_count } = data.data;
+  const BIZ_STATUS = {active:'badge--green',suspended:'badge--red',draft:'badge--gray',pending:'badge--amber',rejected:'badge--red'};
+
+  // Üst bilgi kartları
+  $('bizDetailInfo').innerHTML = `
+    <div style="background:var(--surface2);border-radius:var(--r-sm);padding:12px 14px">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">Hesap</div>
+      <div style="font-weight:700">${esc(user.email)}</div>
+      ${user.name ? `<div style="font-size:12px;color:var(--muted2);margin-top:2px">${esc(user.name)}</div>` : ''}
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">Kayıt: ${fmtDate(user.created_at)}</div>
+      ${user.last_login_at ? `<div style="font-size:11px;color:var(--muted)">Son Giriş: ${fmtDate(user.last_login_at)}</div>` : ''}
+    </div>
+    <div style="background:var(--surface2);border-radius:var(--r-sm);padding:12px 14px">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.05em">İşletme</div>
+      ${user.biz_name ? `
+        <div style="font-weight:700;color:var(--teal)">${esc(user.biz_name)}</div>
+        <div style="margin-top:4px">
+          <span class="badge ${BIZ_STATUS[user.biz_status]||'badge--gray'}" style="font-size:10px">${user.biz_status||'—'}</span>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-top:6px">${esc(user.city||'')} ${esc(user.district||'')}</div>
+        ${user.biz_phone ? `<div style="font-size:11px;color:var(--muted)">${esc(user.biz_phone)}</div>` : ''}
+      ` : '<div style="color:var(--muted);font-size:13px">İşletme kaydı yok</div>'}
+    </div>
+    <div style="background:var(--surface2);border-radius:var(--r-sm);padding:12px 14px;text-align:center">
+      <div style="font:700 22px var(--mono);color:var(--teal)">${sub_count}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">Toplam Abonelik</div>
+    </div>
+    <div style="background:var(--surface2);border-radius:var(--r-sm);padding:12px 14px;text-align:center">
+      <div style="font:700 20px var(--mono);color:var(--amber)">₺${fmtN(total_paid)}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">Toplam Ödeme</div>
+    </div>
+  `;
+
+  // Aktif plan özeti
+  if (active_sub) {
+    const SUB_CLS = {active:'badge--green',trialing:'badge--teal',cancelled:'badge--red',expired:'badge--amber'};
+    $('bizDetailActive').innerHTML = `
+      <div style="background:rgba(14,165,179,.08);border:1px solid rgba(14,165,179,.2);border-radius:var(--r-sm);padding:12px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <span class="material-symbols-rounded" style="color:var(--teal)">workspace_premium</span>
+        <div style="flex:1">
+          <div style="font-weight:700">${PLAN_FULL[active_sub.plan]||active_sub.plan}</div>
+          <div style="font-size:12px;color:var(--muted2)">
+            ${fmtDate(active_sub.start_date)} → ${fmtDate(active_sub.end_date)}
+            ${active_sub.promo_code ? ` · Promo: <span style="color:var(--teal);font-family:var(--mono)">${esc(active_sub.promo_code)}</span>` : ''}
+          </div>
+        </div>
+        <span class="badge ${SUB_CLS[active_sub.status]||'badge--gray'}">${active_sub.status}</span>
+        <span style="font:700 16px var(--mono);color:var(--amber)">₺${fmtN(active_sub.price)}</span>
+      </div>`;
+  }
+
+  // Plan geçmişi tablosu
+  if (!subs.length) {
+    $('bizDetailSubs').innerHTML = '<div class="empty"><span class="material-symbols-rounded">credit_card</span>Henüz plan satın alınmamış</div>';
+    return;
+  }
+
+  const SUB_STATUS_CLS = {trialing:'badge--teal',active:'badge--green',cancelled:'badge--red',expired:'badge--amber',past_due:'badge--red'};
+  const th = s => `<th style="text-align:left;padding:8px 10px;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border)">${s}</th>`;
+
+  $('bizDetailSubs').innerHTML = `
+    <table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr>${['Plan','Fiyat','Durum','Promo Kodu','Başlangıç','Bitiş','İptal'].map(th).join('')}</tr></thead>
+      <tbody>
+        ${subs.map(s => {
+          const promoHtml = s.promo_code
+            ? `<span style="font-family:var(--mono);color:var(--teal);font-weight:700">${esc(s.promo_code)}</span>
+               <span style="font-size:11px;color:var(--muted);display:block">${s.discount_type==='free'?'Ücretsiz':s.discount_type==='percent'?`%${s.discount_value}`:`₺${s.discount_value}`}</span>`
+            : '<span style="color:var(--muted);font-size:12px">—</span>';
+          return `<tr>
+            <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.04);font-weight:600">${PLAN_FULL[s.plan]||s.plan}</td>
+            <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.04);font-family:var(--mono);color:var(--amber)">₺${fmtN(s.price)}</td>
+            <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.04)"><span class="badge ${SUB_STATUS_CLS[s.status]||'badge--gray'}">${s.status}</span></td>
+            <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.04)">${promoHtml}</td>
+            <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;color:var(--muted2)">${fmtDate(s.start_date)}</td>
+            <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;color:var(--muted2)">${fmtDate(s.end_date)}</td>
+            <td style="padding:10px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;color:var(--red)">${s.cancelled_at ? fmtDate(s.cancelled_at) : '—'}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function closeBizDetail() { $('bizDetailModal').classList.remove('open'); }
+$('bizDetailModal').addEventListener('click', e => { if(e.target===$('bizDetailModal')) closeBizDetail(); });
+
+/* ══════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', async () => {
+  // Tarih
+  $('pageDate').textContent = new Date().toLocaleDateString('tr-TR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+
+  // Auth kontrolü
+  try {
+    const me = await apiGet('api/session/me.php');
+    if (!me || me?.data?.role !== 'superadmin') {
+      window.location.href = 'admin-register-login.html';
+      return;
+    }
+    $('saSelf').textContent = me?.data?.email || 'Süper Admin';
+  } catch { window.location.href = 'admin-register-login.html'; return; }
+
+  await loadPlanCatalog();
+  updateDiscountUI();
+  loadStats();
+
+  // Promo sil — event delegation (onclick attribute kullanmak yerine)
+  document.getElementById('promoBody').addEventListener('click', function(e) {
+    const toggleBtn = e.target.closest('.promo-toggle-btn');
+    if (toggleBtn) {
+      e.stopPropagation();
+      togglePromo(toggleBtn.dataset.id, toggleBtn.dataset.code, toggleBtn.dataset.action);
+      return;
+    }
+
+    const btn = e.target.closest('.promo-del-btn');
+    if (!btn) return;
+    e.stopPropagation();
+    const id    = btn.dataset.id;
+    const code  = btn.dataset.code;
+    const uses  = btn.dataset.uses;
+    deletePromo(id, code, uses);
+  });
+});
+</script>
+</body>
+</html>

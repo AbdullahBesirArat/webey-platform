@@ -1,0 +1,26 @@
+<?php
+/**
+ * api/keys/email.php — Local SMTP / Brevo credential override (EXAMPLE)
+ * ════════════════════════════════════════════════════════════════════
+ * Copy this file to `email.php` and fill in real values, OR leave it out
+ * entirely and provide the equivalent SMTP_* environment variables.
+ *
+ *   cp email.php.example email.php
+ *
+ * NEVER commit the real `email.php`. This whole `keys/` directory is
+ * git-ignored and additionally protected by an Apache "Deny from all".
+ *
+ * Loaded by api/_email_config.php (local file > env var > default).
+ */
+
+return [
+    'host'          => 'smtp-relay.brevo.com',
+    'port'          => 587,
+    'encryption'    => 'tls',
+    'username'      => 'YOUR_SMTP_LOGIN',
+    'password'      => 'YOUR_SMTP_PASSWORD',
+    'brevo_api_key' => 'YOUR_BREVO_API_KEY',
+    'from_email'    => 'no-reply@your-domain.example',
+    'from_name'     => 'Webey',
+    'debug'         => false,
+];

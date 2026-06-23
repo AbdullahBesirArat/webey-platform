@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel="icon" href="img/favicon.ico" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Email Doğrulama - Webey</title>
+  <style>
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,Arial,sans-serif;
+      background:#f4f3ef;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:20px;
+      color:#111827;
+    }
+    .card{
+      width:min(480px,100%);
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:20px;
+      padding:32px 28px;
+      text-align:center;
+      box-shadow:0 12px 30px rgba(0,0,0,.08);
+    }
+    .icon{font-size:44px;line-height:1;margin-bottom:12px}
+    h1{margin:0 0 10px;font-size:24px}
+    p{margin:0 0 18px;color:#4b5563;line-height:1.6}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      text-decoration:none;border-radius:10px;padding:12px 16px;
+      font-size:14px;font-weight:700;border:1px solid #d1d5db;color:#111827;background:#fff;
+      min-width:170px;
+    }
+    .btn.primary{background:#0ea5b3;border-color:#0ea5b3;color:#fff}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <section id="stateLoading">
+      <div class="icon">⌛</div>
+      <h1>Email Doğrulanıyor</h1>
+      <p>Lütfen bekleyin, doğrulama işlemi tamamlanıyor.</p>
+    </section>
+
+    <section id="stateSuccess" class="hidden">
+      <div class="icon">✅</div>
+      <h1>Emailiniz onaylanmıştır</h1>
+      <p>Hesabınıza giriş yapabilirsiniz.</p>
+      <div class="actions">
+        <a class="btn primary" href="admin-register-login.html">Admin Giriş</a>
+        <a class="btn" href="index.html">Kullanıcı Giriş</a>
+      </div>
+    </section>
+
+    <section id="stateAlready" class="hidden">
+      <div class="icon">✅</div>
+      <h1>Email zaten onaylı</h1>
+      <p>Hesabınıza giriş yapabilirsiniz.</p>
+      <div class="actions">
+        <a class="btn primary" href="admin-register-login.html">Admin Giriş</a>
+        <a class="btn" href="index.html">Kullanıcı Giriş</a>
+      </div>
+    </section>
+
+    <section id="stateInvalid" class="hidden">
+      <div class="icon">⚠️</div>
+      <h1>Doğrulama linki geçersiz</h1>
+      <p>Link süresi dolmuş olabilir. Yeni doğrulama linki isteyip tekrar deneyin.</p>
+      <div class="actions">
+        <a class="btn" href="index.html">Ana Sayfa</a>
+      </div>
+    </section>
+
+    <section id="stateError" class="hidden">
+      <div class="icon">❌</div>
+      <h1>Bir hata oluştu</h1>
+      <p>İşlem sırasında hata oluştu. Lütfen tekrar deneyin.</p>
+      <div class="actions">
+        <a class="btn" href="index.html">Ana Sayfa</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function show(id){
+      ['stateLoading','stateSuccess','stateAlready','stateInvalid','stateError']
+        .forEach((k) => document.getElementById(k)?.classList.toggle('hidden', k !== id));
+    }
+
+    function notifyEmailVerified() {
+      try {
+        localStorage.setItem('wb_email_verified_at', String(Date.now()));
+      } catch (_) {}
+      try {
+        if ('BroadcastChannel' in window) {
+          const ch = new BroadcastChannel('wb-email-events');
+          ch.postMessage({ type: 'email-verified', at: Date.now() });
+          ch.close();
+        }
+      } catch (_) {}
+    }
+
+    (async function verifyEmail(){
+      const token = new URLSearchParams(location.search).get('token') || '';
+      if (!token) { show('stateInvalid'); return; }
+
+      try {
+        const qs = new URLSearchParams({ token });
+        const newEmail = new URLSearchParams(location.search).get('new_email');
+        if (newEmail) qs.set('new_email', newEmail);
+
+        const res = await fetch('/api/auth/verify-email.php?' + qs.toString(), {
+          method: 'GET',
+          credentials: 'include'
+        });
+        const json = await res.json().catch(() => ({}));
+        if (json?.ok) {
+          notifyEmailVerified();
+          show(json?.already ? 'stateAlready' : 'stateSuccess');
+          return;
+        }
+        if (json?.code === 'token_expired' || res.status === 410 || res.status === 400) {
+          show('stateInvalid');
+          return;
+        }
+        show('stateError');
+      } catch {
+        show('stateError');
+      }
+    })();
+  </script>
+</body>
+</html>

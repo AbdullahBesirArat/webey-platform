@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <link rel="icon" href="img/favicon.ico" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>E-posta Güncelle</title>
+  <style>
+    :root{--bg:#f4f3ef;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e5e7eb;--brand:#0ea5b3;--brand-d:#0b8a96;--ok:#16a34a;--err:#dc2626}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+    .card{width:min(460px,100%);background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+    h1{margin:0 0 8px;font-size:24px} p{margin:0;color:var(--muted);line-height:1.5}
+    .row{margin-top:18px}.label{display:block;margin-bottom:6px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+    input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+    .current{padding:11px 12px;border:1px solid var(--line);background:#f8fafc;border-radius:10px;font-weight:600}
+    .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+    button,a{border:0;border-radius:10px;padding:11px 14px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+    .pri{background:var(--brand);color:#fff}.pri:hover{background:var(--brand-d)} .sec{background:#fff;color:#334155;border:1px solid var(--line)}
+    .msg{display:none;margin-top:14px;padding:10px 12px;border-radius:10px;font-size:14px}
+    .msg.ok{display:block;background:#ecfdf3;color:var(--ok);border:1px solid #bbf7d0}
+    .msg.err{display:block;background:#fef2f2;color:var(--err);border:1px solid #fecaca}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <h1>E-posta Güncelle</h1>
+      <p>Yeni e-posta adresinize doğrulama linki gönderilir. Linke tıklayınca adresiniz güncellenir.</p>
+
+      <div class="row">
+        <span class="label">Mevcut E-posta</span>
+        <div id="currentEmail" class="current">Yükleniyor...</div>
+      </div>
+
+      <div class="row">
+        <label class="label" for="newEmail">Yeni E-posta</label>
+        <input id="newEmail" type="email" placeholder="ornek@site.com" autocomplete="email" />
+      </div>
+
+      <div class="actions">
+        <button id="submitBtn" class="pri" type="button">Doğrulama Linki Gönder</button>
+        <a class="sec" href="admin-profile.html">Profile Dön</a>
+      </div>
+
+      <div id="msg" class="msg"></div>
+    </main>
+  </div>
+
+  <script>
+    let csrf = '';
+    let currentEmail = '';
+
+    function setMsg(text, type){
+      const el = document.getElementById('msg');
+      el.textContent = text;
+      el.className = 'msg ' + (type === 'ok' ? 'ok' : 'err');
+    }
+
+    async function boot(){
+      try {
+        const [csrfRes, meRes] = await Promise.all([
+          fetch('api/csrf.php', { credentials: 'include' }),
+          fetch('api/profile/me.php', { credentials: 'include' })
+        ]);
+        const csrfJson = await csrfRes.json();
+        const meJson = await meRes.json();
+        if (!meJson?.ok) { location.replace('admin-register-login.html#login'); return; }
+        csrf = csrfJson?.data?.token || csrfJson?.token || '';
+        currentEmail = (meJson.data?.email || '').toLowerCase();
+        document.getElementById('currentEmail').textContent = currentEmail || '-';
+      } catch {
+        location.replace('admin-register-login.html#login');
+      }
+    }
+
+    async function submit(){
+      const btn = document.getElementById('submitBtn');
+      const input = document.getElementById('newEmail');
+      const email = (input.value || '').trim().toLowerCase();
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return setMsg('Geçerli bir e-posta adresi girin.', 'err');
+      }
+      if (email === currentEmail) {
+        return setMsg('Bu zaten mevcut e-posta adresiniz.', 'err');
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Gönderiliyor...';
+      try {
+        const res = await fetch('api/profile/update.php', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf },
+          body: JSON.stringify({ action: 'update_email', email })
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!json?.ok) {
+          throw new Error(json?.error || 'İşlem başarısız.');
+        }
+        setMsg('Doğrulama linki gönderildi. E-postanı kontrol et.', 'ok');
+        localStorage.setItem('wb_profile_refresh', String(Date.now()));
+      } catch (e) {
+        setMsg(e.message || 'Bağlantı hatası.', 'err');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Doğrulama Linki Gönder';
+      }
+    }
+
+    document.getElementById('submitBtn').addEventListener('click', submit);
+    document.getElementById('newEmail').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submit();
+    });
+
+    boot();
+  </script>
+</body>
+</html>

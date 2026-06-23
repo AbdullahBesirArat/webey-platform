@@ -1,0 +1,176 @@
+<?php
+declare(strict_types=1);
+/**
+ * api/calendar/update-appointment.php
+ * POST { id, status?, attended? } - randevu durumu guncelle (takvim gorunumunden)
+ * Admin auth gerekli
+ */
+
+require_once __DIR__ . '/../admin/_bootstrap.php';
+require_once __DIR__ . '/../_appointment_log.php';
+require_once __DIR__ . '/../_user_notifications.php';
+wb_method('POST');
+
+$businessId = (int)($_SESSION['business_id'] ?? 0);
+if (!$businessId) {
+    wb_err('Isletme bulunamadi', 403, 'no_business');
+}
+
+$data = wb_body();
+
+$appointmentId = $data['id'] ?? $data['appointmentId'] ?? null;
+if (!$appointmentId) {
+    wb_err('Missing appointment id', 400, 'missing_param');
+}
+
+$status   = $data['status'] ?? null;
+$attended = array_key_exists('attended', $data) ? $data['attended'] : null;
+
+$fields = [];
+$params = [];
+
+if ($status !== null) {
+    $allowedStatuses = ['pending', 'approved', 'cancelled', 'no_show', 'cancellation_requested'];
+    if (!in_array($status, $allowedStatuses, true)) {
+        wb_err('Invalid status value', 400, 'invalid_status');
+    }
+    $fields[] = 'status = ?';
+    $params[] = $status;
+
+    if ($status === 'no_show') {
+        $fields[] = 'attended = 0';
+    }
+}
+
+if ($attended !== null) {
+    $fields[] = 'attended = ?';
+    $params[] = $attended ? 1 : 0;
+}
+
+if (!$fields) {
+    wb_ok(['updated' => false, 'message' => 'Nothing to update']);
+}
+
+$actorUserId = (int)($_SESSION['user_id'] ?? 0) ?: null;
+
+try {
+    $pdo->beginTransaction();
+
+    $prevRow = $pdo->prepare(
+        'SELECT status FROM appointments WHERE id = ? AND business_id = ? LIMIT 1 FOR UPDATE'
+    );
+    $prevRow->execute([$appointmentId, $businessId]);
+    $prevData = $prevRow->fetch();
+
+    if (!$prevData) {
+        $pdo->rollBack();
+        wb_err('Randevu bulunamadi', 404, 'not_found');
+    }
+
+    $prevStatus = (string)($prevData['status'] ?? '');
+
+    $params[] = $appointmentId;
+    $params[] = $businessId;
+
+    $sql = 'UPDATE appointments SET ' . implode(', ', $fields) . ', updated_at = NOW() WHERE id = ? AND business_id = ?';
+    $pdo->prepare($sql)->execute($params);
+
+    if ($status !== null && $prevStatus !== $status) {
+        wb_appt_log($pdo, $appointmentId, 'status_changed', $prevStatus, $status, $actorUserId);
+    }
+
+    if ($attended !== null) {
+        wb_appt_log($pdo, $appointmentId, 'attended_marked', null, $attended ? 'attended' : 'no_show', $actorUserId);
+    }
+
+    if ($status !== null && in_array($status, ['approved', 'cancelled'], true)) {
+        $notifResult = ($status === 'approved') ? 'approved' : 'rejected';
+        $pdo->prepare(
+            "UPDATE notifications
+             SET result = ?, is_read = 1, read_at = NOW()
+             WHERE appointment_id = ? AND business_id = ? AND type = 'booking' AND result = 'pending'"
+        )->execute([$notifResult, $appointmentId, $businessId]);
+    }
+
+    $pdo->commit();
+} catch (Throwable $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
+    error_log('[calendar/update-appointment] ' . $e->getMessage());
+    wb_err('Randevu guncellenemedi', 500, 'internal_error');
+}
+
+// Takvimden status guncelleme sonrasi bildirimler
+if ($status !== null) {
+    try {
+        require_once __DIR__ . '/../_mailer.php';
+        require_once __DIR__ . '/../_email_templates.php';
+
+        $apptFull = $pdo->prepare(
+            "SELECT a.*, b.name AS business_name, b.address_line, b.city, b.district,
+                    b.phone AS business_phone, b.map_url, b.latitude, b.longitude,
+                    s.name AS service_name, st.name AS staff_name,
+                    u.email AS owner_email
+             FROM appointments a
+             LEFT JOIN businesses b ON b.id = a.business_id
+             LEFT JOIN services   s ON s.id = a.service_id
+             LEFT JOIN staff     st ON st.id = a.staff_id
+             LEFT JOIN users      u ON u.id = b.owner_id
+             WHERE a.id = ? AND a.business_id = ?
+             LIMIT 1"
+        );
+        $apptFull->execute([$appointmentId, $businessId]);
+        $row = $apptFull->fetch();
+
+        if ($row) {
+            $emailData = wbApptToEmailData($row, $pdo);
+
+            $custEmail = (string)($row['customer_email'] ?? '');
+            $custName  = (string)($row['customer_name'] ?? 'Musteri');
+            if ($custEmail && filter_var($custEmail, FILTER_VALIDATE_EMAIL)) {
+                if ($status === 'approved') {
+                    [$subj, $html] = wbEmailApptApproved($emailData);
+                    wbMail($custEmail, $custName, $subj, $html);
+                } elseif (in_array($status, ['cancelled', 'rejected', 'declined'], true)) {
+                    [$subj, $html] = wbEmailApptCancelled($emailData);
+                    wbMail($custEmail, $custName, $subj, $html);
+                } else {
+                    $emailData['status'] = $status;
+                    [$subj, $html] = wbEmailApptConfirm($emailData);
+                    wbMail($custEmail, $custName, $subj, $html);
+                }
+            }
+
+            $ownerEmail = (string)($emailData['ownerEmail'] ?? '');
+            $bizNameForOwner = (string)($emailData['bizName'] ?? 'Isletme');
+            if ($ownerEmail && filter_var($ownerEmail, FILTER_VALIDATE_EMAIL)) {
+                [$ownerSubj, $ownerHtml] = wbEmailApptStatusBiz($emailData);
+                wbMail($ownerEmail, $bizNameForOwner, $ownerSubj, $ownerHtml);
+            }
+
+            $notifUserId = wbResolveAppointmentUserId($pdo, $row);
+            if ($notifUserId) {
+                $notif = wbUserNotifFromStatus(
+                    (string)$status,
+                    (string)($row['business_name'] ?? 'Isletme'),
+                    (string)($row['start_at'] ?? ''),
+                    (string)($row['service_name'] ?? '')
+                );
+                wbInsertUserNotification(
+                    $pdo,
+                    (int)$notifUserId,
+                    (int)$appointmentId,
+                    $notif['type'],
+                    $notif['title'],
+                    $notif['message'],
+                    (string)($row['business_name'] ?? '')
+                );
+            }
+        }
+    } catch (Throwable $mailEx) {
+        error_log('[calendar/update-appointment mail] ' . $mailEx->getMessage());
+    }
+}
+
+wb_ok(['updated' => true, 'id' => (string)$appointmentId, 'status' => $status, 'attended' => $attended]);

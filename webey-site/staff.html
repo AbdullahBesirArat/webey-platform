@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#ffffff"/>
+  <title>Personel • Çalışanlar</title>
+
+  <script>
+    (function () {
+      var mq = window.matchMedia('(max-width: 1024px)');
+      function apply(){ document.documentElement.classList.toggle('is-mobile', mq.matches); }
+      apply();
+      (mq.addEventListener ? mq.addEventListener('change', apply) : mq.addListener(apply));
+    })();
+  </script>
+
+  <link rel="stylesheet" href="css/settings.css" />
+  <link rel="stylesheet" href="css/rail.css?v=4" />
+  <link rel="stylesheet" href="css/staff.css?v=68" />
+  <link rel="stylesheet" href="css/mobil_staff.css?v=14" />
+  <link rel="stylesheet" href="css/mobile-admin.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" href="css/wb-transitions.css" />
+  <link rel="stylesheet" href="css/wb-bottom-nav.css" />
+  <link rel="stylesheet" href="css/admin-wb.css" />
+  <link rel="stylesheet" href="css/admin-interactions.css" />
+
+  <style>
+    .skip-link{ position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden; }
+    .skip-link:focus{ position:fixed;left:12px;top:12px;width:auto;height:auto;padding:10px 14px;background:#111827;color:#fff;border-radius:10px;z-index:2000;box-shadow:0 6px 18px rgba(0,0,0,.25);text-decoration:none;outline:0; }
+  </style>
+  <!-- Merkezi API katmanı — calendar.js/settings.js/staff.js'in apiGet/apiPost'larını otomatik geçersiz kılar -->
+  <script src="js/wb-api-shim.js"></script>
+  <script src="js/wb-email-banner.js" defer></script>
+</head>
+<body class="has-rail" data-page="staff">
+
+  <a href="#main" class="skip-link">İçeriğe atla</a>
+  <div id="rail-mount" aria-hidden="true"></div>
+
+  <!-- ── Topbar ── -->
+  <header class="topbar">
+    <div class="topbar__inner">
+      <div class="title">Personel &amp; Çalışanlar</div>
+      <div class="spacer"></div>
+      <a id="brandName" class="logo" href="#" aria-label="İşletme adı"></a>
+    </div>
+  </header>
+
+  <main id="main" class="wb-page-in" tabindex="-1">
+    <div class="container">
+      <div class="page">
+
+        <!-- ── Sol: Personel Listesi ── -->
+        <aside class="staff-card" aria-labelledby="staffCardTitle">
+          <div class="staff-card__header">
+            <span class="staff-card__title" id="staffCardTitle">Personel</span>
+            <div class="staff-card__actions" aria-label="Personel işlemleri">
+              <button class="btn-icon remove" id="btnRemoveSmall" title="Personel Sil" aria-label="Personel Sil">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/>
+                </svg>
+                <span class="btn-icon__label">Sil</span>
+              </button>
+              <button class="btn-icon add" id="btnAddSmall" title="Yeni Personel" aria-label="Yeni Personel Ekle">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 5v14M5 12h14"/>
+                </svg>
+                <span class="btn-icon__label">Ekle</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="staff-card__scroller">
+            <div class="staff-card__body" id="staffCardBody" aria-label="Personel listesi">
+              <!-- JS tarafından doldurulur -->
+              <div class="staff-card__track" id="staffCardTrack"></div>
+            </div>
+            <div class="staff-card__range-wrap" id="staffCardRangeWrap">
+              <input
+                type="range"
+                class="staff-card__range"
+                id="staffCardRange"
+                min="0"
+                max="0"
+                value="0"
+                step="1"
+                aria-label="Personel listesini sağa sola kaydır"
+              />
+            </div>
+          </div>
+        </aside>
+
+        <!-- ── Sağ: Panel ── -->
+        <section class="panel" aria-labelledby="panelTitle">
+
+          <!-- Panel başlığı -->
+          <div class="panel__header">
+            <div class="panel__name">
+              <div class="panel__avatar" id="panelAvatar" style="background:#e5e7eb;" aria-hidden="true"></div>
+              <div>
+                <div class="panel__title" id="panelTitle">Personel seçin</div>
+                <div class="panel__subtitle" id="panelSubtitle">Soldan bir personel seçin</div>
+              </div>
+            </div>
+            <div class="panel__actions">
+              <a class="btn accent" id="showCalendarBtn" href="calendar.html" aria-label="Takvimi Göster">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Takvim
+              </a>
+            </div>
+          </div>
+
+          <!-- Sekmeler -->
+          <div class="tabs" role="tablist" aria-label="Personel sekmeleri">
+            <button class="tab" id="tabBtnServices" role="tab" aria-controls="tab-services" aria-selected="true" tabindex="0">
+              Hizmetler
+            </button>
+            <button class="tab" id="tabBtnHours" role="tab" aria-controls="tab-hours" aria-selected="false" tabindex="-1">
+              Çalışma Saatleri
+            </button>
+
+          </div>
+
+          <div class="panel-body">
+
+            <!-- HİZMETLER -->
+            <div id="tab-services" role="tabpanel" aria-labelledby="tabBtnServices" tabindex="0">
+
+              <div class="svc-bar">
+                <div class="svc-bar__left">
+                  <h3>Hizmet Atamaları • <span id="srvStaffName">—</span></h3>
+                  <p><span id="srvAssignedCount" aria-live="polite">0</span> hizmet atanmış</p>
+                </div>
+                <div class="svc-controls">
+                  <label class="search-wrap">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                    <input id="srvSearch" type="search" placeholder="Hizmetlerde ara…" aria-label="Hizmetlerde ara">
+                  </label>
+                  <label class="check-all-label" for="srvSelectAll">
+                    <input type="checkbox" id="srvSelectAll" aria-controls="srvList" aria-label="Tüm hizmetleri seç/kaldır">
+                    <span class="check-all-label__icon material-symbols-rounded" aria-hidden="true">done_all</span>
+                    <span class="check-all-label__text">Tümünü Seç</span>
+                  </label>
+                </div>
+              </div>
+
+              <div id="srvEmpty">Henüz eklenmiş hizmet yok. Lütfen <strong>Ayarlar › Hizmetler</strong> bölümünden hizmet ekleyin.</div>
+              <ul id="srvList" class="svc-list" aria-label="Hizmet listesi"></ul>
+              <div id="srvNoResult">Bu filtrede hizmet bulunamadı.</div>
+
+              <div class="svc-foot">
+                <button class="btn" id="srvCancel" type="button">İptal</button>
+                <button class="btn" id="srvClearBottom" type="button">Temizle</button>
+                <button class="btn primary" id="srvSaveBottom" type="button">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  Kaydet
+                </button>
+              </div>
+            </div>
+
+            <!-- ÇALIŞMA SAATLERİ -->
+            <div id="tab-hours" role="tabpanel" aria-labelledby="tabBtnHours" tabindex="0" hidden></div>
+
+
+          </div><!-- /panel-body -->
+        </section>
+
+      </div><!-- /page -->
+    </div><!-- /container -->
+  </main>
+
+  <!-- ── Toast ── -->
+  <div id="toastEl" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ── Profil Modal ── -->
+  <div class="bm-overlay" id="bmOverlay" aria-hidden="true"></div>
+  <div class="bm-modal" id="bmModal" aria-hidden="true" data-escape-close="true" data-trap-focus="true">
+    <div class="bm-box" role="dialog" aria-modal="true" aria-labelledby="bmTitle" aria-describedby="bmDesc" data-initial-focus="#bmClose">
+      <div class="bm-head">
+        <button class="bm-x" id="bmClose" title="Kapat" aria-label="Profil penceresini kapat">
+          <svg viewBox="0 0 24 24" fill="none" width="16" height="16" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <h3 id="bmTitle">Profil</h3>
+      </div>
+      <div class="bm-body" id="bmDesc">
+        <div class="bm-search">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+            <path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="bm-list" id="bmList"></div>
+      </div>
+      <div class="bm-foot">
+        <div class="bm-user">
+          <div class="avatar" id="bmAvatar" aria-hidden="true">A</div>
+          <div class="bm-ident">
+            <div class="lbl">GİRİŞ YAPILDI</div>
+            <strong id="bmName">—</strong>
+            <div class="muted" id="bmBusiness"></div>
+            <div class="muted" id="bmMail">—</div>
+          </div>
+        </div>
+        <button class="bm-logout" type="button" id="bmLogout" aria-label="Çıkış yap">ÇIKIŞ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ MODAL (1): Vardiya Düzenle ══════════ -->
+  <div class="modal-backdrop" id="modal" style="display:none;" data-escape-close="true" data-trap-focus="true" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="staffEditTitle" data-initial-focus="#saveModal">
+      <header>
+        <div id="staffEditTitle">Saatleri Düzenle • <span id="staffName">—</span></div>
+        <button class="close-x" id="closeModal" title="Kapat" aria-label="Kapat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </header>
+      <div class="content">
+        <div class="grid" id="editGrid" aria-live="polite"></div>
+        <p class="muted" style="margin-top:12px;font-size:12px;">Not: Personel saatleri, işletme çalışma saatlerinin dışına çıkamaz.</p>
+      </div>
+      <footer>
+        <button class="btn" id="cancelModal" type="button">İptal</button>
+        <button class="btn primary" id="saveModal" type="button">Kaydet</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ══════════ MODAL (2): Yeni Personel Ekle ══════════ -->
+  <div class="modal-backdrop" id="addStaffModal" style="display:none;" data-escape-close="true" data-trap-focus="true" aria-hidden="true">
+    <div class="modal modal-lg" role="dialog" aria-modal="true" aria-labelledby="addStaffTitle" data-initial-focus="#asName">
+      <header>
+        <div id="addStaffTitle">Yeni Personel Ekle</div>
+        <button class="close-x" id="addStaffClose" title="Kapat" aria-label="Kapat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </header>
+
+      <div class="content">
+        <div class="addstaff-wrap">
+
+          <!-- Sol: Bilgiler -->
+          <div class="addstaff-left">
+            <p class="as-section-title">Temel Bilgiler</p>
+            <div class="field">
+              <label for="asName">Ad Soyad *</label>
+              <input id="asName" class="input" type="text" placeholder="Örn: Ali Yılmaz" />
+            </div>
+            <div class="field">
+              <label for="asPhone">Telefon</label>
+              <div class="phone-input">
+                <span class="phone-prefix">+90</span>
+                <input id="asPhone" class="phone-input-field" type="tel" inputmode="numeric" maxlength="10" placeholder="5xx xxx xx xx" autocomplete="tel-national"/>
+              </div>
+              <span class="phone-hint">Sadece 10 hane girin (5xx xxx xx xx)</span>
+            </div>
+
+            <p class="as-section-title" style="margin-top:16px;">Toplu Ayarlar</p>
+            <div class="bulk-actions">
+              <button class="btn" id="asAllStd" type="button">09:00 – 18:00 (Tümü)</button>
+              <button class="btn" id="asAllOff" type="button">Hepsini Kapalı</button>
+            </div>
+          </div>
+
+          <!-- Sağ: Saatler -->
+          <div class="addstaff-right">
+            <p class="as-section-title">Çalışma Saatleri</p>
+            <p class="muted" style="font-size:12px;margin:0 0 12px;">İşletme sınırları otomatik uygulanır.</p>
+            <div class="hours-grid" id="asHoursGrid" aria-live="polite"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <footer>
+        <button class="btn" id="addStaffCancel" type="button">İptal</button>
+        <button class="btn primary" id="addStaffSave" type="button">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Personeli Kaydet
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ══════════ MODAL (3): Personel Sil ══════════ -->
+  <div class="modal-backdrop" id="delStaffModal" style="display:none;" data-escape-close="true" data-trap-focus="true" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="delStaffTitle" data-initial-focus="#delStaffConfirm">
+      <header>
+        <div id="delStaffTitle">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:#dc2626;margin-right:6px;vertical-align:-3px;"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+          Personel Sil
+        </div>
+        <button class="close-x" id="delStaffClose" title="Kapat" aria-label="Kapat">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </header>
+      <div class="content">
+        <div class="del-section-header">
+          <label class="check-all-label check-all-label--compact" for="delSelectAll">
+            <input type="checkbox" id="delSelectAll" aria-controls="delStaffList" aria-label="Tüm personeli seç"/>
+            <span class="check-all-label__icon material-symbols-rounded" aria-hidden="true">group_add</span>
+            <span class="check-all-label__text">Tümünü Seç</span>
+          </label>
+          <span class="muted" style="font-size:12px;">Yönetici silinemez.</span>
+        </div>
+        <ul class="del-list" id="delStaffList" aria-label="Silinebilir personel listesi"></ul>
+        <div class="del-note">⚠️ Silinen personelin geçmiş randevuları korunur ancak yeni randevu alınamaz.</div>
+      </div>
+      <footer>
+        <button class="btn" id="delStaffCancel" type="button">İptal</button>
+        <button class="btn danger" id="delStaffConfirm" type="button" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+          Seçilenleri Sil
+        </button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Rail yükleyici -->
+  <script>
+  (function loadRail(){
+    const mount = document.getElementById('rail-mount');
+    if(!mount) return;
+    const CANDIDATES = ['bar-menu.html', '/bar-menu.html', 'partials/bar-menu.html', '/partials/bar-menu.html', '../bar-menu.html'];
+    function ensureRailStyles(){
+      const has = Array.from(document.styleSheets).some(ss=>{ try{ return Array.from(ss.cssRules||[]).some(r=>String(r.cssText).includes('.rail')); }catch{return false;} });
+      if(has) return;
+      const css = `:root{--rail-bg:#151619;--rail-fg:#b9bec7;--rail-active:#fff;--rail-accent:#7c6cff;--rail-hover:#1d1f24;--rail-divider:#2a2d34;}.rail{position:fixed;inset:0 auto 0 0;width:72px;background:var(--rail-bg);color:var(--rail-fg);display:flex;flex-direction:column;align-items:center;justify-content:space-between;z-index:1000;border-right:1px solid var(--rail-divider);padding:12px 0;}.rail__list{list-style:none;margin:0;padding:0;width:100%;flex:1;display:flex;flex-direction:column;justify-content:space-evenly;align-items:center}.rail__item{width:100%;display:flex;justify-content:center}.rail__btn{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;color:var(--rail-fg);text-decoration:none;position:relative}.rail__btn:hover{background:var(--rail-hover);color:var(--rail-active)}.rail__btn[aria-current="page"]{background:rgba(124,108,255,.12);color:var(--rail-active);box-shadow:inset 0 0 0 1px rgba(124,108,255,.35)}.rail__btn[aria-current="page"]::before{content:"";position:absolute;left:-8px;top:6px;bottom:6px;width:3px;background:var(--rail-accent);border-radius:8px}@media(max-width:900px){.rail{position:fixed!important;inset:auto 0 0 0!important;width:100%!important;height:60px!important;padding:6px 8px!important;flex-direction:row!important;justify-content:center!important;gap:10px!important;border-right:none!important;border-top:1px solid var(--rail-divider)!important;}.rail__list{width:100%!important;height:100%!important;flex-direction:row!important;justify-content:space-evenly!important;align-items:center!important;gap:6px!important;}.rail__item{width:auto!important;flex:1 1 0!important;display:flex!important;justify-content:center!important;}.rail__btn{width:40px!important;height:40px!important;border-radius:12px!important;}.rail__btn[aria-current="page"]::before{display:none!important;}}`;
+      const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+    }
+    async function tryFetch(url){
+      try{
+        const r = await fetch(url,{credentials:'same-origin'}); if(!r.ok) throw new Error();
+        const html = await r.text(); mount.innerHTML = html; mount.removeAttribute('aria-hidden');
+        ensureRailStyles();
+        mount.querySelectorAll('.rail__btn, .rail a, nav a').forEach(a=>{
+          const href = (a.getAttribute('href')||'').split(/[?#]/)[0];
+          if(/(^|\/)staff\.html$/i.test(href)) a.setAttribute('aria-current','page');
+        });
+
+        // app-bar__item--active (innerHTML inject sonrası script çalışmaz, burada ekle)
+        document.body.classList.add('has-app-bar');
+        mount.querySelectorAll('.app-bar__item').forEach(function(el){
+          if(el.getAttribute('data-page') === 'staff') el.classList.add('app-bar__item--active');
+        });
+
+        mount.querySelectorAll('.avatar-btn,[data-open="bm"]').forEach(btn=>{
+          btn.addEventListener('click',e=>{ e.preventDefault(); document.getElementById('bmModal')?.classList.add('show'); document.getElementById('bmOverlay')?.classList.add('show'); });
+        });
+        return true;
+      }catch{ return false; }
+    }
+    (async()=>{
+      let ok=false; for(const u of CANDIDATES){ ok=await tryFetch(u); if(ok) break; }
+      if(!ok){
+        mount.innerHTML=`<div class="rail"><ul class="rail__list"><li class="rail__item"><a class="rail__btn" href="calendar.html" title="Takvim"></a></li><li class="rail__item"><a class="rail__btn" href="staff.html" aria-current="page" title="Personel"></a></li><li class="rail__item"><a class="rail__btn" href="settings.html" title="Ayarlar">⚙️</a></li></ul></div>`;
+        mount.removeAttribute('aria-hidden'); ensureRailStyles();
+      }
+    })();
+  })();
+  </script>
+
+  <!-- Profil modal kapatma -->
+  <script>
+    document.addEventListener('mousedown',e=>{
+      const bmOpen = document.getElementById('bmModal')?.classList.contains('show');
+      if(!bmOpen) return;
+      if(!e.target.closest('#bmModal') && !e.target.closest('[data-open="bm"]')){
+        document.getElementById('bmModal')?.classList.remove('show');
+        document.getElementById('bmOverlay')?.classList.remove('show');
+      }
+    });
+    document.getElementById('bmClose')?.addEventListener('click',()=>{
+      document.getElementById('bmModal')?.classList.remove('show');
+      document.getElementById('bmOverlay')?.classList.remove('show');
+    });
+  </script>
+
+  <!-- Sayfa JS -->
+  <script type="module" src="js/staff.js?v=67"></script>
+  <script src="js/mobil_staff.js?v=9"></script>
+  <script src="js/wb-transitions.js" defer></script>
+  <script src="js/admin-interactions.js" defer></script>
+  <!-- ══════ MOBİL ALT NAVİGASYON ══════ -->
+  <nav class="wb-bottom-nav" id="adminBottomNav" aria-label="Admin menü" role="navigation">
+    <div class="wb-bn-inner">
+
+      <!-- Personel — AKTİF -->
+      <a class="wb-bn-item is-active" href="staff.html" aria-label="Personel" aria-current="page">
+        <span class="wb-bn-icon material-symbols-rounded">group</span>
+        <span class="wb-bn-label">Personel</span>
+      </a>
+
+      <!-- Ayarlar -->
+      <a class="wb-bn-item" href="settings.html" aria-label="Ayarlar">
+        <span class="wb-bn-icon material-symbols-rounded">store</span>
+        <span class="wb-bn-label">Dükkan</span>
+      </a>
+
+      <!-- TAKVİM — Merkez CTA -->
+      <a class="wb-bn-item wb-bn-cta" href="calendar.html" aria-label="Takvim">
+        <div class="wb-bn-cta-bubble">
+          <span class="wb-bn-icon material-symbols-rounded">calendar_month</span>
+        </div>
+        <span class="wb-bn-label">Takvim</span>
+      </a>
+
+      <!-- Bildirimler -->
+      <a class="wb-bn-item" href="bildirimler.html" aria-label="Bildirimler" id="bnBellLink">
+        <span class="wb-bn-icon material-symbols-rounded" style="position:relative">
+          notifications
+          <span id="bnBellBadge" class="wb-bn-badge" aria-live="polite"></span>
+        </span>
+        <span class="wb-bn-label">Bildirim</span>
+      </a>
+
+      <!-- Profil -->
+      <a class="wb-bn-item" href="admin-profile.html" aria-label="Profil">
+        <span class="wb-bn-icon material-symbols-rounded">account_circle</span>
+        <span class="wb-bn-label">Profil</span>
+      </a>
+
+    </div>
+  </nav>
+  <!-- Global Bildirimler -->
+  <script src="js/wb-notifications.js"></script>
+</body>
+</html>

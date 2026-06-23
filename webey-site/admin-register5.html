@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="robots" content="noindex,nofollow"/><meta name="theme-color" content="#07080d"/>
+  <title>Adım 3 – Adres Bilgileri | Webey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    :root{--bg:#07080d;--bg2:#0d0f17;--bg3:#111420;--teal:#0ea5b3;--teal-d:#0b8a96;--teal-g:rgba(14,165,179,.35);--teal-s:rgba(14,165,179,.10);--ink:#fff;--ink2:rgba(255,255,255,.68);--ink3:rgba(255,255,255,.40);--border:rgba(255,255,255,.08);--border-t:rgba(14,165,179,.22);--on:#22c55e;--on-g:rgba(34,197,94,.2);--danger:#ef4444;--danger-s:rgba(239,68,68,.12);--warn:#f59e0b;--warn-s:rgba(245,158,11,.12);--input-bg:rgba(255,255,255,.04);--radius:20px;--radius-sm:12px;--shadow:0 0 0 1px var(--border-t),0 32px 80px rgba(0,0,0,.6),0 0 60px rgba(14,165,179,.06);--ring:rgba(14,165,179,.3);}
+    *,*::before,*::after{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0;min-height:100dvh;font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;align-items:center;padding:clamp(16px,3vw,28px) clamp(12px,4vw,20px);padding-top:calc(env(safe-area-inset-top,0px) + 16px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px);-webkit-font-smoothing:antialiased;}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(14,165,179,.12),transparent 65%);}
+    .page-logo{display:block;text-align:center;margin-bottom:20px;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:#fff;text-decoration:none;position:relative;z-index:1;}.page-logo em{color:var(--teal);font-style:normal;}
+    .sn{width:min(600px,100%);margin:0 auto 20px;display:flex;align-items:flex-start;position:relative;z-index:1;}
+    .sn-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:0 0 auto;}
+    .sn-line{flex:1 1 0;height:2px;background:var(--border);margin-top:14px;border-radius:2px;min-width:6px;transition:background .35s;}.sn-line.done{background:var(--on);}
+    .sn-bubble{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:2px solid var(--border);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink3);transition:all .3s;}
+    .sn-item.done .sn-bubble{background:var(--on);border-color:var(--on);color:#fff;}
+    .sn-item.active .sn-bubble{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 4px var(--teal-s);}
+    .sn-label{font-size:9.5px;font-weight:700;color:var(--ink3);letter-spacing:.05em;text-align:center;white-space:nowrap;text-transform:uppercase;line-height:1;}
+    .sn-item.done .sn-label,.sn-item.active .sn-label{color:var(--ink2);}
+    @media(max-width:480px){.sn-label{display:none}.sn-bubble{width:24px;height:24px;font-size:10px}.sn-line{margin-top:11px}}
+    .card,.container{width:min(600px,100%);background:var(--bg2);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border-t);padding:28px 28px 32px;position:relative;z-index:1;}
+    @media(max-width:560px){.card,.container{padding:20px 18px 28px;}}
+    .top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+    .back-btn{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--ink2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;}
+    .back-btn:hover{border-color:var(--border-t);color:var(--teal);background:var(--teal-s);}
+    .back-btn:focus-visible{outline:2px solid var(--teal);}
+    h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    h2{font-size:clamp(17px,3.5vw,20px);font-weight:700;letter-spacing:-.1px;margin:0 0 8px;color:#fff;}
+    .title{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    .subtitle,.sub{color:var(--ink2);margin:0 0 22px;font-size:14px;line-height:1.55;}
+    .row,.form-row,.field,.field-row{margin-bottom:16px;}
+    label{display:block;font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:7px;letter-spacing:.08em;text-transform:uppercase;}
+    input[type="text"],input[type="tel"],input[type="email"],input[type="password"],input[type="number"],input[type="time"],select,textarea{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;}
+    input::placeholder,textarea::placeholder{color:var(--ink3);}
+    input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    input[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+    textarea{height:auto;padding:12px 14px;resize:vertical;}
+    select option{background:var(--bg3);color:#fff;}
+    .btn{width:100%;min-height:50px;border-radius:999px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-top:10px;}
+    .btn:hover:not([disabled]){opacity:.92;}
+    .btn:active:not([disabled]){transform:scale(.98);}
+    .btn[disabled]{opacity:.4;cursor:not-allowed;}
+    .btn-primary{background:var(--teal);color:#fff;box-shadow:0 6px 22px var(--teal-g);}
+    .btn-primary:hover:not([disabled]){background:var(--teal-d);box-shadow:0 10px 28px var(--teal-g);transform:translateY(-1px);}
+    .btn-ghost{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ghost:hover:not([disabled]){background:rgba(255,255,255,.09);color:#fff;}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ok{background:var(--on);color:#fff;}
+    .btn-danger{background:rgba(239,68,68,.15);color:var(--danger);border:1px solid rgba(239,68,68,.25);}
+    .btn-row{display:flex;gap:10px;margin-top:14px;}
+    .btn-row .btn{margin-top:0;flex:1;}
+    @media(max-width:440px){.btn-row{flex-direction:column;}}
+    .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--bg3);color:#fff;border:1px solid var(--border);padding:11px 22px;border-radius:999px;font-size:13.5px;font-weight:600;display:none;z-index:10000;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.4);}
+    .toast.show{display:block;animation:toastPop 2.4s ease both;}
+    .toast.err{background:#7f1d1d;border-color:var(--danger);}
+    @keyframes toastPop{0%{opacity:0;transform:translate(-50%,10px)}12%{opacity:1;transform:translate(-50%,0)}88%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
+    .help{font-size:12px;color:var(--ink3);margin-top:5px;line-height:1.4;}
+    .error-text{font-size:12px;color:var(--danger);margin-top:5px;display:none;}
+    .error-text.show{display:block;}
+    .warn-text{font-size:12px;color:var(--warn);margin-top:5px;display:none;}
+    .warn-text.show{display:block;}
+    .section-divider{height:1px;background:var(--border);margin:20px 0;}
+    /* Toggle switch */
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+    .toggle-row:last-child{border-bottom:none;}
+    .toggle-label{font-size:14px;font-weight:600;color:var(--ink);}
+    .toggle-sub{font-size:12px;color:var(--ink3);}
+    .sw{position:relative;width:46px;height:26px;flex-shrink:0;}
+    .sw input{opacity:0;width:0;height:0;}
+    .sw-slider{position:absolute;inset:0;background:rgba(255,255,255,.15);border-radius:999px;cursor:pointer;transition:.25s;}
+    .sw-slider::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s;}
+    .sw input:checked~.sw-slider{background:var(--teal);}
+    .sw input:checked~.sw-slider::before{transform:translateX(20px);}
+    /* Day rows (register6) */
+    .day-row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+    .day-row:last-child{border-bottom:none;}
+    .day-name{font-size:14px;font-weight:600;min-width:80px;}
+    .time-pair{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .time-pair input[type="time"]{width:110px;height:40px;flex-shrink:0;}
+    .time-sep{font-size:13px;color:var(--ink3);}
+    /* Service & staff cards */
+    .item-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .item-name{font-size:15px;font-weight:600;}
+    .item-detail{font-size:13px;color:var(--ink2);}
+    .item-actions{display:flex;gap:6px;flex-shrink:0;}
+    .icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--ink3);display:grid;place-items:center;cursor:pointer;transition:all .15s;font-size:14px;}
+    .icon-btn:hover{color:#fff;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);}
+    .icon-btn.del:hover{color:var(--danger);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.06);}
+    /* Avatar */
+    .avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700;flex-shrink:0;}
+    /* Modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.active{display:flex;}
+    .modal{background:var(--bg2);border:1px solid var(--border-t);border-radius:var(--radius);padding:24px;width:min(480px,100%);max-height:90dvh;overflow-y:auto;}
+    .modal h3{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;margin:0 0 18px;color:#fff;}
+    .modal-footer{display:flex;gap:10px;margin-top:20px;}
+    .modal-footer .btn{margin-top:0;flex:1;}
+    /* Picker */
+    /* Picker — mobilde bottom sheet, masaüstünde ortalanmış modal */
+    .picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:2000;display:none;align-items:center;justify-content:center;padding:16px;}
+    .picker-overlay.active{display:flex;}
+    .picker-sheet{background:var(--bg2);border:1px solid var(--border-t);border-radius:var(--radius);padding:20px;width:min(480px,100%);max-height:80dvh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.7);}
+    .picker-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+    .picker-title{font-size:16px;font-weight:700;color:#fff;margin:0;}
+    .picker-close-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:rgba(255,255,255,.07);color:var(--ink2);display:grid;place-items:center;cursor:pointer;font-size:14px;flex-shrink:0;transition:all .15s;}
+    .picker-close-btn:hover{background:rgba(255,255,255,.13);color:#fff;}
+    .picker-search{width:100%;height:44px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;margin-bottom:10px;box-sizing:border-box;}
+    .picker-search:focus{border-color:var(--teal);}
+    .picker-list{overflow-y:auto;flex:1;}
+    .picker-item{display:block;width:100%;text-align:left;padding:13px 14px;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--ink2);font-family:inherit;font-size:15px;cursor:pointer;transition:background .15s;}
+    .picker-item:hover,.picker-item.selected{background:var(--teal-s);color:#fff;}
+    .picker-empty{padding:20px;text-align:center;color:var(--ink3);font-size:14px;}
+    /* Grid */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media(max-width:420px){.grid-2{grid-template-columns:1fr;}}
+    /* Add form */
+    .add-form{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px;}
+    /* Staff owner card */
+    .owner-card{background:var(--teal-s);border:1px solid var(--border-t);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+    .owner-badge{font-size:11px;font-weight:700;background:var(--teal);color:#fff;border-radius:999px;padding:2px 8px;}
+    /* Success card (register9) */
+    .success-hero{text-align:center;padding:16px 0 28px;}
+    .success-icon{width:72px;height:72px;border-radius:24px;background:var(--on-g);border:1px solid rgba(34,197,94,.3);display:grid;place-items:center;margin:0 auto 20px;font-size:28px;color:var(--on);}
+    .feature-list{list-style:none;padding:0;margin:0;}
+    .feature-list li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--ink2);}
+    .feature-list li:last-child{border-bottom:none;}
+    .feature-list li i{color:var(--teal);width:20px;text-align:center;flex-shrink:0;}
+    /* Checkbox */
+    input[type="checkbox"]{accent-color:var(--teal);width:16px;height:16px;}
+    /* Tag chips */
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600;background:var(--teal-s);border:1px solid var(--border-t);color:var(--teal);margin:3px;}
+    .tag.inactive{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--ink3);}
+    /* Select trigger button for address page */
+    .select-trigger{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:var(--ink3);font-family:inherit;outline:none;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:border-color .15s;}
+    .select-trigger.filled{color:#fff;}
+    .select-trigger:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    .select-trigger[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+  </style>
+</head>
+<body>
+  <a href="index.html" class="page-logo">Web<em>ey</em></a>
+  <nav class="sn" aria-label="Kayıt adımları (7 adım)">
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Şifre</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Profil</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item active" aria-current=step><div class="sn-bubble">3</div><span class="sn-label">Adres</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">4</div><span class="sn-label">Saatler</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">5</div><span class="sn-label">Hizmetler</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">6</div><span class="sn-label">Personel</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">7</div><span class="sn-label">Bitiş</span></div>
+  </nav>
+  
+  
+<main class="card" role="main">
+    <div class="top">
+      <button class="back-btn" id="btnBack" aria-label="Geri"><i class="fa-solid fa-arrow-left"></i></button>
+    </div>
+
+    <h1>Adresinizi doğrulayın</h1>
+    <p class="subtitle">Dükkan konumunuzu kaydedin. Türkiye genelinden il / ilçe / mahalle seçebilirsiniz.</p>
+
+    <form id="addressForm" autocomplete="off" novalidate>
+      <div class="info-card">
+        <i class="fa-solid fa-location-dot"></i>
+        <div>Adresiniz, müşterilerin sizi listelerde doğru şehir / ilçe altında gösterebilmemiz için kullanılır.</div>
+      </div>
+
+      <div class="field-row">
+        <label for="citySelect">ŞEHİR</label>
+        <select id="citySelect" required aria-invalid="false">
+          <option value="" selected disabled>Şehir seçin</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="districtSelect">İLÇE</label>
+        <select id="districtSelect" required aria-invalid="false" disabled>
+          <option value="" selected disabled>Önce il seçin</option>
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="neighborhoodSelect">MAHALLE</label>
+        <select id="neighborhoodSelect" required aria-invalid="false" disabled>
+          <option value="" selected disabled>Önce ilçe seçin</option>
+        </select>
+        <div class="help">İlçe seçildikten sonra mahalle listesi otomatik gelir.</div>
+      </div>
+
+      <div class="field-row">
+        <div class="inline-grid">
+          <div>
+            <label for="street">CADDE / SOKAK</label>
+            <input id="street" type="text" placeholder="Örn: Selvi Sokak" maxlength="120" aria-invalid="false"/>
+          </div>
+          <div>
+            <label for="buildingNo">BİNA NO</label>
+            <input id="buildingNo" type="text" placeholder="Örn: 12" maxlength="10" aria-invalid="false"/>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn" id="btnNext" type="submit" disabled>
+        DEVAM ET
+      </button>
+    </form>
+  </main>
+
+  
+
+  <div id="pickerOverlay" class="picker-overlay" aria-hidden="true">
+    <div class="picker-sheet" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
+      <div class="picker-header">
+        <span id="pickerTitle" class="picker-title">Seçim yapın</span>
+        <button id="pickerCancel" class="picker-close-btn" type="button" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <input id="pickerSearch" class="picker-search" type="text" placeholder="Ara…" />
+      <div id="pickerList" class="picker-list"></div>
+    </div>
+  </div>
+
+  <!-- ✅ Firebase kaldırıldı, MySQL Session + PHP API ile kontrol -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module">
+    // ===== API (MySQL + PHP) =====
+    const API_BASE = (window.API_BASE || "/api").replace(/\/+$/, "");
+    const apiUrl = (path) => {
+      if (!path.startsWith("/")) path = "/" + path;
+      return API_BASE + path;
+    };
+
+        // ── CSRF Token Yönetimi ─────────────────────────────────────
+    let __wbCsrf = null;
+    async function getCsrfToken() {
+      if (__wbCsrf) return __wbCsrf;
+      try { const r=await fetch("/api/csrf.php",{credentials:"include"}); const j=await r.json(); __wbCsrf=j?.data?.token||null; } catch {}
+      return __wbCsrf;
+    }
+    // ─────────────────────────────────────────────────────────────
+    async function postJson(path, body){
+      const csrf = await getCsrfToken();
+      const hdrs = {"Content-Type":"application/json","Accept":"application/json"};
+      if (csrf) hdrs["X-CSRF-Token"] = csrf;
+      const res = await fetch(apiUrl(path), {
+        method:"POST",
+        credentials:"include",
+        headers: hdrs,
+        body: JSON.stringify(body && typeof body==="object" ? body : {})
+      });
+      const data = await res.json().catch(()=> ({}));
+      if(!res.ok){
+        const err = new Error(data?.error || data?.message || `İstek başarısız (${res.status})`);
+        err.status = res.status;
+        err.response = data;
+        throw err;
+      }
+      return data;
+    }
+
+    // Flow keys
+    const K_FLOW   = "admin_onboarding_flow";
+    const K_EMAIL  = "pending_admin_email";
+    const K_METHOD = "admin_onboarding_method";
+    const K_LAST   = "admin_onboarding_last_step";
+    const K_TOTAL  = "admin_onboarding_total";
+    const K_DATA   = "onboardingData"; // local payload
+
+    const TOTAL_STEPS = 7;
+    const CURRENT_STEP = 3;
+
+    function stepToHref(n){
+      const s = Math.max(1, Math.min(TOTAL_STEPS, Number(n)||1));
+      if (s <= 1) return "admin-register1.html";
+      if (s === 2) return "admin-register2.html";
+      if (s === 3) return "admin-register5.html";
+      if (s === 4) return "admin-register6.html";
+      if (s === 5) return "admin-register7.html";
+      if (s === 6) return "admin-register8.html";
+      return "admin-register9.html";
+    }
+
+    const readStore  = (k)   => localStorage.getItem(k);
+    const writeStore = (k,v) => localStorage.setItem(k,v);
+    const $ = (s,r=document)=>r.querySelector(s);
+
+    function getOnboardingData(){
+      try { return JSON.parse(localStorage.getItem(K_DATA) || "{}"); }
+      catch { return {}; }
+    }
+    function patchOnboardingData(patch){
+      const cur = getOnboardingData();
+      const next = { ...cur, ...patch };
+      localStorage.setItem(K_DATA, JSON.stringify(next));
+      return next;
+    }
+
+    const toast = $("#toast");
+    function showToast(msg,err=false){
+      toast.textContent = msg;
+      toast.className = "toast show" + (err ? " err" : "");
+      setTimeout(()=> toast.classList.remove("show","err"), 2200);
+    }
+
+    const citySel  = $("#citySelect");
+    const distSel  = $("#districtSelect");
+    const nbSel    = $("#neighborhoodSelect");
+    const streetEl = $("#street");
+    const noEl     = $("#buildingNo");
+    const btnNext  = $("#btnNext");
+    const btnBack  = $("#btnBack");
+    const form     = $("#addressForm");
+
+    const pickerOverlay = $("#pickerOverlay");
+    const pickerTitle   = $("#pickerTitle");
+    const pickerSearch  = $("#pickerSearch");
+    const pickerList    = $("#pickerList");
+    const pickerCancel  = $("#pickerCancel");
+    let activeSelect    = null;
+
+    async function requireSessionOrRedirect(){
+      try{
+        // register5-7 arası session YOK — sadece localStorage kontrolü yapılır
+        // me.php ÇAŞRILMAZ, register8'de register.php ile session açılır
+        const flow  = (localStorage.getItem(K_FLOW)||"").trim().toLowerCase();
+        const email = (localStorage.getItem(K_EMAIL)||"").trim();
+        const pw    = (localStorage.getItem("_reg_pw")||"").trim();
+        if(flow !== "admin" || !email){
+          location.replace("admin-register-login.html#login");
+          return null;
+        }
+        // completed check yok — kayıt henüz tamamlanmadı
+        return { ok: true };
+      }catch(e){
+        location.replace("admin-register-login.html#login");
+        return null;
+      }
+    }
+
+    function guardLocalFlow(){
+      const flow   = (readStore(K_FLOW)||"").trim().toLowerCase();
+      const email  = (readStore(K_EMAIL)||"").trim();
+      const method = (readStore(K_METHOD)||"").trim().toLowerCase();
+      const last   = Number(readStore(K_LAST)||"0");
+
+      if(flow!=="admin" || !email || !method){
+        location.replace("admin-register-login.html#login");
+        return false;
+      }
+      if(!readStore(K_TOTAL)) writeStore(K_TOTAL, String(TOTAL_STEPS));
+
+      if(last < CURRENT_STEP){
+        location.replace(stepToHref(last || 1));
+        return false;
+      }
+      if(last > CURRENT_STEP){
+        location.replace(stepToHref(last));
+        return false;
+      }
+      return true;
+    }
+
+    async function initLocationCombos(){
+      try{
+        const { attachTRLocationCombo } = await import("./js/components/select-combo.js");
+        await attachTRLocationCombo({
+          citySelect: citySel,
+          districtSelect: distSel,
+          neighborhoodSelect: nbSel
+        });
+        restoreFromLocal();
+        hookValidation();
+        hookPickerTriggers();
+      }catch(err){
+        console.error("[attachTRLocationCombo] hata:", err);
+        showToast("Adres listesini yüklerken sorun oluştu.", true);
+      }
+    }
+
+    function restoreFromLocal(){
+      // 1) eski key varsa (geri uyumluluk)
+      try{
+        const raw = readStore("step5");
+        if(raw){
+          const obj = JSON.parse(raw);
+          const loc = obj?.businessLocation;
+          if(loc) return applyLocation(loc);
+        }
+      }catch{}
+
+      // 2) yeni: onboardingData.address
+      try{
+        const data = getOnboardingData();
+        const loc = data?.address;
+        if(loc) applyLocation(loc);
+      }catch{}
+    }
+
+    function applyLocation(loc){
+      if(loc.cityCode){
+        citySel.value = loc.cityCode;
+        citySel.dispatchEvent(new Event("change"));
+      }
+      setTimeout(()=>{
+        if(loc.districtCode){
+          distSel.value = loc.districtCode;
+          distSel.dispatchEvent(new Event("change"));
+        }
+        setTimeout(()=>{
+          if(loc.neighborhoodCode){
+            nbSel.value = loc.neighborhoodCode;
+          }
+        }, 80);
+      }, 80);
+
+      streetEl.value = loc.street || "";
+      noEl.value     = loc.buildingNo || "";
+    }
+
+    let DIRTY = false, allowLeave = false;
+    let validationActive = false;
+
+    window.addEventListener("beforeunload",(e)=>{
+      if(!allowLeave && DIRTY){
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    });
+
+    function markDirty(){ DIRTY = true; }
+
+    function updateValidity(){
+      const cityOk   = !!citySel.value;
+      const distOk   = !!distSel.value;
+      const nbOk     = !!nbSel.value;
+      const streetOk = streetEl.value.trim().length >= 3;
+      const noOk     = noEl.value.trim().length >= 1;
+
+      const allOk = cityOk && distOk && nbOk && streetOk && noOk;
+      btnNext.disabled = !allOk;
+
+      if (validationActive){
+        citySel.setAttribute("aria-invalid", String(!cityOk));
+        distSel.setAttribute("aria-invalid", String(!distOk));
+        nbSel.setAttribute("aria-invalid",   String(!nbOk));
+        streetEl.setAttribute("aria-invalid",String(!streetOk));
+        noEl.setAttribute("aria-invalid",    String(!noOk));
+      } else {
+        citySel.setAttribute("aria-invalid","false");
+        distSel.setAttribute("aria-invalid","false");
+        nbSel.setAttribute("aria-invalid","false");
+        streetEl.setAttribute("aria-invalid","false");
+        noEl.setAttribute("aria-invalid","false");
+      }
+      return allOk;
+    }
+
+    function hookValidation(){
+      [citySel, distSel, nbSel, streetEl, noEl].forEach(el=>{
+        el?.addEventListener("change", ()=>{ markDirty(); updateValidity(); });
+        el?.addEventListener("input",  ()=>{ markDirty(); updateValidity(); });
+      });
+      updateValidity();
+    }
+
+    function persistLocalAddress(){
+      const cityOpt = citySel.options[citySel.selectedIndex] || null;
+      const distOpt = distSel.options[distSel.selectedIndex] || null;
+      const nbOpt   = nbSel.options[nbSel.selectedIndex]   || null;
+
+      const cityName = cityOpt ? cityOpt.textContent.trim() : "";
+      const distName = distOpt ? distOpt.textContent.trim() : "";
+      const nbName   = nbOpt   ? nbOpt.textContent.trim()   : "";
+
+      const street   = streetEl.value.trim();
+      const building = noEl.value.trim();
+
+      const fullText = `${nbName ? nbName + " Mah. " : ""}${street}${building ? " No: " + building : ""}, ${distName}/${cityName}`;
+
+      const address = {
+        cityCode: citySel.value || "",
+        cityName,
+        districtCode: distSel.value || "",
+        districtName: distName,
+        neighborhoodCode: nbSel.value || "",
+        neighborhoodName: nbName,
+        street,
+        buildingNo: building,
+        addressLine: fullText
+      };
+
+      // geri uyumluluk için ikisini de yaz
+      writeStore("step5", JSON.stringify({ businessLocation: address }));
+      patchOnboardingData({ address });
+
+      return address;
+    }
+
+    function normalizeTR(str){
+      return (str || "")
+        .toLocaleLowerCase("tr-TR")
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function openPicker(selectEl){
+      if (!selectEl || selectEl.disabled) return;
+      activeSelect = selectEl;
+
+      const label = document.querySelector(`label[for="${selectEl.id}"]`);
+      pickerTitle.textContent = label ? label.textContent.trim() : "Seçim yapın";
+
+      pickerSearch.value = "";
+      buildPickerOptions();
+
+      pickerOverlay.classList.add("active");
+      pickerOverlay.setAttribute("aria-hidden","false");
+      document.body.style.overflow = "hidden";
+      setTimeout(()=> pickerSearch.focus(), 40);
+    }
+
+    function closePicker(){
+      pickerOverlay.classList.remove("active");
+      pickerOverlay.setAttribute("aria-hidden","true");
+      document.body.style.overflow = "";
+      activeSelect = null;
+    }
+
+    function buildPickerOptions(){
+      pickerList.innerHTML = "";
+      if (!activeSelect) return;
+
+      const q = normalizeTR(pickerSearch.value || "");
+      const options = Array.from(activeSelect.options);
+
+      let added = 0;
+      for (const opt of options){
+        if (!opt.value) continue;
+        const text = opt.textContent || "";
+        if (q && !normalizeTR(text).includes(q)) continue;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "picker-item";
+        btn.textContent = text;
+        btn.dataset.value = opt.value;
+        if (opt.value === activeSelect.value) btn.classList.add("selected");
+
+        btn.addEventListener("click", ()=>{
+          activeSelect.value = opt.value;
+          activeSelect.dispatchEvent(new Event("change", { bubbles:true }));
+          closePicker();
+        });
+
+        pickerList.appendChild(btn);
+        added++;
+      }
+
+      if (!added){
+        const div = document.createElement("div");
+        div.className = "picker-empty";
+        div.textContent = "Sonuç bulunamadı.";
+        pickerList.appendChild(div);
+      }
+    }
+
+    function hookPickerTriggers(){
+      [citySel, distSel, nbSel].forEach(sel=>{
+        if (!sel) return;
+
+        // native select açılmasın -> custom picker
+        sel.addEventListener("mousedown",(e)=>{
+          e.preventDefault();
+          openPicker(sel);
+        });
+        sel.addEventListener("keydown",(e)=>{
+          if(e.key === "Enter" || e.key === " "){
+            e.preventDefault();
+            openPicker(sel);
+          }
+        });
+      });
+
+      pickerSearch.addEventListener("input", buildPickerOptions);
+      pickerCancel.addEventListener("click",(e)=>{ e.preventDefault(); closePicker(); });
+      pickerOverlay.addEventListener("click",(e)=>{ if(e.target === pickerOverlay) closePicker(); });
+    }
+
+    // back (çıkmadan önce local'e kaydet)
+    btnBack?.addEventListener("click",(e)=>{
+      e.preventDefault();
+      persistLocalAddress();
+      allowLeave = true;
+      location.replace("admin-register2.html");
+    });
+
+    // submit => SADECE LOCAL KAYIT
+    form?.addEventListener("submit", (e)=>{
+      e.preventDefault();
+      validationActive = true;
+
+      if(!updateValidity()){
+        showToast("Lütfen adres alanlarını eksiksiz doldurun.", true);
+        return;
+      }
+
+      persistLocalAddress();
+
+      // ✅ next step (4)
+      writeStore(K_LAST, "4");
+      allowLeave = true;
+      DIRTY = false;
+      location.replace("admin-register6.html");
+    });
+
+    // Boot
+    (async function boot(){
+      const me = await requireSessionOrRedirect();
+      if(!me) return;
+      const ok = guardLocalFlow();
+      if(!ok) return;
+      await initLocationCombos();
+    })();
+  </script>
+
+</body>
+</html>

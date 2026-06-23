@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="robots" content="noindex,nofollow"/><meta name="theme-color" content="#07080d"/>
+  <title>Adım 1 – Şifre Belirle | Webey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    :root{--bg:#07080d;--bg2:#0d0f17;--bg3:#111420;--teal:#0ea5b3;--teal-d:#0b8a96;--teal-g:rgba(14,165,179,.35);--teal-s:rgba(14,165,179,.10);--ink:#fff;--ink2:rgba(255,255,255,.68);--ink3:rgba(255,255,255,.40);--border:rgba(255,255,255,.08);--border-t:rgba(14,165,179,.22);--on:#22c55e;--on-g:rgba(34,197,94,.2);--danger:#ef4444;--danger-s:rgba(239,68,68,.12);--warn:#f59e0b;--warn-s:rgba(245,158,11,.12);--input-bg:rgba(255,255,255,.04);--radius:20px;--radius-sm:12px;--shadow:0 0 0 1px var(--border-t),0 32px 80px rgba(0,0,0,.6);--ring:rgba(14,165,179,.3);--meter-weak:#ef4444;--meter-mid:#f59e0b;--meter-strong:#22c55e;--meter-xstrong:#0ea5b3;}
+    *,*::before,*::after{box-sizing:border-box;}
+    body{margin:0;min-height:100dvh;font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;align-items:center;padding:clamp(16px,3vw,28px) clamp(12px,4vw,20px);padding-top:calc(env(safe-area-inset-top,0px) + 16px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px);-webkit-font-smoothing:antialiased;}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(14,165,179,.12),transparent 65%);}
+    .page-logo{display:block;text-align:center;margin-bottom:20px;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:#fff;text-decoration:none;position:relative;z-index:1;}
+    .page-logo em{color:var(--teal);font-style:normal;}
+    .sn{width:min(560px,100%);margin:0 auto 20px;display:flex;align-items:flex-start;position:relative;z-index:1;}
+    .sn-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:0 0 auto;}
+    .sn-line{flex:1 1 0;height:2px;background:var(--border);margin-top:14px;border-radius:2px;min-width:6px;transition:background .35s;}
+    .sn-line.done{background:var(--on);}
+    .sn-bubble{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:2px solid var(--border);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink3);transition:all .3s;}
+    .sn-item.done .sn-bubble{background:var(--on);border-color:var(--on);color:#fff;}
+    .sn-item.active .sn-bubble{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 4px var(--teal-s);}
+    .sn-label{font-size:9.5px;font-weight:700;color:var(--ink3);letter-spacing:.05em;text-align:center;white-space:nowrap;text-transform:uppercase;line-height:1;}
+    .sn-item.done .sn-label,.sn-item.active .sn-label{color:var(--ink2);}
+    @media(max-width:480px){.sn-label{display:none}.sn-bubble{width:24px;height:24px;font-size:10px}.sn-line{margin-top:11px}}
+    .card{width:min(520px,100%);background:var(--bg2);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border-t);padding:28px 28px 32px;position:relative;z-index:1;}
+    @media(max-width:520px){.card{padding:20px 18px 28px;}}
+    .top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+    .back-btn{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--ink2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;}
+    .back-btn:hover{border-color:var(--border-t);color:var(--teal);background:var(--teal-s);}
+    h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,27px);font-weight:400;margin:0 0 6px;color:#fff;}
+    .subtitle{color:var(--ink2);margin:0 0 22px;font-size:14px;line-height:1.55;}
+    .email-summary{display:flex;align-items:center;gap:12px;background:var(--teal-s);border:1px solid var(--border-t);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:20px;font-size:14px;}
+    .email-summary i{color:var(--teal);font-size:16px;}
+    .email-lbl{font-size:11px;color:var(--ink3);margin-bottom:2px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+    .email-text{font-weight:700;font-size:14px;color:#fff;}
+    .field{margin-bottom:16px;}
+    label{display:block;font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:7px;letter-spacing:.08em;text-transform:uppercase;}
+    input[type="password"],input[type="text"]{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;}
+    input::placeholder{color:var(--ink3);}
+    input:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    input[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+    .pw-wrap{position:relative;}.pw-wrap input{padding-right:90px;}
+    .toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:none;background:transparent;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--ink3);display:grid;place-items:center;transition:color .15s;}
+    .toggle:hover{color:var(--ink2);}
+    .pw-suggest{position:absolute;right:42px;top:50%;transform:translateY(-50%);height:30px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--ink2);padding:0 10px;cursor:pointer;font-weight:700;font-size:12px;font-family:inherit;transition:all .15s;}
+    .pw-suggest:hover{background:rgba(255,255,255,.12);color:#fff;}
+    .meter{margin:10px 0 6px;}
+    .meter-bars{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+    .bar{height:5px;background:rgba(255,255,255,.08);border-radius:999px;transition:background .3s;}
+    .bar.f1{background:var(--meter-weak);}.bar.f2{background:var(--meter-mid);}.bar.f3{background:var(--meter-strong);}.bar.f4{background:var(--meter-xstrong);}
+    .meter-label{font-size:12px;color:var(--ink3);font-weight:600;margin-top:5px;}
+    .rules{margin:12px 0 6px;padding:0;list-style:none;}
+    .rules li{display:flex;align-items:center;gap:10px;padding:5px 0;font-size:13px;color:var(--ink3);}
+    .rules li .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.15);flex-shrink:0;transition:background .2s;}
+    .rules li.valid{color:var(--on);}.rules li.valid .dot{background:var(--on);}
+    .caps{display:none;margin:6px 0;font-size:13px;padding:10px 12px;border-radius:var(--radius-sm);background:var(--warn-s);color:var(--warn);border:1px solid rgba(245,158,11,.2);}
+    .caps.show{display:flex;align-items:center;gap:8px;}
+    .terms-row{display:flex;align-items:flex-start;gap:10px;margin:18px 0 4px;cursor:pointer;}
+    .terms-row input[type="checkbox"]{margin-top:3px;width:16px;height:16px;accent-color:var(--teal);flex-shrink:0;}
+    .terms-row span{font-size:12.5px;color:var(--ink2);line-height:1.55;}
+    .terms-row a{color:var(--teal);font-weight:600;text-decoration:none;}
+    .btn-row{display:flex;gap:10px;margin-top:14px;}
+    .btn{min-height:50px;border-radius:999px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;flex:1;}
+    .btn:disabled{opacity:.4;cursor:not-allowed;}.btn:active:not(:disabled){transform:scale(.98);}
+    .btn-primary{background:var(--teal);color:#fff;box-shadow:0 6px 22px var(--teal-g);}
+    .btn-primary:hover:not(:disabled){background:var(--teal-d);box-shadow:0 10px 28px var(--teal-g);transform:translateY(-1px);}
+    .btn-ghost{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ghost:hover:not(:disabled){background:rgba(255,255,255,.09);color:#fff;}
+    .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--bg3);color:#fff;border:1px solid var(--border);padding:11px 22px;border-radius:999px;font-size:13.5px;font-weight:600;display:none;z-index:10000;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.4);}
+    .toast.show{display:block;animation:toastPop 2.4s ease both;}.toast.err{background:#7f1d1d;border-color:var(--danger);}
+    @keyframes toastPop{0%{opacity:0;transform:translate(-50%,10px)}12%{opacity:1;transform:translate(-50%,0)}88%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
+    @media(max-width:440px){.btn-row{flex-direction:column;}}
+  </style>
+</head>
+<body>
+  <a href="index.html" class="page-logo">Web<em>ey</em></a>
+  <nav class="sn" aria-label="Kayıt adımları (7 adım)">
+    <div class="sn-item active" aria-current="step"><div class="sn-bubble">1</div><span class="sn-label">Şifre</span></div>
+    <div class="sn-line"></div><div class="sn-item"><div class="sn-bubble">2</div><span class="sn-label">Profil</span></div>
+    <div class="sn-line"></div><div class="sn-item"><div class="sn-bubble">3</div><span class="sn-label">Adres</span></div>
+    <div class="sn-line"></div><div class="sn-item"><div class="sn-bubble">4</div><span class="sn-label">Saatler</span></div>
+    <div class="sn-line"></div><div class="sn-item"><div class="sn-bubble">5</div><span class="sn-label">Hizmetler</span></div>
+    <div class="sn-line"></div><div class="sn-item"><div class="sn-bubble">6</div><span class="sn-label">Personel</span></div>
+    <div class="sn-line"></div><div class="sn-item"><div class="sn-bubble">7</div><span class="sn-label">Bitiş</span></div>
+  </nav>
+  <main class="card" role="main">
+    <div class="top">
+      <button class="back-btn" id="btn-back" type="button" aria-label="Geri"><i class="fa-solid fa-arrow-left"></i></button>
+      <div style="flex:1"></div>
+    </div>
+    <h1>Şifre Belirle</h1>
+    <p class="subtitle">Yönetici hesabınız için güçlü bir şifre oluşturun.</p>
+    <div class="email-summary" aria-live="polite">
+      <i class="fa-regular fa-envelope"></i>
+      <div><div class="email-lbl">Devam edilen e-posta</div><div id="emailText" class="email-text">—</div></div>
+    </div>
+    <div class="field">
+      <label for="password">Şifre</label>
+      <div class="pw-wrap">
+        <input id="password" type="password" placeholder="••••••••" autocomplete="new-password"/>
+        <button id="pwSuggest" class="pw-suggest" type="button" title="Güçlü şifre öner">Öner</button>
+        <button id="pwToggle" class="toggle" aria-label="Şifreyi göster" aria-pressed="false" type="button"><i class="fa-regular fa-eye"></i></button>
+      </div>
+    </div>
+    <div class="meter" aria-live="polite">
+      <div class="meter-bars" aria-hidden="true"><div id="b1" class="bar"></div><div id="b2" class="bar"></div><div id="b3" class="bar"></div><div id="b4" class="bar"></div></div>
+      <div id="meterLabel" class="meter-label">Şifre gücü: —</div>
+    </div>
+    <ul class="rules" aria-live="polite">
+      <li id="r-letter"><span class="dot"></span><span>En az bir harf</span></li>
+      <li id="r-digit"><span class="dot"></span><span>En az bir rakam</span></li>
+      <li id="r-length"><span class="dot"></span><span>8 karakter veya daha uzun</span></li>
+      <li id="r-noemail"><span class="dot"></span><span>E-postanın ad kısmını içermesin</span></li>
+      <li id="r-nocommon"><span class="dot"></span><span>Kolay/ortak şifre olmasın</span></li>
+    </ul>
+    <div id="capsWarn" class="caps"><i class="fa-solid fa-arrow-up-a-z"></i> Caps Lock açık olabilir.</div>
+    <label class="terms-row">
+      <input type="checkbox" id="termsAgree"/>
+      <span><a href="kullanim-kosullari.html" target="_blank">Kullanım Koşulları</a>'nı, <a href="gizlilik-politikasi.html" target="_blank">Gizlilik Politikası</a>'nı ve <a href="cerez-politikasi.html" target="_blank">Çerez Politikası</a>'nı okudum, kabul ediyorum.</span>
+    </label>
+    <div class="btn-row">
+      <button id="btn-back2" class="btn btn-ghost" type="button"><i class="fa-solid fa-arrow-left"></i> Geri</button>
+      <button id="btn-continue" class="btn btn-primary" type="button" disabled>Devam Et <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+  </main>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script>
+  const K_EMAIL="pending_admin_email",K_METHOD="admin_onboarding_method",K_FLOW="admin_onboarding_flow",K_LAST="admin_onboarding_last_step",K_TOTAL="admin_onboarding_total",K_DATA="onboardingData";
+  const TOTAL_STEPS=7,CURRENT_STEP=1;
+  function stepToHref(n){const s=Math.max(1,Math.min(TOTAL_STEPS,Number(n)||1));if(s<=1)return"admin-register1.html";if(s===2)return"admin-register2.html";if(s===3)return"admin-register5.html";if(s===4)return"admin-register6.html";if(s===5)return"admin-register7.html";if(s===6)return"admin-register8.html";return"admin-register9.html";}
+  function getOnboardingData(){try{return JSON.parse(localStorage.getItem(K_DATA)||"{}");}catch{return{};}}
+  function patchOnboardingData(patch){const next={...getOnboardingData(),...patch};localStorage.setItem(K_DATA,JSON.stringify(next));return next;}
+  const API_BASE=(window.API_BASE||"/api").replace(/\/+$/,"");
+  const apiUrl=p=>API_BASE+(p.startsWith("/")?"":"/")+p;
+  let _csrfToken=null;
+  async function getCsrfToken(){if(_csrfToken)return _csrfToken;try{const r=await fetch(apiUrl("/csrf.php"),{credentials:"include",cache:"no-store"});const d=await r.json().catch(()=>({}));_csrfToken=d?.data?.token||d?.token||"";}catch{_csrfToken="";}return _csrfToken;}
+  getCsrfToken();
+  async function postJson(path,body){const csrf=await getCsrfToken();const res=await fetch(apiUrl(path),{method:"POST",credentials:"include",headers:{"Content-Type":"application/json","Accept":"application/json",...(csrf?{"X-CSRF-Token":csrf}:{})},body:JSON.stringify(body&&typeof body==="object"?body:{})});const data=await res.json().catch(()=>({}));if(!res.ok){const e=new Error(data?.error||data?.message||`İstek başarısız (${res.status})`);e.status=res.status;e.response=data;throw e;}return data;}
+  const email=(localStorage.getItem(K_EMAIL)||"").trim().toLowerCase();
+  const flow=(localStorage.getItem(K_FLOW)||"").trim().toLowerCase();
+  const last=Number(localStorage.getItem(K_LAST)||"0");
+  if(!email||flow!=="admin"){alert("Geçersiz akış. Lütfen yönetici kaydına baştan başlayın.");location.replace("admin-register-login.html");}
+  if(last>CURRENT_STEP){location.replace(stepToHref(last));}
+  localStorage.setItem(K_FLOW,"admin");if(!localStorage.getItem(K_TOTAL))localStorage.setItem(K_TOTAL,String(TOTAL_STEPS));
+  if(!localStorage.getItem(K_LAST)||Number(localStorage.getItem(K_LAST))<CURRENT_STEP)localStorage.setItem(K_LAST,String(CURRENT_STEP));
+  document.getElementById("emailText").textContent=email||"—";
+  const pwd=document.getElementById("password"),btn=document.getElementById("btn-continue"),pwToggle=document.getElementById("pwToggle"),pwSuggest=document.getElementById("pwSuggest");
+  const rLetter=document.getElementById("r-letter"),rDigit=document.getElementById("r-digit"),rLength=document.getElementById("r-length"),rNoEmail=document.getElementById("r-noemail"),rNoCommon=document.getElementById("r-nocommon"),caps=document.getElementById("capsWarn");
+  const bars=[document.getElementById("b1"),document.getElementById("b2"),document.getElementById("b3"),document.getElementById("b4")];
+  const meterLabel=document.getElementById("meterLabel");
+  const COMMON=new Set(["12345678","123456789","1234567890","00000000","11111111","qwerty","qwertyuiop","asdfgh","asdf1234","zxcvbn","password","passw0rd","admin123","iloveyou","letmein"]);
+  function scorePassword(p){if(!p)return 0;let score=0;const len=p.length;const hasLower=/[a-z]/.test(p),hasUpper=/[A-Z]/.test(p),hasDigit=/\d/.test(p),hasSpec=/[^A-Za-z0-9]/.test(p);const variety=[hasLower,hasUpper,hasDigit,hasSpec].filter(Boolean).length;if(len>=8)score++;if(len>=12)score++;if(variety>=2)score++;if(variety>=3&&len>=12)score++;const onlyDigits=/^\d+$/.test(p),onlyLetters=/^[A-Za-z]+$/.test(p);if(onlyDigits||onlyLetters)score=Math.min(score,2);return Math.max(0,Math.min(4,score));}
+  function updateMeter(p){const s=scorePassword(p);bars.forEach((b,i)=>{b.className="bar"+(i<s?(" f"+s):"");});const labels=["—","Zayıf","Orta","Güçlü","Çok güçlü"];meterLabel.textContent="Şifre gücü: "+labels[s];}
+  function includesEmailLocal(pass){const local=(email.split("@")[0]||"").replace(/[^a-z0-9]/gi,"").toLowerCase();if(!local||local.length<3)return false;return(pass||"").toLowerCase().includes(local);}
+  function validate(v){const hasLetter=/[a-zA-Z]/.test(v),hasDigit=/\d/.test(v),hasLen=v.length>=8,hasNoEmail=!includesEmailLocal(v),notCommon=!COMMON.has(v.toLowerCase());rLetter.classList.toggle("valid",hasLetter);rDigit.classList.toggle("valid",hasDigit);rLength.classList.toggle("valid",hasLen);rNoEmail.classList.toggle("valid",hasNoEmail);rNoCommon.classList.toggle("valid",notCommon);const ok=hasLetter&&hasDigit&&hasLen&&hasNoEmail&&notCommon;const termsOk=document.getElementById("termsAgree")?.checked??true;btn.disabled=!(ok&&termsOk);if(ok)pwd.removeAttribute("aria-invalid");else pwd.setAttribute("aria-invalid","true");updateMeter(v);}
+  function handleKeyEvent(e){if(typeof e.getModifierState==="function"){caps.classList.toggle("show",!!e.getModifierState("CapsLock"));}}
+  function randomStrong(length=14){const lowers="abcdefghijkmnopqrstuvwxyz",uppers="ABCDEFGHJKLMNPQRSTUVWXYZ",digits="23456789",specials="!@#$%^&*()-_=+[]{}",all=lowers+uppers+digits+specials;const buf=new Uint32Array(length);(window.crypto||window.msCrypto)?.getRandomValues?.(buf)||Array.from({length},(_,i)=>buf[i]=Math.floor(Math.random()*0xffffffff));const pick=(src,n)=>src[n%src.length];let out=[pick(lowers,buf[0]),pick(uppers,buf[1]),pick(digits,buf[2]),pick(specials,buf[3])];for(let i=4;i<length;i++)out.push(pick(all,buf[i]));for(let i=out.length-1;i>0;i--){const j=buf[i]%(i+1);[out[i],out[j]]=[out[j],out[i]];}return out.join("");}
+  let deb;
+  pwd.addEventListener("input",()=>{clearTimeout(deb);const v=pwd.value;deb=setTimeout(()=>validate(v),60);});
+  pwd.addEventListener("keydown",(e)=>{handleKeyEvent(e);if(e.key==="Enter"&&!btn.disabled)btn.click();});
+  pwd.addEventListener("keyup",handleKeyEvent);
+  pwToggle.addEventListener("click",(e)=>{e.preventDefault();const icon=pwToggle.querySelector("i");const show=pwd.type==="password";pwd.type=show?"text":"password";icon.className=show?"fa-regular fa-eye-slash":"fa-regular fa-eye";pwToggle.setAttribute("aria-pressed",String(show));pwToggle.setAttribute("aria-label",show?"Şifreyi gizle":"Şifreyi göster");pwd.focus();});
+  pwSuggest.addEventListener("click",()=>{const s=randomStrong(14);pwd.value=s;validate(s);});
+  const termsBox=document.getElementById("termsAgree");
+  if(termsBox)termsBox.addEventListener("change",()=>pwd.dispatchEvent(new Event("input")));
+  [document.getElementById("btn-back"),document.getElementById("btn-back2")].forEach(b=>b?.addEventListener("click",()=>{location.replace("admin-register-login.html");}));
+  function friendlyApiError(err){const s=Number(err?.status||0);if(s===409)return"Bu e-posta zaten kayıtlı. Lütfen giriş yapın.";if(s===400)return err?.message||"Geçersiz bilgi. Lütfen kontrol edin.";if(s===401)return"Yetkisiz işlem. Lütfen tekrar deneyin.";return err?.message||"İşlem başarısız. Tekrar deneyin.";}
+  btn.addEventListener("click",async()=>{
+    const pass=(pwd.value||"").trim();
+    const ok=/[a-zA-Z]/.test(pass)&&/\d/.test(pass)&&pass.length>=8&&!includesEmailLocal(pass)&&!COMMON.has(pass.toLowerCase());
+    if(!ok){validate(pass);return;}
+    btn.disabled=true;const old=btn.innerHTML;btn.innerHTML='<i class="fa-solid fa-circle-notch fa-spin"></i> Devam ediliyor…';
+    try{
+      // DB'ye YAZMA — şifre sadece localStorage'da saklanır, register8'de gönderilir
+      localStorage.setItem("_reg_pw", pass);
+      patchOnboardingData({email,startedAt:getOnboardingData().startedAt||Date.now()});
+      localStorage.setItem(K_LAST,"2");
+      await new Promise(r=>setTimeout(r,300));
+      location.replace("admin-register2.html");
+    }catch(err){
+      console.error("[admin step1]",err);
+      btn.disabled=false;btn.innerHTML=old;
+    }
+  });
+  setTimeout(()=>{pwd.focus();validate(pwd.value||"");},50);
+</script>
+</body>
+</html>

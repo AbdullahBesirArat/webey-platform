@@ -1,0 +1,45 @@
+User-agent: *
+Allow: /
+
+# Admin paneli — indexlenmesin
+Disallow: /admin-profile.html
+Disallow: /admin-register1.html
+Disallow: /admin-register2.html
+Disallow: /admin-register5.html
+Disallow: /admin-register6.html
+Disallow: /admin-register7.html
+Disallow: /admin-register8.html
+Disallow: /admin-register9.html
+Disallow: /admin-register-login.html
+Disallow: /calendar.html
+Disallow: /settings.html
+Disallow: /staff.html
+Disallow: /appointments.html
+
+# Kullanıcı paneli — indexlenmesin
+Disallow: /user-profile.html
+Disallow: /profile.html
+
+# Auth sayfaları — indexlenmesin
+Disallow: /sifremi-unuttum.html
+Disallow: /sifre-sifirla.html
+Disallow: /email-dogrula.html
+
+# HTML parça (include) dosyaları — indexlenmesin
+Disallow: /navbar.html
+Disallow: /bar-menu.html
+Disallow: /mobile-bar.html
+
+# API — asla indexlenmesin
+Disallow: /api/
+
+# Upload klasörü
+Disallow: /uploads/
+
+# Veritabanı / sunucu dosyaları
+Disallow: /db.php
+Disallow: /core/
+Disallow: /database/
+
+# Sitemap
+Sitemap: https://webey.com.tr/sitemap.xml

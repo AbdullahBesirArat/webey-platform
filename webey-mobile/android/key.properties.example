@@ -1,0 +1,13 @@
+# Release signing credentials for Webey APK builds.
+#
+# USAGE:
+#   1. Copy this file:  copy key.properties.example key.properties
+#   2. Fill in the values below with your actual credentials.
+#   3. Keep key.properties out of version control (already in .gitignore).
+#
+# storeFile is relative to the android/app/ directory.
+
+storePassword=YOUR_KEYSTORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=webey
+storeFile=webey-release-key.jks

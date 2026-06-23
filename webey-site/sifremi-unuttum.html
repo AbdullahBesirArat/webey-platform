@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Şifremi Unuttum – Webey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=DM+Serif+Display:ital@1&display=swap" rel="stylesheet">
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+  </noscript>
+  <link rel="icon" href="img/favicon.ico" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root{
+      --brand:#0ea5b3;
+      --brand-dark:#0b8a96;
+      --ink:#0f172a;
+      --ink-2:#475569;
+      --ink-3:#64748b;
+      --surface:#ffffff;
+      --bg:#eef3f4;
+      --border:#dbe4e7;
+      --radius:16px;
+      --radius-lg:24px;
+      --radius-xl:34px;
+      --shadow:0 24px 64px rgba(15,23,42,.12);
+    }
+
+    body{
+      font-family:'Inter','Helvetica Neue',Arial,sans-serif;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding:24px 16px;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top, rgba(14,165,179,.16), transparent 36%),
+        linear-gradient(180deg, #f6fbfb 0%, var(--bg) 100%);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    .auth-card{
+      width:min(460px,100%);
+      background:rgba(255,255,255,.94);
+      border:1px solid rgba(255,255,255,.72);
+      border-radius:var(--radius-xl);
+      padding:44px 36px 34px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+    }
+
+    @media(max-width:480px){
+      .auth-card{
+        padding:34px 20px 26px;
+        border-radius:var(--radius-lg);
+      }
+    }
+
+    .logo-link{display:block;text-align:center;margin-bottom:28px;text-decoration:none;}
+    .logo-text{font-family:'DM Serif Display',serif;font-style:italic;font-size:31px;font-weight:600;color:var(--brand);}
+
+    .icon-wrap{
+      width:76px;
+      height:76px;
+      border-radius:50%;
+      background:rgba(14,165,179,.10);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:0 auto 20px;
+      font-size:30px;
+      color:var(--brand);
+    }
+
+    h1{
+      font-size:28px;
+      font-weight:700;
+      text-align:center;
+      line-height:1.12;
+      letter-spacing:-.03em;
+      margin-bottom:8px;
+    }
+
+    .subtitle{
+      font-size:14px;
+      color:var(--ink-3);
+      text-align:center;
+      line-height:1.65;
+      margin:0 auto 24px;
+      max-width:32ch;
+    }
+
+    .alert{
+      display:none;
+      align-items:flex-start;
+      gap:10px;
+      padding:13px 14px;
+      border-radius:14px;
+      font-size:13.5px;
+      line-height:1.55;
+      margin-bottom:16px;
+    }
+    .alert.show{display:flex;}
+    .alert-error{background:#fff1f2;border:1px solid #fecdd3;color:#9f1239;}
+    .alert-success{background:#ecfdf5;border:1px solid #bbf7d0;color:#166534;}
+    .alert i{margin-top:2px;flex-shrink:0;}
+
+    .form-group{margin-bottom:16px;}
+    label{
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      color:var(--ink-2);
+      margin-bottom:7px;
+    }
+
+    .input-wrap{position:relative;}
+    .input-wrap i{
+      position:absolute;
+      left:14px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#94a3b8;
+      font-size:15px;
+      pointer-events:none;
+    }
+
+    .inp-text{
+      width:100%;
+      min-height:54px;
+      padding:0 15px 0 42px;
+      border:1.5px solid var(--border);
+      border-radius:15px;
+      font-family:inherit;
+      font-size:15px;
+      color:var(--ink);
+      background:#fff;
+      transition:border-color .18s, box-shadow .18s;
+      outline:none;
+    }
+    .inp-text:focus{
+      border-color:var(--brand);
+      box-shadow:0 0 0 4px rgba(14,165,179,.12);
+    }
+    .inp-text::placeholder{color:#94a3b8;}
+
+    .helper{
+      font-size:12.5px;
+      color:var(--ink-3);
+      line-height:1.55;
+      margin-top:8px;
+    }
+
+    .btn-primary{
+      width:100%;
+      min-height:54px;
+      border:none;
+      border-radius:15px;
+      background:var(--brand);
+      color:#fff;
+      font-family:inherit;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:background .18s, transform .1s, box-shadow .18s;
+      box-shadow:0 16px 28px rgba(14,165,179,.24);
+      text-decoration:none;
+    }
+    .btn-primary:hover{background:var(--brand-dark);}
+    .btn-primary:active{transform:scale(.985);}
+    .btn-primary:disabled{opacity:.7;cursor:not-allowed;box-shadow:none;}
+
+    .spinner{
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.32);
+      border-top-color:#fff;
+      animation:spin .8s linear infinite;
+      display:none;
+    }
+    .btn-primary.loading .spinner{display:block;}
+    .btn-primary.loading .btn-label{display:none;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    .success-panel{display:none;}
+    .success-panel.show{display:block;}
+    .success-panel .icon-wrap{
+      background:rgba(34,197,94,.12);
+      color:#16a34a;
+    }
+
+    .tips{
+      display:grid;
+      gap:10px;
+      margin-top:18px;
+    }
+    .tip{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px 13px;
+      border-radius:14px;
+      border:1px solid #e8eef0;
+      background:#f8fbfb;
+    }
+    .tip i{
+      color:var(--brand);
+      margin-top:2px;
+    }
+    .tip span{
+      font-size:12.5px;
+      color:var(--ink-2);
+      line-height:1.55;
+    }
+
+    .back-link{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:7px;
+      margin-top:22px;
+      font-size:13.5px;
+      color:var(--ink-3);
+      text-decoration:none;
+      transition:color .18s;
+    }
+    .back-link:hover{color:var(--brand);}
+  </style>
+  <script>
+    let __wbCsrf = null;
+    async function getCsrfToken() {
+      if (__wbCsrf) return __wbCsrf;
+      try {
+        const response = await fetch('/api/csrf.php', { credentials: 'include' });
+        const json = await response.json();
+        __wbCsrf = json?.data?.token || null;
+      } catch {}
+      return __wbCsrf;
+    }
+  </script>
+</head>
+<body>
+  <div class="auth-card">
+    <a href="index.html" class="logo-link"><span class="logo-text">Webey</span></a>
+
+    <div id="requestPanel">
+      <div class="icon-wrap"><i class="fas fa-envelope-open-text"></i></div>
+      <h1>Şifremi Unuttum</h1>
+      <p class="subtitle">Kayıtlı e-posta adresini gir. Şifreni değiştirebileceğin güvenli bağlantıyı sana gönderelim.</p>
+
+      <div class="alert alert-error" id="errorBox" role="alert">
+        <i class="fas fa-circle-exclamation"></i>
+        <span id="errorText"></span>
+      </div>
+
+      <div class="alert alert-success" id="successBox" role="status" aria-live="polite">
+        <i class="fas fa-circle-check"></i>
+        <span id="successText"></span>
+      </div>
+
+      <form id="forgotForm" novalidate>
+        <div class="form-group">
+          <label for="emailInput">E-posta Adresi</label>
+          <div class="input-wrap">
+            <i class="fas fa-at"></i>
+            <input class="inp-text" type="email" id="emailInput" placeholder="ornek@eposta.com"
+                   inputmode="email" autocomplete="email" required />
+          </div>
+          <p class="helper">Eğer bu adres kayıtlıysa, sıfırlama bağlantısı birkaç dakika içinde e-postana ulaşır.</p>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submitBtn">
+          <span class="btn-label">Sıfırlama Linki Gönder</span>
+          <div class="spinner"></div>
+        </button>
+      </form>
+
+      <div class="tips">
+        <div class="tip">
+          <i class="fas fa-shield-heart"></i>
+          <span>Güvenlik için her zaman aynı bilgi mesajını gösteriyoruz. Bu sayede e-posta kayıt kontrolü dışarıdan anlaşılamaz.</span>
+        </div>
+        <div class="tip">
+          <i class="fas fa-envelope"></i>
+          <span>Mail görünmüyorsa spam, tanıtımlar veya gereksiz klasörlerini de kontrol et.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="success-panel" id="donePanel">
+      <div class="icon-wrap"><i class="fas fa-paper-plane"></i></div>
+      <h1>Bağlantı Gönderildi</h1>
+      <p class="subtitle">E-postandaki bağlantıya tıklayarak yeni şifreni belirleyebilirsin. Mail birkaç dakika içinde ulaşmazsa tekrar deneyebilirsin.</p>
+      <a href="index.html" class="btn-primary">
+        <i class="fas fa-arrow-right-to-bracket"></i>
+        Girişe Dön
+      </a>
+    </div>
+
+    <a href="javascript:history.back()" class="back-link">
+      <i class="fas fa-arrow-left"></i> Geri Dön
+    </a>
+  </div>
+
+  <script>
+    const form = document.getElementById('forgotForm');
+    const emailInput = document.getElementById('emailInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorBox = document.getElementById('errorBox');
+    const errorText = document.getElementById('errorText');
+    const successBox = document.getElementById('successBox');
+    const successText = document.getElementById('successText');
+    const requestPanel = document.getElementById('requestPanel');
+    const donePanel = document.getElementById('donePanel');
+
+    function setLoading(on) {
+      submitBtn.disabled = on;
+      submitBtn.classList.toggle('loading', on);
+    }
+
+    function showError(message) {
+      successBox.classList.remove('show');
+      errorText.textContent = message;
+      errorBox.classList.add('show');
+    }
+
+    function showSuccess(message) {
+      errorBox.classList.remove('show');
+      successText.textContent = message;
+      successBox.classList.add('show');
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      errorBox.classList.remove('show');
+      successBox.classList.remove('show');
+
+      const email = (emailInput.value || '').trim().toLowerCase();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError('Geçerli bir e-posta adresi gir.');
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const csrf = await getCsrfToken();
+        const response = await fetch('/api/auth/forgot-password.php', {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(csrf ? { 'X-CSRF-Token': csrf } : {})
+          },
+          body: JSON.stringify({ email })
+        });
+
+        const json = await response.json();
+        if (!json.ok) {
+          showError(json.error || 'İşlem tamamlanamadı. Lütfen tekrar dene.');
+          return;
+        }
+
+        showSuccess(json.data?.message || 'Eğer bu adres kayıtlıysa şifre sıfırlama emaili gönderildi.');
+        requestPanel.style.display = 'none';
+        donePanel.classList.add('show');
+      } catch (_) {
+        showError('Bağlantı hatası oluştu. Lütfen tekrar dene.');
+      } finally {
+        setLoading(false);
+      }
+    });
+  </script>
+</body>
+</html>

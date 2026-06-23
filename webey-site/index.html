@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+  <!-- Sadece açık tema rengimiz -->
+  <meta name="theme-color" content="#0ea5b3" />
+
+  <meta name="description" content="Webey ile yakınındaki kuaförleri keşfet, fiyatları gör ve saniyeler içinde randevu al." />
+  <!-- ═══ SEO / Open Graph ═══ -->
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://webey.com.tr/" />
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:site_name"   content="Webey" />
+  <meta property="og:locale"      content="tr_TR" />
+  <meta property="og:title"       content="Webey – Yakınındaki Kuaförleri Bul, Randevu Al" />
+  <meta property="og:description" content="Webey ile yakınındaki kuaförleri keşfet, fiyatları gör ve saniyeler içinde randevu al." />
+  <meta property="og:url"         content="https://webey.com.tr/" />
+  <meta property="og:image"       content="https://webey.com.tr/img/hero-cover.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Webey – Yakınındaki Kuaförleri Bul, Randevu Al" />
+  <meta name="twitter:description" content="Webey ile yakınındaki kuaförleri keşfet, fiyatları gör ve saniyeler içinde randevu al." />
+  <meta name="twitter:image"       content="https://webey.com.tr/img/hero-cover.jpg" />
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Webey","url":"https://webey.com.tr","description":"Türkiye'nin online kuaför randevu platformu","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://webey.com.tr/kuafor.html?q={search_term_string}"},"query-input":"required name=search_term_string"}}</script>
+  <!-- ════════════════════════ -->
+  <meta name="format-detection" content="telephone=no" />
+  <title>Webey – Yakınındaki Kuaförleri Bul, Randevu Al</title>
+  <!-- Google Search Console doğrulama — kendi kodunu buraya yaz -->
+  <meta name="google-site-verification" content="BURAYA_GOOGLE_DOGRULAMA_KODUNU_YAZ" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- DM Serif Display (italic) -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@1&display=swap" rel="stylesheet">
+
+  <!-- Helpful preconnects for Firebase/Firestore -->
+  <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://firestore.googleapis.com">
+
+  <!-- Icons (non-blocking) -->
+  <link rel="preload" as="style"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer"
+        onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </noscript>
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="css/index.css?v=2026-04-06-0004" />
+  <link rel="stylesheet" href="css/auth-modal.css" />
+  <link rel="icon" href="img/favicon.ico" />
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <meta name="google-signin-client_id" content="279602177241-o5qmpgshp4g13jlrunnkav6vdu4hiejv.apps.googleusercontent.com" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Webey" />
+  <link rel="apple-touch-icon" href="img/icon-192.png" />
+  <link rel="stylesheet" href="css/cookie-consent.css" />
+  <link rel="stylesheet" href="css/wb-transitions.css" />
+  <link rel="stylesheet" href="css/wb-bottom-nav.css" />
+  <link rel="stylesheet" href="css/mobile-user.css" />
+
+  <!-- Nasıl Çalışır bölümü stilleri -->
+  <link rel="stylesheet" href="css/index-sections.css" />
+
+  <!-- HERO ana görselini yerelden preload et -->
+  <link rel="preload"
+        as="image"
+        href="img/hero-cover.webp"
+        fetchpriority="high" />
+</head>
+
+<body class="index-page">
+  <!-- =========================
+       WEBEY SPLASH / LOADER
+       ========================= -->
+  <div id="splashOverlay" aria-hidden="false" aria-busy="true">
+    <div class="splash-card" role="status" aria-live="polite">
+      <div class="splash-logo">
+        <span class="dot" aria-hidden="true"></span>
+        Webey
+      </div>
+      <p class="splash-sub">Yükleniyor…</p>
+      <div class="splash-row">
+        <div class="spinner" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky navbar (scroll sonrası görünür) -->
+  <!-- MOBİL NAVBAR (≤767px) — kuafor.html ile aynı yapı -->
+  <div class="mobile-navbar" id="mobileNavbar" aria-label="Mobil ana menü">
+
+    <!-- EXPANDED: sadece en üstteyken görünür -->
+    <div class="mob-expanded" id="mobExpanded">
+      <!-- Satır 1: İşletmeni Listele -->
+      <div class="mob-top-bar">
+        <a href="isletmeni-listele.html" class="mob-list-btn">
+          İşletmeni Listele <i class="fas fa-arrow-right" aria-hidden="true"></i>
+        </a>
+      </div>
+      <!-- Satır 2: Logo -->
+      <div class="mob-logo-row">
+        <a href="index.html" class="logo-text" id="logoMobile" aria-label="Ana sayfa">Webey</a>
+      </div>
+      <!-- Satır 3: Hizmet ara -->
+      <div class="mob-search-area mob-extra-search" role="search">
+        <div class="mob-search-row">
+          <div class="mob-search-box mob-search-main" style="flex:1">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <input id="qSvcMobileIdx2" type="text" placeholder="Hizmet veya işletme ara" aria-label="Hizmet veya işletme ara" autocomplete="off"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPACT: scroll sonrası tek satır -->
+    <div class="mob-compact-row">
+      <a href="index.html" class="mob-compact-logo logo-text" aria-label="Ana sayfa">Webey</a>
+      <div class="mob-search-box mob-search-main" role="search">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input id="qSvcMobileIdx" type="text" placeholder="Hizmet veya işletme ara" aria-label="Hizmet veya işletme ara" autocomplete="off"/>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DESKTOP NAVBAR (≥768px) -->
+  <nav class="navbar" id="mainNavbar" role="navigation" aria-label="Birincil">
+    <button class="logo-text" id="logoBtn" type="button" aria-label="En üste dön">Webey</button>
+
+    <div class="search-section" role="search">
+      <div class="search-box">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input type="text" placeholder="Hizmet veya işletme ara" aria-label="Hizmet veya işletme ara" />
+      </div>
+      <div class="search-box">
+        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+        <input id="idxNavLoc" type="text" placeholder="Neresi?" aria-label="Konum" />
+        <button id="btnGeoNav" type="button" class="geo-btn" aria-label="Konumumu kullan" title="Konumumu kullan">
+          <i class="fas fa-crosshairs" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="search-box">
+        <i class="fas fa-clock" aria-hidden="true"></i>
+        <input id="whenNavInput" data-when-label type="text" placeholder="Ne zaman?" aria-label="Zaman" readonly />
+      </div>
+    </div>
+
+    <div class="right-section">
+      <!-- Profil butonu: JS giriş durumuna göre ya auth açar ya da user-profile.html'e götürür -->
+      <button class="profile open-auth" type="button" aria-label="Profilim" data-profile-btn>
+        <i class="fas fa-user-circle" aria-hidden="true"></i>
+        <span class="auth-text">Giriş Yap / Kayıt Ol</span>
+      </button>
+      <a href="isletmeni-listele.html" class="list-btn">İşletmeni Listele</a>
+    </div>
+  </nav>
+
+  <main id="content" tabindex="-1">
+    <!-- HERO -->
+    <!-- Artık video yok, arka plan yerel hero görselinden geliyor -->
+    <section
+      class="hero-section hero-section--bg"
+      id="heroSec"
+      aria-label="Tanıtım"
+    >
+      <div class="hero-logo" aria-hidden="true">Webey</div>
+
+      <!-- HERO VIDEO (randevu yoksa görünür, randevu varsa durduruluyor) -->
+      <video id="heroVideo" class="hero-video" muted loop playsinline preload="none"
+             data-src="video/hero.mp4" aria-hidden="true"></video>
+
+      <!-- NORMAL HERO OVERLAY (randevu yoksa görünür) -->
+      <div class="hero-overlay" id="heroOverlay">
+        <div class="hero-navbar-right">
+          <button class="profile open-auth" type="button" aria-label="Giriş Yap / Kayıt Ol" data-profile-btn>
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+            <span class="auth-text">Giriş Yap / Kayıt Ol</span>
+          </button>
+          <a href="isletmeni-listele.html" class="list-btn hero-listele-btn">İşletmeni Listele <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+
+        <h1 id="changingText" class="animated-heading" aria-live="polite"></h1>
+        <p>Yakınındaki Kuaför Salonlarını keşfet ve randevu al</p>
+
+        <div class="search-box" id="heroSearchBox">
+          <svg class="search-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"></circle>
+            <line x1="16" y1="16" x2="21" y2="21" stroke="currentColor" stroke-width="2"></line>
+          </svg>
+          <input type="text" placeholder="Hizmet veya işletme ara …" aria-label="Hizmet veya işletme ara" />
+        </div>
+
+        <div class="search-box hero-loc-box" id="heroLocBox">
+          <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+          <input id="heroLoc" type="text" placeholder="Neresi?" aria-label="Konum" autocomplete="off" />
+          <button id="btnGeoHero" type="button" class="geo-btn" aria-label="Konumumu kullan" title="Konumumu kullan">
+            <i class="fas fa-crosshairs" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="hero-menu">
+          <a id="listAllBtn" href="kuafor.html">Tüm Kuaförleri Listele</a>
+        </div>
+      </div>
+
+      <!-- YAKLAŞAN RANDEVU HERO (randevu varsa görünür) -->
+      <div class="appt-hero" id="apptHero" hidden aria-hidden="true">
+        <div class="appt-hero-brand" aria-hidden="true">Webey</div>
+        <div class="hero-navbar-right">
+          <button class="profile" type="button" data-goto-profile="1" aria-label="Profilim">
+            <i class="fas fa-user-circle" aria-hidden="true"></i>
+            <span class="auth-text">Profilim</span>
+          </button>
+          <a href="isletmeni-listele.html" class="list-btn">İşletmeni Listele</a>
+        </div>
+
+        <div class="appt-hero-card">
+          <div class="ah-left">
+            <div class="ah-status" id="homeApptStatus">Planlandı</div>
+            <h2 class="ah-title" id="homeApptTitle">Hizmet</h2>
+
+            <div class="ah-biz">
+              <img id="homeApptLogo" alt="" width="44" height="44" decoding="async" />
+              <div>
+                <div class="ah-bizname" id="homeApptBiz">İşletme</div>
+                <div class="ah-addr" id="homeApptAddr">—</div>
+              </div>
+            </div>
+
+            <div class="ah-when" id="homeApptWhen">—</div>
+
+            <div class="ah-actions">
+              <a class="btn-primary" id="homeApptOpen" href="user-profile.html">Randevuyu Aç</a>
+              <a class="btn" id="homeApptMap" target="_blank" rel="noopener">Haritada Aç</a>
+              <a class="btn-ghost" id="homeApptBook">Tekrar Randevu Al</a>
+            </div>
+          </div>
+
+          <div class="ah-map">
+            <iframe id="homeApptGm" title="Harita" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            <div class="pin" aria-hidden="true"></div>
+          </div>
+          <div class="ah-footer">
+            <a class="ah-all-link" href="kuafor.html">Tüm Kuaförleri Listele</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scroll sentinel: 60px noktasında navbar collapse tetikler -->
+    <div id="scrollSentinel" style="height:1px;width:100%;margin:0;padding:0;"></div>
+
+    <!-- Recommended -->
+    <section class="recommended-section container" aria-label="Önerilenler">
+      <div class="recommended-header">
+        <h2>Önerilenler</h2>
+      </div>
+      <div class="rec-viewport">
+        <button class="scroll-btn left" type="button" aria-label="Sola kaydır">←</button>
+        <div class="rec-track" id="recommendedContainer" role="list"></div>
+        <button class="scroll-btn right" type="button" aria-label="Sağa kaydır">→</button>
+      </div>
+    </section>
+
+    <!-- NASIL ÇALIŞIR -->
+    <section class="how-section" aria-label="Nasıl Çalışır">
+      <div class="how-inner">
+        <div class="how-head">
+          <span class="how-badge">Nasıl Çalışır?</span>
+          <h2>Randevunu <em>3 adımda</em> al</h2>
+          <p>Üyelik şart değil, dakikalar içinde hazırsın.</p>
+        </div>
+        <div class="how-steps">
+          <div class="how-step">
+            <div class="how-num">1</div>
+            <div class="how-icon">🔍</div>
+            <h3>Salon Bul</h3>
+            <p>Konumuna veya hizmet türüne göre yakınındaki kuaförleri filtrele, fiyatları ve yorumları karşılaştır.</p>
+          </div>
+          <div class="how-arrow" aria-hidden="true">→</div>
+          <div class="how-step">
+            <div class="how-num">2</div>
+            <div class="how-icon">📅</div>
+            <h3>Tarih & Saat Seç</h3>
+            <p>Müsait personeli gör, sana uygun gün ve saati seç. Çakışma yok, bekletme yok.</p>
+          </div>
+          <div class="how-arrow" aria-hidden="true">→</div>
+          <div class="how-step">
+            <div class="how-num">3</div>
+            <div class="how-icon">✅</div>
+            <h3>Onayla & Git</h3>
+            <p>Randevunu onayla, SMS hatırlatması al. Randevu saatinde salona git, hepsi bu kadar.</p>
+          </div>
+        </div>
+        <div class="how-cta">
+          <a href="kuafor.html" class="how-cta-btn">Hemen Kuaför Bul</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOSYAL KANIT -->
+    <section class="proof-section" aria-label="Sosyal Kanıt">
+      <div class="proof-inner">
+
+        <!-- İstatistikler -->
+        <div class="proof-stats">
+          <div class="proof-stat">
+            <span class="proof-stat-num">500+</span>
+            <span class="proof-stat-label">Kayıtlı İşletme</span>
+          </div>
+          <div class="proof-divider" aria-hidden="true"></div>
+          <div class="proof-stat">
+            <span class="proof-stat-num">50K+</span>
+            <span class="proof-stat-label">Alınan Randevu</span>
+          </div>
+          <div class="proof-divider" aria-hidden="true"></div>
+          <div class="proof-stat">
+            <span class="proof-stat-num">81</span>
+            <span class="proof-stat-label">İl'de Aktif</span>
+          </div>
+          <div class="proof-divider" aria-hidden="true"></div>
+          <div class="proof-stat">
+            <span class="proof-stat-num">4.8★</span>
+            <span class="proof-stat-label">Ortalama Puan</span>
+          </div>
+        </div>
+
+        <!-- Kullanıcı Yorumları -->
+        <div class="proof-head">
+          <h2>Kullanıcılar <em>ne diyor?</em></h2>
+        </div>
+        <div class="proof-reviews">
+          <div class="proof-review">
+            <div class="pr-stars" aria-label="5 yıldız">★★★★★</div>
+            <p class="pr-text">"Artık kuaförümü aramak yok. Sabah açıyorum, müsait saati seçiyorum, gidiyorum. İnanılmaz kolaylık."</p>
+            <div class="pr-author">
+              <div class="pr-avatar" aria-hidden="true">AK</div>
+              <div>
+                <div class="pr-name">Ayşe K.</div>
+                <div class="pr-loc">İstanbul, Kadıköy</div>
+              </div>
+            </div>
+          </div>
+          <div class="proof-review proof-review--featured">
+            <div class="pr-stars" aria-label="5 yıldız">★★★★★</div>
+            <p class="pr-text">"Salonuma gelen müşterilerin %40'ı artık Webey üzerinden randevu alıyor. Telefon trafiği ciddi azaldı, takvimim düzenlendi."</p>
+            <div class="pr-author">
+              <div class="pr-avatar" aria-hidden="true">MÇ</div>
+              <div>
+                <div class="pr-name">Murat Ç.</div>
+                <div class="pr-loc">Salon Sahibi · Ankara</div>
+              </div>
+            </div>
+          </div>
+          <div class="proof-review">
+            <div class="pr-stars" aria-label="5 yıldız">★★★★★</div>
+            <p class="pr-text">"Randevudan 24 saat önce SMS geliyor, hiç unutmuyorum. Üstelik iptal etmek de çok kolay, tek tık."</p>
+            <div class="pr-author">
+              <div class="pr-avatar" aria-hidden="true">ZD</div>
+              <div>
+                <div class="pr-name">Zeynep D.</div>
+                <div class="pr-loc">İzmir, Konak</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Güven Rozetleri -->
+        <div class="proof-trust">
+          <div class="proof-trust-badge">
+            <span class="ptb-icon">🔒</span>
+            <span class="ptb-text">SSL Şifreli</span>
+          </div>
+          <div class="proof-trust-badge">
+            <span class="ptb-icon">🇹🇷</span>
+            <span class="ptb-text">KVKK Uyumlu</span>
+          </div>
+          <div class="proof-trust-badge">
+            <span class="ptb-icon">💳</span>
+            <span class="ptb-text">PCI-DSS Güvenli Ödeme</span>
+          </div>
+          <div class="proof-trust-badge">
+            <span class="ptb-icon">✅</span>
+            <span class="ptb-text">Ücretsiz Randevu Al</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- İSTANBUL – 4 SÜTUN (JS ile dolacak) -->
+    <section class="city-section" aria-label="İstanbul’daki İşletmeler">
+      <div class="container">
+        <h2>İstanbul’daki İşletmeleri Bul</h2>
+        <p class="city-hint">İlçene göre kuaför ve güzellik salonlarını keşfet</p>
+      </div>
+      <div class="districts-wrap">
+        <div class="districts-grid" id="districtGrid"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="foot-main">
+      <div class="foot-col foot-col-brand">
+        <span class="foot-logo">Webey</span>
+        <p class="foot-tagline">Yakınındaki kuaförleri keşfet,<br>saniyeler içinde randevu al.</p>
+        <div class="foot-social">
+          <a class="social-btn" href="https://www.instagram.com/webey"
+             target="_blank" rel="noopener" aria-label="Instagram" style="text-decoration:none">
+            <i class="fab fa-instagram" aria-hidden="true"></i>
+          </a>
+          <a class="social-btn" href="https://www.tiktok.com/@webey"
+             target="_blank" rel="noopener" aria-label="TikTok" style="text-decoration:none">
+            <i class="fab fa-tiktok" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <p class="foot-col-title">Platform</p>
+        <ul class="foot-links">
+          <li><a href="index.html">Kuaför Bul</a></li>
+          <li><a href="isletmeni-listele.html">İşletmeni Listele</a></li>
+          <li><a href="fiyat.html">Fiyatlandırma</a></li>
+        </ul>
+      </div>
+        <div class="foot-col">
+          <p class="foot-col-title">Kurumsal</p>
+          <ul class="foot-links">
+            <li><a href="sss.html">Sık Sorulan Sorular</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <p class="foot-col-title">İletişim</p>
+          <ul class="foot-links foot-contact-list">
+            <li><a href="mailto:abdullah@webey.com.tr">abdullah@webey.com.tr</a></li>
+            <li><a href="tel:05462924044">0546 292 40 44</a></li>
+            <li><a href="tel:05386050911">0538 605 09 11</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <p class="foot-col-title">Yasal</p>
+          <ul class="foot-links">
+            <li><a href="gizlilik-politikasi.html">Gizlilik Politikası</a></li>
+            <li><a href="kullanim-kosullari.html">Kullanım Koşulları</a></li>
+          <li><a href="cerez-politikasi.html">Çerez Politikası</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="copyright">© 2026 Webey. Tüm hakları saklıdır.</span>
+      <span style="font-size:12px;color:rgba(255,255,255,.25)">KVKK Uyumlu &nbsp;·&nbsp; Türkiye&#39;de Geliştirildi 🇹🇷</span>
+    </div>
+  </footer>
+
+  <!-- =========================
+       KULLANICI AKIŞI MODALLARI
+       ========================= -->
+
+  <!-- AUTH MODALLARI — Modern Redesign -->
+
+  <!-- ── 1. AUTH: Giriş / Kayıt ── -->
+  <div id="authModal" class="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="loginRegisterTitle" aria-hidden="true" hidden>
+    <div class="modal-box">
+      <div class="auth-modal-header">
+        <div class="auth-header-spacer"></div>
+        <div class="auth-steps" aria-hidden="true"></div>
+        <button class="modal-close" type="button" aria-label="Kapat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="auth-container">
+        <h2 id="loginRegisterTitle" class="auth-title">Hoş Geldin</h2>
+        <p class="auth-subtitle">Randevu almak için giriş yap veya kayıt ol.</p>
+
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active" data-tab="login" type="button" role="tab" aria-selected="true">Giriş Yap</button>
+          <button class="auth-tab" data-tab="signup" type="button" role="tab" aria-selected="false">Kayıt Ol</button>
+        </div>
+
+        <!-- GİRİŞ -->
+        <form id="loginForm" class="auth-form active" data-form="login" autocomplete="off" role="tabpanel">
+          <input class="auth-input" type="email" name="email" placeholder="E-posta"
+                 inputmode="email" autocomplete="email" required aria-label="E-posta" />
+          <div class="password-wrap">
+            <input class="auth-input" type="password" name="password" placeholder="Şifre"
+                   autocomplete="current-password" aria-label="Şifre" required minlength="8" />
+            <button type="button" class="toggle-eye" aria-label="Şifreyi göster/gizle">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div class="auth-link-row">
+            <a id="forgotLink" href="sifremi-unuttum.html" class="auth-link">Şifremi unuttum</a>
+          </div>
+          <div id="loginError" class="error" aria-live="assertive"></div>
+          <button type="submit" class="auth-btn" id="btnLogin">Giriş Yap</button>
+
+          <!-- Google Ayraç -->
+          <div class="auth-divider"><span>veya</span></div>
+          <!-- Google Butonu -->
+          <button type="button" class="auth-google-btn" id="btnGoogleLogin">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Google ile Giriş Yap
+          </button>
+        </form>
+
+        <!-- KAYIT -->
+        <form id="signupForm" class="auth-form" data-form="signup" autocomplete="one-time-code" role="tabpanel">
+          <input class="auth-input" type="email" name="email" placeholder="E-posta"
+                 inputmode="email" autocomplete="email" required aria-label="E-posta" />
+          <p class="phone-hint">Doğrulama kodu bu e-posta adresine gönderilecek</p>
+          <div id="signupError" class="error" aria-live="assertive"></div>
+          <label class="terms-check" style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;cursor:pointer">
+            <input type="checkbox" id="termsAgree" required style="margin-top:3px;width:16px;height:16px;accent-color:#0ea5b3;flex-shrink:0"/>
+            <span style="font-size:12.5px;color:#6b6b6b;line-height:1.55">
+              <a href="kullanim-kosullari.html" target="_blank" style="color:#0ea5b3;font-weight:600">Kullanım Koşulları</a>'nı,
+              <a href="gizlilik-politikasi.html" target="_blank" style="color:#0ea5b3;font-weight:600">Gizlilik Politikası</a>'nı ve
+              <a href="cerez-politikasi.html" target="_blank" style="color:#0ea5b3;font-weight:600">Çerez Politikası</a>'nı okudum, kabul ediyorum.
+            </span>
+          </label>
+          <button type="submit" class="auth-btn" id="btnSendOtp">Devam Et →</button>
+
+          <!-- Google Ayraç -->
+          <div class="auth-divider"><span>veya</span></div>
+          <!-- Google Butonu -->
+          <button type="button" class="auth-google-btn" id="btnGoogleSignup">
+            <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            Google ile Devam Et
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2. OTP (artık kullanılmıyor ama kalıyor) ── -->
+  <!-- ── 3. ŞİFRE ── -->
+  <div id="passModal" class="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="passTitle" aria-hidden="true" hidden>
+    <div class="modal-box">
+      <div class="auth-modal-header">
+        <button class="modal-back" type="button" id="btnBackPass" aria-label="Geri">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="auth-steps" aria-hidden="true">
+          <div class="auth-step-dot active"></div>
+          <div class="auth-step-dot"></div>
+          <div class="auth-step-dot"></div>
+        </div>
+        <button class="modal-close" type="button" aria-label="Kapat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="auth-container">
+        <h2 id="passTitle" class="auth-title">Şifre Oluştur</h2>
+        <p class="auth-subtitle">En az 8 karakter — harf, rakam karıştırabilirsin.</p>
+        <form id="passForm" class="auth-form active" data-form="pass" autocomplete="new-password">
+          <div class="password-wrap">
+            <input class="auth-input" type="password" name="password" placeholder="Şifre"
+                   aria-label="Şifre" required minlength="8" />
+            <button type="button" class="toggle-eye" aria-label="Şifreyi göster/gizle">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div class="pass-strength-wrap">
+            <div class="pass-strength" aria-hidden="true">
+              <div class="pass-strength-bar" id="passStrBar"></div>
+            </div>
+            <div class="pass-strength-meta">
+              <span class="pass-strength-label" id="passStrLabel"></span>
+              <span class="pass-strength-tips" id="passStrTips"></span>
+            </div>
+          </div>
+          <div class="password-wrap">
+            <input class="auth-input" type="password" name="confirm" placeholder="Şifre (tekrar)"
+                   aria-label="Şifre tekrar" required minlength="8" />
+            <button type="button" class="toggle-eye" aria-label="Şifreyi göster/gizle">
+              <i class="fa-regular fa-eye"></i>
+            </button>
+          </div>
+          <div id="passError" class="error" aria-live="assertive"></div>
+          <button type="submit" class="auth-btn" id="btnPassNext" disabled>Devam Et →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. KİMLİK ── -->
+  <div id="nameModal" class="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="nameTitle" aria-hidden="true" hidden>
+    <div class="modal-box">
+      <div class="auth-modal-header">
+        <button class="modal-back" type="button" id="btnBackName" aria-label="Geri">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="auth-steps" aria-hidden="true">
+          <div class="auth-step-dot done"></div>
+          <div class="auth-step-dot active"></div>
+          <div class="auth-step-dot"></div>
+        </div>
+        <button class="modal-close" type="button" aria-label="Kapat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="auth-container">
+        <h2 id="nameTitle" class="auth-title">Kimlik Bilgileri</h2>
+        <p class="auth-subtitle">Randevu aldığında salonun bu bilgileri görecek — doğru gir.</p>
+          <form id="nameForm" class="auth-form active" data-form="name">
+            <div class="field-row-2">
+              <input class="auth-input" type="text" name="firstName" placeholder="Ad"
+                     autocomplete="given-name" required />
+              <input class="auth-input" type="text" name="lastName" placeholder="Soyad"
+                     autocomplete="family-name" required />
+            </div>
+            <div class="phone-row" style="margin-top:10px;">
+              <div class="cc-box" aria-hidden="true">
+                <span class="flag">🇹🇷</span>
+                <span class="cc">+90</span>
+              </div>
+              <input class="auth-input phone-input" type="tel" name="phone" placeholder="5xx xxx xx xx"
+                     inputmode="numeric" maxlength="13" autocomplete="tel-national"
+                     data-phone required aria-label="Telefon numarası" />
+            </div>
+            <p class="phone-hint">Türkiye numarası · 10 hane · 5xx ile başlamalı</p>
+            <!-- DOB: visible trigger button + hidden input (dob-picker bağlanır) -->
+          <button type="button" id="dobTriggerBtn" class="dob-trigger placeholder"
+                  aria-label="Doğum tarihi seç" aria-haspopup="dialog">
+            <span id="dobDisplay">Doğum Tarihi</span>
+            <i class="fas fa-calendar-alt dob-icon"></i>
+          </button>
+          <input type="text" name="birthday" id="birthdayInput" tabindex="-1"
+                 aria-hidden="true" style="position:absolute;opacity:0;pointer-events:none;width:1px;height:1px" />
+          <div id="nameError" class="error" aria-live="assertive"></div>
+          <button type="submit" class="auth-btn" id="btnNameNext" disabled>Devam Et →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. ADRES ── -->
+  <div id="addressModal" class="modal-overlay" role="dialog" aria-modal="true"
+       aria-labelledby="addressTitle" aria-hidden="true" hidden>
+    <div class="modal-box">
+      <div class="auth-modal-header">
+        <button class="modal-back" type="button" id="btnBackAddress" aria-label="Geri">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="auth-steps" aria-hidden="true">
+          <div class="auth-step-dot done"></div>
+          <div class="auth-step-dot done"></div>
+          <div class="auth-step-dot active"></div>
+        </div>
+        <button class="modal-close" type="button" aria-label="Kapat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="auth-container">
+        <h2 id="addressTitle" class="auth-title">Konumun</h2>
+        <p class="auth-subtitle">Yakınındaki salonları önermek için şehir bilgine ihtiyacımız var.</p>
+        <form id="addressForm" class="auth-form active" data-form="address" autocomplete="off">
+          <div class="field-row-3">
+            <select class="auth-input" id="citySelect" required aria-label="Şehir"></select>
+            <select class="auth-input" id="districtSelect" required aria-label="İlçe"></select>
+            <select class="auth-input" id="neighborhoodSelect" required aria-label="Mahalle"></select>
+          </div>
+          <div id="addressError" class="error" aria-live="assertive"></div>
+          <button type="submit" class="auth-btn" id="btnFinish" disabled>Kaydı Tamamla ✓</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- reCAPTCHA (görünmez) -->
+  <div id="recaptcha-container" class="sr-only"></div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Page script -->
+
+<script type="module" src="js/index.js?v2026-04-06-0003"></script>
+<script type="module" src="js/auth.js?v=3"></script>
+<script src="js/cookie-consent.js"></script>
+  <script src="js/wb-transitions.js" defer></script>
+  <script src="js/wb-bottom-nav.js" defer></script>
+  <script src="js/wb-navbar-mobile.js" defer></script>
+  <!-- index.html: hero search geçilince navbar belirsin -->
+  <script>
+  (function() {
+    if (!document.body.classList.contains('index-page')) return;
+
+    function initHeroNavbar() {
+      var heroSec  = document.getElementById('heroSec');
+      var navbar   = document.getElementById('mobileNavbar');
+      var content  = document.getElementById('content');
+      if (!heroSec || !navbar || window.innerWidth > 767) return;
+
+      var visible = false;
+      var rafId = 0;
+      var lastTop = -1;
+
+      function setVisible(show) {
+        if (show === visible) return;
+        visible = show;
+        document.body.classList.toggle('navbar-visible', show);
+      }
+
+      function readTop() {
+        var se = document.scrollingElement || document.documentElement || document.body;
+        var heroTop = 0;
+        try {
+          heroTop = heroSec.getBoundingClientRect().top || 0;
+        } catch (_) {}
+        return Math.max(
+          window.scrollY || 0,
+          window.pageYOffset || 0,
+          se ? se.scrollTop || 0 : 0,
+          document.documentElement ? document.documentElement.scrollTop || 0 : 0,
+          document.body ? document.body.scrollTop || 0 : 0,
+          content ? content.scrollTop || 0 : 0,
+          heroTop < 0 ? Math.abs(heroTop) : 0
+        );
+      }
+
+      function syncNavbar() {
+        var top = readTop();
+        if (top !== lastTop) {
+          lastTop = top;
+          setVisible(top > 0);
+        }
+        rafId = window.requestAnimationFrame(syncNavbar);
+      }
+
+      syncNavbar();
+
+      ['scroll','touchmove','touchstart','wheel'].forEach(function(evt) {
+        window.addEventListener(evt, function() {
+          var top = readTop();
+          lastTop = top;
+          setVisible(top > 0);
+        }, { passive: true });
+      });
+      if (content) {
+        ['scroll','touchmove','wheel'].forEach(function(evt) {
+          content.addEventListener(evt, function() {
+            var top = readTop();
+            lastTop = top;
+            setVisible(top > 0);
+          }, { passive: true });
+        });
+      }
+
+      document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+          if (rafId) window.cancelAnimationFrame(rafId);
+        } else if (!rafId) {
+          syncNavbar();
+        }
+      });
+
+      window.addEventListener('pagehide', function() {
+        if (rafId) window.cancelAnimationFrame(rafId);
+        rafId = 0;
+      });
+
+      window.addEventListener('pageshow', function() {
+        if (!rafId) syncNavbar();
+      });
+
+      /* Resize: desktop'a geçince class'ı temizle */
+      window.addEventListener('resize', function() {
+        if (window.innerWidth > 767) {
+          document.body.classList.remove('navbar-visible');
+        }
+      }, { passive: true });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHeroNavbar);
+    } else {
+      initHeroNavbar();
+    }
+  })();
+  </script>
+
+  <!-- Mobil navbar: arama kutusu yönlendirme (index.html) -->
+  <script>
+  (function() {
+    function initIdxMobileSearch() {
+      var qSvc  = document.getElementById('qSvcMobileIdx');
+      var qSvc2 = document.getElementById('qSvcMobileIdx2'); /* expanded navbar arama */
+
+      function goSearch(val) {
+        var url = new URL('kuafor.html', location.origin);
+        var q = (val || '').trim();
+        if (q) url.searchParams.set('q', q);
+        location.href = url.pathname + (url.search || '');
+      }
+
+      /* Compact satır */
+      if (qSvc) qSvc.addEventListener('keydown', function(e) { if (e.key === 'Enter') goSearch(qSvc.value); });
+      /* Expanded satır */
+      if (qSvc2) qSvc2.addEventListener('keydown', function(e) { if (e.key === 'Enter') goSearch(qSvc2.value); });
+      /* İkisi senkron */
+      if (qSvc && qSvc2) {
+        qSvc.addEventListener('input', function() { qSvc2.value = qSvc.value; });
+        qSvc2.addEventListener('input', function() { qSvc.value = qSvc2.value; });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initIdxMobileSearch);
+    } else {
+      initIdxMobileSearch();
+    }
+  })();
+  </script>
+  <script src="js/wb-user-notifications.js" defer></script>
+
+  <!-- Geo buton stilleri (navbar + hero) -->
+  <style>
+    .geo-btn{
+      flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      width:32px; height:32px;
+      border:none; border-radius:8px;
+      background:transparent;
+      color:#0ea5b3;
+      cursor:pointer;
+      transition:background .15s, color .15s;
+    }
+    .geo-btn:hover{ background:rgba(14,165,179,.12); }
+    .geo-btn.loading{ pointer-events:none; }
+    .geo-btn.loading i{ animation:wb-spin .8s linear infinite; }
+    @keyframes wb-spin{ to{ transform:rotate(360deg); } }
+
+    /* Hero konumu kutusu — heroSearchBox ile aynı genişlik */
+    .hero-loc-box{
+      margin-top:10px;
+      background:rgba(255,255,255,.95);
+      color:#333;
+    }
+    .hero-loc-box i.fa-map-marker-alt{ color:#888; font-size:16px; }
+    .hero-loc-box input{ flex:1; border:none; outline:none; background:transparent; font-size:14px; color:#333; }
+    .hero-loc-box .geo-btn{ color:#0ea5b3; }
+  </style>
+
+  <!-- Konum butonu: kuafor.html?il=X&ilce=Y&mahalle=Z yönlendirmesi -->
+  <script type="module">
+    import { initGeoRedirect } from "./js/wb-geoloc.js";
+    initGeoRedirect([
+      { btn: "btnGeoNav",  inputs: ["idxNavLoc"] },
+      { btn: "btnGeoHero", inputs: ["heroLoc"] },
+    ]);
+  </script>
+
+  <!-- PWA: Service Worker kaydı -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(reg => console.log('[Webey SW] Kayıt başarılı:', reg.scope))
+          .catch(err => console.warn('[Webey SW] Kayıt hatası:', err));
+      });
+    }
+  </script>
+</body>
+</html>

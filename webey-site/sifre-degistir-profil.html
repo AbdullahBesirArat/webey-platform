@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex" />
+  <title>Şifre Değiştir</title>
+  <style>
+    :root{--bg:#f4f3ef;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e5e7eb;--brand:#0ea5b3;--brand-d:#0b8a96;--ok:#16a34a;--err:#dc2626}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{min-height:100vh;display:grid;place-items:center;padding:20px}
+    .card{width:min(520px,100%);background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+    h1{margin:0 0 8px;font-size:24px} p{margin:0;color:var(--muted);line-height:1.5}
+    .row{margin-top:18px}.label{display:block;margin-bottom:6px;font-size:12px;color:var(--muted);font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+    input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+    .choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .choice button{padding:11px 12px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:700;cursor:pointer}
+    .choice button.active{border-color:var(--brand);color:var(--brand)}
+    .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+    button,a{border:0;border-radius:10px;padding:11px 14px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+    .pri{background:var(--brand);color:#fff}.pri:hover{background:var(--brand-d)} .sec{background:#fff;color:#334155;border:1px solid var(--line)}
+    .msg{display:none;margin-top:14px;padding:10px 12px;border-radius:10px;font-size:14px}
+    .msg.ok{display:block;background:#ecfdf3;color:var(--ok);border:1px solid #bbf7d0}
+    .msg.err{display:block;background:#fef2f2;color:var(--err);border:1px solid #fecaca}
+    .state{display:none}.state.show{display:block}
+    .hint{font-size:12px;color:var(--muted);margin-top:5px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main class="card">
+      <h1>Şifre İşlemleri</h1>
+      <p>Mevcut şifrenle değiştir veya şifremi unuttum akışı ile sıfırlama maili gönder.</p>
+
+      <div class="choice">
+        <button id="knownBtn" class="active" type="button">Güncel Şifremi Biliyorum</button>
+        <button id="forgotBtn" type="button">Şifremi Unuttum</button>
+      </div>
+
+      <section id="knownState" class="state show">
+        <div class="row">
+          <label class="label" for="curPw">Mevcut Şifre</label>
+          <input id="curPw" type="password" autocomplete="current-password" />
+        </div>
+        <div class="row">
+          <label class="label" for="newPw">Yeni Şifre</label>
+          <input id="newPw" type="password" autocomplete="new-password" />
+          <div class="hint">En az 8 karakter, harf ve rakam içermeli.</div>
+        </div>
+        <div class="row">
+          <label class="label" for="newPw2">Yeni Şifre (Tekrar)</label>
+          <input id="newPw2" type="password" autocomplete="new-password" />
+        </div>
+        <div class="actions">
+          <button id="saveBtn" class="pri" type="button">Şifreyi Güncelle</button>
+          <a class="sec" href="admin-profile.html">Profile Dön</a>
+        </div>
+      </section>
+
+      <section id="forgotState" class="state">
+        <div class="row">
+          <span class="label">Hesap E-postası</span>
+          <input id="accountEmail" type="email" disabled />
+        </div>
+        <div class="actions">
+          <button id="forgotSendBtn" class="pri" type="button">Sıfırlama Maili Gönder</button>
+          <a class="sec" href="admin-profile.html">Profile Dön</a>
+        </div>
+      </section>
+
+      <div id="msg" class="msg"></div>
+    </main>
+  </div>
+
+  <script>
+    let csrf = '';
+    let accountEmail = '';
+
+    function setMsg(text, type){
+      const el = document.getElementById('msg');
+      el.textContent = text;
+      el.className = 'msg ' + (type === 'ok' ? 'ok' : 'err');
+    }
+
+    function activate(mode){
+      const known = mode === 'known';
+      document.getElementById('knownBtn').classList.toggle('active', known);
+      document.getElementById('forgotBtn').classList.toggle('active', !known);
+      document.getElementById('knownState').classList.toggle('show', known);
+      document.getElementById('forgotState').classList.toggle('show', !known);
+      document.getElementById('msg').className = 'msg';
+    }
+
+    function strongEnough(pw){
+      return pw.length >= 8 && /[A-Za-z]/.test(pw) && /\d/.test(pw);
+    }
+
+    async function boot(){
+      try {
+        const [csrfRes, meRes] = await Promise.all([
+          fetch('api/csrf.php', { credentials: 'include' }),
+          fetch('api/profile/me.php', { credentials: 'include' })
+        ]);
+        const csrfJson = await csrfRes.json();
+        const meJson = await meRes.json();
+        if (!meJson?.ok) { location.replace('admin-register-login.html#login'); return; }
+        csrf = csrfJson?.data?.token || csrfJson?.token || '';
+        accountEmail = meJson.data?.email || '';
+        document.getElementById('accountEmail').value = accountEmail;
+      } catch {
+        location.replace('admin-register-login.html#login');
+      }
+    }
+
+    async function savePassword(){
+      const btn = document.getElementById('saveBtn');
+      const cur = document.getElementById('curPw').value || '';
+      const n1 = document.getElementById('newPw').value || '';
+      const n2 = document.getElementById('newPw2').value || '';
+
+      if (!cur || !n1 || !n2) return setMsg('Tüm alanları doldurun.', 'err');
+      if (!strongEnough(n1)) return setMsg('Yeni şifre en az 8 karakter olmalı, harf ve rakam içermeli.', 'err');
+      if (n1 !== n2) return setMsg('Yeni şifreler eşleşmiyor.', 'err');
+
+      btn.disabled = true; btn.textContent = 'Kaydediliyor...';
+      try {
+        const res = await fetch('api/profile/update.php', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf },
+          body: JSON.stringify({ action: 'change_password', currentPassword: cur, newPassword: n1 })
+        });
+        const json = await res.json();
+        if (!json?.ok) throw new Error(json?.error || 'Şifre güncellenemedi.');
+        setMsg('Şifre başarıyla güncellendi.', 'ok');
+        localStorage.setItem('wb_profile_refresh', String(Date.now()));
+        document.getElementById('curPw').value = '';
+        document.getElementById('newPw').value = '';
+        document.getElementById('newPw2').value = '';
+      } catch (e) {
+        setMsg(e.message || 'Bağlantı hatası.', 'err');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Şifreyi Güncelle';
+      }
+    }
+
+    async function sendForgot(){
+      const btn = document.getElementById('forgotSendBtn');
+      if (!accountEmail) return setMsg('Hesap e-postası alınamadı.', 'err');
+      btn.disabled = true; btn.textContent = 'Gönderiliyor...';
+      try {
+        const res = await fetch('api/auth/forgot-password.php', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf },
+          body: JSON.stringify({ email: accountEmail })
+        });
+        const json = await res.json();
+        if (!json?.ok) throw new Error(json?.error || 'Mail gönderilemedi.');
+        setMsg(json?.message || 'Sıfırlama maili gönderildi.', 'ok');
+      } catch (e) {
+        setMsg(e.message || 'Bağlantı hatası.', 'err');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Sıfırlama Maili Gönder';
+      }
+    }
+
+    document.getElementById('knownBtn').addEventListener('click', () => activate('known'));
+    document.getElementById('forgotBtn').addEventListener('click', () => activate('forgot'));
+    document.getElementById('saveBtn').addEventListener('click', savePassword);
+    document.getElementById('forgotSendBtn').addEventListener('click', sendForgot);
+
+    boot();
+  </script>
+</body>
+</html>

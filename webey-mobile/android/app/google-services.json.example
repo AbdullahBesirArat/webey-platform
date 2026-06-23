@@ -1,0 +1,39 @@
+{
+  "_comment": "EXAMPLE Firebase Android config. Download the real google-services.json from the Firebase console (Project settings > Your apps) and place it next to this file as 'google-services.json'. Do NOT commit the real file.",
+  "project_info": {
+    "project_number": "000000000000",
+    "project_id": "your-firebase-project-id",
+    "storage_bucket": "your-firebase-project-id.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+        "android_client_info": {
+          "package_name": "tr.com.webey.beauty"
+        }
+      },
+      "api_key": [
+        { "current_key": "YOUR_FIREBASE_ANDROID_API_KEY" }
+      ],
+      "services": {
+        "appinvite_service": { "other_platform_oauth_client": [] }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:000000000000:android:1111111111111111111111",
+        "android_client_info": {
+          "package_name": "tr.com.webey.business"
+        }
+      },
+      "api_key": [
+        { "current_key": "YOUR_FIREBASE_ANDROID_API_KEY" }
+      ],
+      "services": {
+        "appinvite_service": { "other_platform_oauth_client": [] }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

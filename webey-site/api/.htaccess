@@ -1,0 +1,43 @@
+Options -Indexes
+
+# ── CORS: Yalnızca kendi domain'ine izin ver ────────────────────────────────
+# Prodüksiyon: Access-Control-Allow-Origin header'ı dinamik olarak ayarlanır.
+# Aynı origin'den gelen istekler (SPA) zaten credential cookie gönderir,
+# farklı origin'den gelen isteklere CORS izni verilmez.
+# Eğer harici erişim gerekirse aşağıdaki satırı domain'inize göre güncelleyin:
+# Header always set Access-Control-Allow-Origin "https://webey.com.tr"
+# Header always set Access-Control-Allow-Credentials "true"
+# Header always set Access-Control-Allow-Headers "Content-Type, X-CSRF-Token, X-Requested-With"
+# Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+
+<IfModule mod_setenvif.c>
+    SetEnvIfNoCase Origin "^http://localhost:8081$" WEBEY_CORS_ORIGIN=$0
+    SetEnvIfNoCase Origin "^http://localhost:8082$" WEBEY_CORS_ORIGIN=$0
+    SetEnvIfNoCase Origin "^http://127\.0\.0\.1:8081$" WEBEY_CORS_ORIGIN=$0
+    SetEnvIfNoCase Origin "^http://127\.0\.0\.1:8082$" WEBEY_CORS_ORIGIN=$0
+    SetEnvIfNoCase Origin "^https://webey\.com\.tr$" WEBEY_CORS_ORIGIN=$0
+    SetEnvIfNoCase Origin "^https://www\.webey\.com\.tr$" WEBEY_CORS_ORIGIN=$0
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Güvenlik başlıkları
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+</IfModule>
+
+<If "%{REQUEST_METHOD} == 'OPTIONS'">
+    <IfModule mod_headers.c>
+        Header always set Access-Control-Allow-Origin "%{WEBEY_CORS_ORIGIN}e" env=WEBEY_CORS_ORIGIN
+        Header always merge Vary "Origin"
+        Header always set Access-Control-Allow-Credentials "true" env=WEBEY_CORS_ORIGIN
+        Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+        Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, Accept"
+        Header always set Access-Control-Max-Age "86400"
+    </IfModule>
+</If>
+
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^ - [R=204,L]

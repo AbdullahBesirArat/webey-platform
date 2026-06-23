@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="robots" content="noindex,nofollow"/><meta name="theme-color" content="#07080d"/>
+  <title>Adım 6 – Personel | Webey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    :root{--bg:#07080d;--bg2:#0d0f17;--bg3:#111420;--teal:#0ea5b3;--teal-d:#0b8a96;--teal-g:rgba(14,165,179,.35);--teal-s:rgba(14,165,179,.10);--ink:#fff;--ink2:rgba(255,255,255,.68);--ink3:rgba(255,255,255,.40);--border:rgba(255,255,255,.08);--border-t:rgba(14,165,179,.22);--on:#22c55e;--on-g:rgba(34,197,94,.2);--danger:#ef4444;--danger-s:rgba(239,68,68,.12);--warn:#f59e0b;--warn-s:rgba(245,158,11,.12);--input-bg:rgba(255,255,255,.04);--radius:20px;--radius-sm:12px;--shadow:0 0 0 1px var(--border-t),0 32px 80px rgba(0,0,0,.6),0 0 60px rgba(14,165,179,.06);--ring:rgba(14,165,179,.3);}
+    *,*::before,*::after{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0;min-height:100dvh;font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;align-items:center;padding:clamp(16px,3vw,28px) clamp(12px,4vw,20px);padding-top:calc(env(safe-area-inset-top,0px) + 16px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px);-webkit-font-smoothing:antialiased;}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(14,165,179,.12),transparent 65%);}
+    .page-logo{display:block;text-align:center;margin-bottom:20px;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:#fff;text-decoration:none;position:relative;z-index:1;}.page-logo em{color:var(--teal);font-style:normal;}
+    .sn{width:min(600px,100%);margin:0 auto 20px;display:flex;align-items:flex-start;position:relative;z-index:1;}
+    .sn-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:0 0 auto;}
+    .sn-line{flex:1 1 0;height:2px;background:var(--border);margin-top:14px;border-radius:2px;min-width:6px;transition:background .35s;}.sn-line.done{background:var(--on);}
+    .sn-bubble{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:2px solid var(--border);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink3);transition:all .3s;}
+    .sn-item.done .sn-bubble{background:var(--on);border-color:var(--on);color:#fff;}
+    .sn-item.active .sn-bubble{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 4px var(--teal-s);}
+    .sn-label{font-size:9.5px;font-weight:700;color:var(--ink3);letter-spacing:.05em;text-align:center;white-space:nowrap;text-transform:uppercase;line-height:1;}
+    .sn-item.done .sn-label,.sn-item.active .sn-label{color:var(--ink2);}
+    @media(max-width:480px){.sn-label{display:none}.sn-bubble{width:24px;height:24px;font-size:10px}.sn-line{margin-top:11px}}
+    .card,.container{width:min(600px,100%);background:var(--bg2);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border-t);padding:28px 28px 32px;position:relative;z-index:1;}
+    @media(max-width:560px){.card,.container{padding:20px 18px 28px;}}
+    .top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+    .back-btn{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--ink2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;}
+    .back-btn:hover{border-color:var(--border-t);color:var(--teal);background:var(--teal-s);}
+    .back-btn:focus-visible{outline:2px solid var(--teal);}
+    h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    h2{font-size:clamp(17px,3.5vw,20px);font-weight:700;letter-spacing:-.1px;margin:0 0 8px;color:#fff;}
+    .title{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    .subtitle,.sub{color:var(--ink2);margin:0 0 22px;font-size:14px;line-height:1.55;}
+    .row,.form-row,.field,.field-row{margin-bottom:16px;}
+    label{display:block;font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:7px;letter-spacing:.08em;text-transform:uppercase;}
+    input[type="text"],input[type="tel"],input[type="email"],input[type="password"],input[type="number"],input[type="time"],select,textarea{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;}
+    input::placeholder,textarea::placeholder{color:var(--ink3);}
+    input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    input[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+    textarea{height:auto;padding:12px 14px;resize:vertical;}
+    select option{background:var(--bg3);color:#fff;}
+    .btn{width:100%;min-height:50px;border-radius:999px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-top:10px;}
+    .btn:hover:not([disabled]){opacity:.92;}
+    .btn:active:not([disabled]){transform:scale(.98);}
+    .btn[disabled]{opacity:.4;cursor:not-allowed;}
+    .btn-primary{background:var(--teal);color:#fff;box-shadow:0 6px 22px var(--teal-g);}
+    .btn-primary:hover:not([disabled]){background:var(--teal-d);box-shadow:0 10px 28px var(--teal-g);transform:translateY(-1px);}
+    .btn-ghost{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ghost:hover:not([disabled]){background:rgba(255,255,255,.09);color:#fff;}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ok{background:var(--on);color:#fff;}
+    .btn-danger{background:rgba(239,68,68,.15);color:var(--danger);border:1px solid rgba(239,68,68,.25);}
+    .btn-row{display:flex;gap:10px;margin-top:14px;}
+    .btn-row .btn{margin-top:0;flex:1;}
+    @media(max-width:440px){.btn-row{flex-direction:column;}}
+    .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--bg3);color:#fff;border:1px solid var(--border);padding:11px 22px;border-radius:999px;font-size:13.5px;font-weight:600;display:none;z-index:10000;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.4);}
+    .toast.show{display:block;animation:toastPop 2.4s ease both;}
+    .toast.err{background:#7f1d1d;border-color:var(--danger);}
+    @keyframes toastPop{0%{opacity:0;transform:translate(-50%,10px)}12%{opacity:1;transform:translate(-50%,0)}88%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
+    .help{font-size:12px;color:var(--ink3);margin-top:5px;line-height:1.4;}
+    .error-text{font-size:12px;color:var(--danger);margin-top:5px;display:none;}
+    .error-text.show{display:block;}
+    .warn-text{font-size:12px;color:var(--warn);margin-top:5px;display:none;}
+    .warn-text.show{display:block;}
+    .section-divider{height:1px;background:var(--border);margin:20px 0;}
+    /* Toggle switch */
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+    .toggle-row:last-child{border-bottom:none;}
+    .toggle-label{font-size:14px;font-weight:600;color:var(--ink);}
+    .toggle-sub{font-size:12px;color:var(--ink3);}
+    .sw{position:relative;width:46px;height:26px;flex-shrink:0;}
+    .sw input{opacity:0;width:0;height:0;}
+    .sw-slider{position:absolute;inset:0;background:rgba(255,255,255,.15);border-radius:999px;cursor:pointer;transition:.25s;}
+    .sw-slider::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s;}
+    .sw input:checked~.sw-slider{background:var(--teal);}
+    .sw input:checked~.sw-slider::before{transform:translateX(20px);}
+    /* Day rows (register6) */
+    .day-row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+    .day-row:last-child{border-bottom:none;}
+    .day-name{font-size:14px;font-weight:600;min-width:80px;}
+    .time-pair{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .time-pair input[type="time"]{width:110px;height:40px;flex-shrink:0;}
+    .time-sep{font-size:13px;color:var(--ink3);}
+    /* Service & staff cards */
+    .item-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .item-name{font-size:15px;font-weight:600;}
+    .item-detail{font-size:13px;color:var(--ink2);}
+    .item-actions{display:flex;gap:6px;flex-shrink:0;}
+    .icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--ink3);display:grid;place-items:center;cursor:pointer;transition:all .15s;font-size:14px;}
+    .icon-btn:hover{color:#fff;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);}
+    .icon-btn.del:hover{color:var(--danger);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.06);}
+    /* Avatar */
+    .avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700;flex-shrink:0;overflow:hidden;}
+    /* Modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.active{display:flex;}
+    /* Personel modal */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;box-sizing:border-box;}
+    .overlay.show{display:flex;}
+    .modal{background:var(--bg2);border:1px solid var(--border-t);border-radius:var(--radius);padding:24px;width:min(480px,100%);max-height:90dvh;overflow-y:auto;box-sizing:border-box;}
+    .modal h3{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;margin:0 0 18px;color:#fff;}
+    .modal-footer{display:flex;gap:10px;margin-top:20px;}
+    .modal-footer .btn{margin-top:0;flex:1;}
+    /* Picker */
+    .picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:2000;display:none;flex-direction:column;}
+    .picker-overlay.active{display:flex;}
+    .picker-sheet{background:var(--bg2);border-top:1px solid var(--border-t);border-radius:20px 20px 0 0;padding:20px;margin-top:auto;max-height:70dvh;display:flex;flex-direction:column;}
+    .picker-title{font-size:16px;font-weight:700;margin-bottom:12px;color:#fff;}
+    .picker-search{width:100%;height:44px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;margin-bottom:10px;}
+    .picker-search:focus{border-color:var(--teal);}
+    .picker-list{overflow-y:auto;flex:1;}
+    .picker-item{display:block;width:100%;text-align:left;padding:13px 14px;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--ink2);font-family:inherit;font-size:15px;cursor:pointer;transition:background .15s;}
+    .picker-item:hover,.picker-item.selected{background:var(--teal-s);color:#fff;}
+    .picker-cancel{margin-top:10px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--ink2);font-family:inherit;font-size:15px;font-weight:600;border-radius:999px;height:48px;cursor:pointer;transition:all .15s;}
+    .picker-cancel:hover{background:rgba(255,255,255,.09);color:#fff;}
+    .picker-empty{padding:20px;text-align:center;color:var(--ink3);font-size:14px;}
+    /* Grid */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media(max-width:420px){.grid-2{grid-template-columns:1fr;}}
+    /* Add form */
+    .add-form{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px;}
+    /* Staff owner card */
+    .owner-card{background:var(--teal-s);border:1px solid var(--border-t);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+    .owner-badge{font-size:11px;font-weight:700;background:var(--teal);color:#fff;border-radius:999px;padding:2px 8px;}
+    /* Success card (register9) */
+    .success-hero{text-align:center;padding:16px 0 28px;}
+    .success-icon{width:72px;height:72px;border-radius:24px;background:var(--on-g);border:1px solid rgba(34,197,94,.3);display:grid;place-items:center;margin:0 auto 20px;font-size:28px;color:var(--on);}
+    .feature-list{list-style:none;padding:0;margin:0;}
+    .feature-list li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--ink2);}
+    .feature-list li:last-child{border-bottom:none;}
+    .feature-list li i{color:var(--teal);width:20px;text-align:center;flex-shrink:0;}
+    /* Checkbox */
+    input[type="checkbox"]{accent-color:var(--teal);width:16px;height:16px;}
+    /* Tag chips */
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600;background:var(--teal-s);border:1px solid var(--border-t);color:var(--teal);margin:3px;}
+    .tag.inactive{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--ink3);}
+    /* Select trigger button for address page */
+    .select-trigger{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:var(--ink3);font-family:inherit;outline:none;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:border-color .15s;}
+    .select-trigger.filled{color:#fff;}
+    .select-trigger:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    .select-trigger[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+    /* Register8 specific */
+    .header{margin-bottom:20px;}
+    .header h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;}
+    .header p{color:var(--ink2);font-size:14px;margin:0;}
+    .section{margin-bottom:20px;}
+    /* Staff chips list */
+    .staff-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+    .chip{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);transition:border-color .15s;}
+    .chip:hover{border-color:var(--border-t);}
+    .chip .avatar{width:42px;height:42px;min-width:42px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;flex-shrink:0;flex-grow:0;color:#fff;overflow:hidden;}
+    .chip>div{flex:1;}
+    .chip .role{font-size:12px;color:var(--ink3);}
+    .chip .rm{width:30px;height:30px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--ink3);display:grid;place-items:center;cursor:pointer;flex-shrink:0;transition:all .15s;font-size:13px;}
+    .chip .rm:hover{border-color:rgba(239,68,68,.4);color:var(--danger);background:rgba(239,68,68,.08);}
+    /* Add row button */
+    .add-row{display:flex;align-items:center;gap:14px;width:100%;padding:14px 16px;background:transparent;border:2px dashed var(--border);border-radius:var(--radius-sm);cursor:pointer;text-align:left;font-family:inherit;transition:all .2s;color:inherit;}
+    .add-row:hover{border-color:var(--teal);background:var(--teal-s);}
+    .add-icon{width:40px;height:40px;border-radius:50%;background:rgba(14,165,179,.15);border:1.5px solid var(--border-t);display:grid;place-items:center;font-size:16px;color:var(--teal);flex-shrink:0;transition:background .2s;}
+    .add-row:hover .add-icon{background:rgba(14,165,179,.3);}
+    .add-label{font-size:14px;font-weight:700;color:var(--teal);}
+    .add-sub{font-size:12px;color:var(--ink3);margin-top:2px;}
+    .footer{margin-top:8px;}
+    /* Modal redesign */
+    .m-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+    .m-head-title{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:#fff;}
+    .m-close{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--ink2);display:grid;place-items:center;cursor:pointer;transition:all .15s;font-size:16px;}
+    .m-close:hover{border-color:var(--teal);color:var(--teal);background:var(--teal-s);}
+    .m-body{display:flex;flex-direction:column;gap:4px;}
+    .m-foot{display:flex;gap:8px;margin-top:20px;}
+    .m-foot .btn{margin-top:0;flex:1;}
+    /* Form fields inside modal */
+    .inp{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+    .field-label-row{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--ink3);letter-spacing:.06em;text-transform:uppercase;}
+    .field-label-row i{color:var(--teal);width:14px;text-align:center;}
+    .phone-wrap{display:flex;align-items:stretch;border-radius:var(--radius-sm);border:1.5px solid var(--border);overflow:hidden;background:var(--input-bg);transition:border-color .15s,box-shadow .15s;}
+    .phone-wrap:focus-within{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    .prefix{display:flex;align-items:center;padding:0 12px;background:rgba(255,255,255,.06);border-right:1px solid var(--border);font-size:14px;font-weight:600;color:var(--ink3);flex-shrink:0;}
+    .phone-wrap input{border:none!important;background:transparent!important;box-shadow:none!important;border-radius:0!important;flex:1;}
+    .phone-wrap input:focus{box-shadow:none!important;}
+    .err{font-size:12px;color:var(--danger);display:none;}
+    .inp.invalid .err{display:block;}
+    .inp.invalid input,.inp.invalid select{border-color:var(--danger)!important;background:var(--danger-s)!important;}
+    .inp.invalid .phone-wrap{border-color:var(--danger)!important;}
+    .btn-cancel{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-cancel:hover{background:rgba(255,255,255,.09);color:#fff;}
+  </style>
+</head>
+<body>
+  <a href="index.html" class="page-logo">Web<em>ey</em></a>
+  <nav class="sn" aria-label="Kayıt adımları (7 adım)">
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Şifre</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Profil</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Adres</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Saatler</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Hizmetler</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item active" aria-current=step><div class="sn-bubble">6</div><span class="sn-label">Personel</span></div>
+    <div class="sn-line "></div>
+    <div class="sn-item "><div class="sn-bubble">7</div><span class="sn-label">Bitiş</span></div>
+  </nav>
+  
+  
+<main class="container card" role="main">
+    <div class="top">
+      <button class="back-btn" id="btnBack" aria-label="Geri"><i class="fa-solid fa-arrow-left"></i></button>
+    </div>
+
+    <div class="header">
+      <h1>Personel eklemek ister misiniz?</h1>
+      <p>İsterseniz ekibinizi buradan ekleyebilirsiniz. İstemiyorsanız direkt kaydı tamamlayın.</p>
+    </div>
+
+    <section class="section" aria-labelledby="staffListTitle">
+      <h2 id="staffListTitle" style="position:absolute;left:-9999px">Personel listesi</h2>
+
+      <div class="staff-list" id="staffList" aria-live="polite">
+        <div class="chip" id="ownerChip" aria-label="İşletme sahibi" style="display:none">
+          <div class="avatar" id="ownerAvatar" aria-hidden="true">ME</div>
+          <div>
+            <div id="ownerName">Ben</div>
+            <div class="role">Sahip</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="add-row" id="btnOpenModal" type="button" aria-haspopup="dialog">
+        <div class="add-icon"><i class="fa-solid fa-user-plus" aria-hidden="true"></i></div>
+        <div>
+          <div class="add-label">Ekip üyesi ekle</div>
+          <div class="add-sub">Berber, kuaför, resepsiyonist…</div>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="margin-left:auto;color:var(--ink3);font-size:12px;" aria-hidden="true"></i>
+      </button>
+    </section>
+
+    <div class="footer">
+      <button class="btn btn-ok" id="btnFinish"><i class="fa-solid fa-circle-check"></i> KAYDI TAMAMLA</button>
+    </div>
+  </main>
+
+  <div class="overlay" id="staffOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal">
+      <div class="m-head">
+        <div class="m-head-title" id="modalTitle">Ekip Üyesi Ekle</div>
+        <button class="m-close" id="btnModalClose" aria-label="Kapat"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="m-body">
+
+        <!-- Ad Soyad -->
+        <div class="inp" id="nameWrap">
+          <div class="field-label-row">
+            <i class="fa-solid fa-id-card"></i>
+            <span>Ad Soyad</span>
+          </div>
+          <input type="text" id="name" placeholder="Örn: Ahmet Yılmaz" autocomplete="name" aria-label="Ad Soyad"/>
+          <div class="err">Ad gerekli</div>
+        </div>
+
+        <!-- Telefon -->
+        <div class="inp" id="phoneWrap">
+          <div class="field-label-row">
+            <i class="fa-solid fa-phone"></i>
+            <span>Telefon</span>
+          </div>
+          <div class="phone-wrap">
+            <span class="prefix">+90</span>
+            <input type="tel" id="phone" placeholder="5xx xxx xx xx" inputmode="numeric" autocomplete="tel" aria-label="Telefon"/>
+          </div>
+          <div class="err">Telefon 10 haneli olmalı</div>
+        </div>
+
+      </div>
+
+      <div class="m-foot">
+        <button class="btn btn-cancel" id="btnCancel" type="button">
+          <i class="fa-solid fa-xmark"></i> İptal
+        </button>
+        <button class="btn btn-primary" id="addBtn" type="button">
+          <i class="fa-solid fa-user-plus"></i> Ekle
+        </button>
+      </div>
+    </div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module">
+  /* ===============================
+     ✅ Firebase kaldırıldı.
+     ✅ Session kontrol: /api/auth/me.php
+     ✅ Final submit: /api/admin/completeOnboarding.php (session cookie ile)
+     =============================== */
+
+  /* ---------- Flow sabitleri + step haritası ---------- */
+  const K_EMAIL  = "pending_admin_email";
+  const K_FLOW   = "admin_onboarding_flow";
+  const K_METHOD = "admin_onboarding_method";
+  const K_GOOGLE_SIGNUP_CRED = "wb_admin_google_signup_credential";
+  const K_LAST   = "admin_onboarding_last_step";
+  const K_TOTAL  = "admin_onboarding_total";
+  const TOTAL_STEPS = 7;
+
+  const K_PROFILE = "pending_admin_profile";
+  const K_DATA    = "onboardingData";     // LOCAL birikim
+  const CURRENT_STEP = 6;                 // ✅ bu sayfa: admin-register8.html
+
+  function stepToHref(n){
+    const s = Math.max(1, Math.min(TOTAL_STEPS, Number(n)||1));
+    if (s <= 1) return "admin-register1.html";
+    if (s === 2) return "admin-register2.html";
+    if (s === 3) return "admin-register5.html";
+    if (s === 4) return "admin-register6.html";
+    if (s === 5) return "admin-register7.html";
+    if (s === 6) return "admin-register8.html";
+    return "admin-register9.html";
+  }
+
+  /* ---------- API helpers (SESSION) ---------- */
+  const API_BASE = (window.API_BASE || "/api").replace(/\/+$/, "");
+  const apiUrl = (path) => {
+    if (/^https?:\/\//i.test(path)) return path;
+    if (!path.startsWith("/")) path = "/" + path;
+    return API_BASE + path;
+  };
+
+  async function postJson(path, body){
+    const ctrl = new AbortController();
+    const to = setTimeout(()=>ctrl.abort(), 15000);
+
+    let csrfToken = window.__csrfToken || null;
+    if (!csrfToken) {
+      try {
+        const cr = await fetch(apiUrl("/csrf.php"), { credentials: "include" });
+        const cd = await cr.json();
+        if (cd?.ok && cd?.data?.token) { csrfToken = cd.data.token; window.__csrfToken = csrfToken; }
+      } catch(_) {}
+    }
+
+    const res = await fetch(apiUrl(path), {
+      method:"POST",
+      credentials:"include",
+      headers:{ "Content-Type":"application/json", "Accept":"application/json", ...(csrfToken ? {"X-CSRF-Token":csrfToken} : {}) },
+      body: JSON.stringify(body && typeof body==="object" ? body : {}),
+      signal: ctrl.signal
+    }).finally(()=> clearTimeout(to));
+
+    const data = await res.json().catch(()=> ({}));
+    if(!res.ok){
+      const err = new Error(data?.error || data?.message || `İstek başarısız (${res.status})`);
+      err.status = res.status;
+      err.response = data;
+      if(err.status === 403 && data?.code === "csrf_invalid") window.__csrfToken = null;
+      throw err;
+    }
+    if(data?.success === false || data?.ok === false){
+      const err = new Error(data?.message || data?.error || "İşlem başarısız");
+      err.status = res.status;
+      err.response = data;
+      if(err.status === 403 && data?.code === "csrf_invalid") window.__csrfToken = null;
+      throw err;
+    }
+    return data;
+  }
+
+  async function requireSessionOrRedirect(){
+    try{
+      // register8'de session henüz YOK — sadece localStorage kontrolü yapılır
+      // Session, submit butonuna basılınca register.php ile açılır
+      const flow  = (localStorage.getItem(K_FLOW)||"").trim().toLowerCase();
+      const email = (localStorage.getItem(K_EMAIL)||"").trim();
+      if(flow !== "admin" || !email){
+        location.replace("admin-register-login.html#login");
+        return null;
+      }
+      if(!localStorage.getItem(K_TOTAL)) localStorage.setItem(K_TOTAL, String(TOTAL_STEPS));
+      return { ok: true };
+    }catch{
+      location.replace("admin-register-login.html#login");
+      return null;
+    }
+  }
+
+  async function refreshCsrfToken(){
+    window.__csrfToken = null;
+    const cr = await fetch(apiUrl("/csrf.php"), { credentials: "include", cache: "no-store" });
+    const cd = await cr.json().catch(()=> ({}));
+    const token = cd?.data?.token || "";
+    if(token) window.__csrfToken = token;
+    return token;
+  }
+
+  /* ---------- Storage helpers ---------- */
+  const readStore  = (k) => localStorage.getItem(k) ?? sessionStorage.getItem(k);
+  const writeStore = (k,v) => { localStorage.setItem(k,v); };
+  const removeStore= (k) => { localStorage.removeItem(k); sessionStorage.removeItem(k); };
+
+  function getOnboardingData(){
+    try{ return JSON.parse(localStorage.getItem(K_DATA) || "{}"); }catch{ return {}; }
+  }
+  function patchOnboardingData(patch){
+    const cur=getOnboardingData();
+    const next={ ...cur, ...patch };
+    localStorage.setItem(K_DATA, JSON.stringify(next));
+    return next;
+  }
+
+  /* ---------- Guards (LOCAL) ---------- */
+  function guardPrerequisites(){
+    const d = getOnboardingData();
+
+    const hasAddress = !!readStore("step5") || !!d?.address;
+    if(!hasAddress){ location.replace("admin-register5.html"); return false; }
+
+    const hasHours = !!readStore("step6") || !!d?.workingHours;
+    if(!hasHours){ location.replace("admin-register6.html"); return false; }
+
+    const hasServices = !!readStore("step7") || (Array.isArray(d?.services) && d.services.length>0);
+    if(!hasServices){ location.replace("admin-register7.html"); return false; }
+
+    return true;
+  }
+
+  function guardFlowLocal(){
+    const flow   = (readStore(K_FLOW)||"").trim().toLowerCase();
+    const email  = (readStore(K_EMAIL)||"").trim();
+    const method = (readStore(K_METHOD)||"").trim().toLowerCase();
+    const last   = Number(readStore(K_LAST)||"0");
+
+    if(flow!=="admin" || !email || !method){
+      location.replace("admin-register-login.html#login");
+      return false;
+    }
+
+    if(last < CURRENT_STEP){
+      location.replace(stepToHref(last || 1));
+      return false;
+    }
+    if(last > CURRENT_STEP){
+      location.replace(stepToHref(last));
+      return false;
+    }
+
+    if(!readStore(K_TOTAL)){
+      writeStore(K_TOTAL, String(TOTAL_STEPS));
+    }
+
+    return guardPrerequisites();
+  }
+
+  /* ---------- UI Shortcuts ---------- */
+  const $ = (s) => document.querySelector(s);
+  const staffList   = $("#staffList");
+  const ownerChip   = $("#ownerChip");
+  const ownerAvatar = $("#ownerAvatar");
+  const ownerNameEl = $("#ownerName");
+  const overlay     = $("#staffOverlay");
+  const toast       = $("#toast");
+  const btnFinish   = $("#btnFinish");
+  const btnOpen     = $("#btnOpenModal");
+  const btnClose    = $("#btnModalClose");
+  const btnCancel   = $("#btnCancel");
+  const addBtn      = $("#addBtn");
+
+  const initials = n => String(n||"").trim().split(" ").filter(Boolean).map(w=>w[0]).slice(0,2).join("").toUpperCase();
+  const colors   = ['#111827','#2563eb','#0ea5e9','#059669','#f59e0b','#dc2626','#7c3aed'];
+  const colorFor = n => colors[(String(n||"").codePointAt(0)||0)%colors.length];
+  const showToast = m => { toast.textContent=m; toast.classList.add("show"); setTimeout(()=>toast.classList.remove("show"),1500); };
+
+  /* ---------- Leave / Back ---------- */
+  let allowLeave=false;
+  let DIRTY=false;
+  let IS_SUBMITTING=false;
+
+  $("#btnBack").addEventListener("click",(e)=>{
+    e.preventDefault();
+    persistStep8();
+    allowLeave=true;
+    location.replace("admin-register7.html");
+  });
+
+  window.addEventListener("beforeunload",(e)=>{
+    if(!allowLeave && DIRTY){
+      e.preventDefault();
+      e.returnValue="";
+    }
+  });
+
+  /* ---------- Owner chip ---------- */
+  function renderOwner(){
+    try{
+      const prof = JSON.parse(readStore(K_PROFILE)||"{}");
+      const name = (prof?.adminName || "Ben").trim();
+      ownerNameEl.textContent = name + " (Ben)";
+      ownerAvatar.textContent = initials(name) || "ME";
+      ownerAvatar.style.background = colorFor(name);
+      ownerChip.style.display="flex";
+    }catch{
+      ownerChip.style.display="flex";
+    }
+  }
+
+  /* ---------- Normalize helpers for API payload ---------- */
+  const DAY_ID = { "Pazartesi":"mon","Salı":"tue","Çarşamba":"wed","Perşembe":"thu","Cuma":"fri","Cumartesi":"sat","Pazar":"sun" };
+
+  function getWorkingHoursServer(){
+    const d = getOnboardingData();
+
+    if(d?.workingHours && typeof d.workingHours === "object" && ("mon" in d.workingHours || "tue" in d.workingHours)){
+      return d.workingHours;
+    }
+
+    try{
+      const raw = readStore("step6");
+      const obj = raw ? JSON.parse(raw) : null;
+      const whTR = obj?.workingHours;
+      if(whTR && typeof whTR === "object"){
+        const out = {};
+        Object.keys(DAY_ID).forEach(tr=>{
+          const id = DAY_ID[tr];
+          const v = whTR[tr];
+          if(v?.open){
+            out[id] = { open:true, from: v.from || "10:00", to: v.to || "19:00" };
+          }else{
+            out[id] = { open:false };
+          }
+        });
+        return out;
+      }
+    }catch{}
+
+    return {
+      mon:{open:true,from:"10:00",to:"19:00"},
+      tue:{open:true,from:"10:00",to:"19:00"},
+      wed:{open:true,from:"10:00",to:"19:00"},
+      thu:{open:true,from:"10:00",to:"19:00"},
+      fri:{open:true,from:"10:00",to:"19:00"},
+      sat:{open:false},
+      sun:{open:false},
+    };
+  }
+
+  function getServicesServerItems(){
+    const d = getOnboardingData();
+
+    if(Array.isArray(d?.services) && d.services.length){
+      return d.services.map(x=>({
+        name: String(x.name||"").trim(),
+        min: Number(x.minutes ?? x.min ?? 0),
+        price: Number(x.price ?? 0),
+      })).filter(x=>x.name && x.min>0);
+    }
+
+    try{
+      const raw = readStore("step7");
+      const obj = raw ? JSON.parse(raw) : null;
+      const items = Array.isArray(obj?.items) ? obj.items : [];
+      return items.map(x=>({
+        name: String(x.name||"").trim(),
+        min: Number(x.minutes ?? 0),
+        price: Number(x.price ?? 0),
+      })).filter(x=>x.name && x.min>0);
+    }catch{
+      return [];
+    }
+  }
+
+  function getAddressPayload(){
+    const d = getOnboardingData();
+    if(d?.address && typeof d.address === "object") return d.address;
+
+    try{
+      const raw = readStore("step5");
+      const obj = raw ? JSON.parse(raw) : null;
+      if(obj?.address && typeof obj.address === "object") return obj.address;
+      if(obj && typeof obj === "object") return obj;
+      return null;
+    }catch{
+      return null;
+    }
+  }
+
+  function getStep5LocationDraft(){
+    try{
+      const raw = readStore("step5");
+      const obj = raw ? JSON.parse(raw) : null;
+      return obj && typeof obj === "object" ? obj : null;
+    }catch{
+      return null;
+    }
+  }
+
+  function normalizeTRPhone10(v){
+    const d = String(v||"").replace(/\D/g,"").slice(-10);
+    return d;
+  }
+
+  function mergeProfileForServer(){
+    let p = {};
+    try{ p = JSON.parse(readStore(K_PROFILE)||"{}") || {}; }catch{ p = {}; }
+
+    const d = getOnboardingData();
+    const about = d?.about && typeof d.about === "object" ? d.about : {};
+
+    const out = { ...p };
+
+    if(!out.businessName && about.businessName) out.businessName = about.businessName;
+    if(!out.adminName    && about.adminName)    out.adminName    = about.adminName;
+
+    const ph = out.adminPhone ?? about.adminPhone ?? out.phone ?? about.phone;
+    if(ph != null && ph !== "") out.adminPhone = normalizeTRPhone10(ph);
+
+    if(!Array.isArray(out.businessTypes) && Array.isArray(p?.businessTypes)) out.businessTypes = p.businessTypes;
+
+    return out;
+  }
+
+  /* ---------- Staff state ---------- */
+  function getDefaultWorkingHoursTR(){
+    try{
+      const raw = readStore("step6");
+      const obj = raw ? JSON.parse(raw) : null;
+      if(obj && obj.workingHours) return JSON.parse(JSON.stringify(obj.workingHours));
+    }catch{}
+    const base = (from="10:00",to="19:00") => ({open:true,from,to});
+    return {
+      "Pazartesi":base(),"Salı":base(),"Çarşamba":base(),"Perşembe":base(),"Cuma":base(),
+      "Cumartesi":{open:false},"Pazar":{open:false}
+    };
+  }
+  let SHOP_WORKING_CHOSEN = getDefaultWorkingHoursTR();
+  let members=[];
+
+  function ensureWorkingHoursForAll(){
+    members = (members||[]).map(m => {
+      if(!m.workingHours) m.workingHours = JSON.parse(JSON.stringify(SHOP_WORKING_CHOSEN));
+      return m;
+    });
+  }
+
+  function persistStep8(){
+    ensureWorkingHoursForAll();
+    writeStore("step8", JSON.stringify({ staff: members }));
+    patchOnboardingData({ staffDraft: members });
+  }
+
+  function hydrateStep8(){
+    try{
+      const prev=JSON.parse(readStore("step8")||"null");
+      if(prev?.staff) members=prev.staff;
+      ensureWorkingHoursForAll();
+    }catch{}
+  }
+
+  function renderMembers(){
+    [...staffList.querySelectorAll(".chip")].forEach(e=>{ if(e.id!=="ownerChip") e.remove(); });
+    members.forEach((m,idx)=>{
+      const el=document.createElement("div");
+      el.className="chip";
+      el.innerHTML=`
+        <div class="avatar" style="background:${m.color}" aria-hidden="true">${m.initials}</div>
+        <div>
+          <div>${m.name}</div>
+          <div class="role">${m.phoneE164||('+90'+m.phone)}</div>
+        </div>
+        <button class="rm" aria-label="${m.name} kaydını kaldır" title="Kaldır"><i class="fa-solid fa-xmark"></i></button>`;
+      el.querySelector(".rm").addEventListener("click",()=>{
+        DIRTY=true;
+        members.splice(idx,1);
+        renderMembers();
+        persistStep8();
+        showToast("Kaldırıldı");
+      });
+      staffList.appendChild(el);
+    });
+  }
+
+  /* ---------- Modal behaviors ---------- */
+  const phoneEl = $("#phone");
+  const nameEl  = $("#name");
+  const nameWrap = $("#nameWrap");
+  const phoneWrap= $("#phoneWrap");
+
+  const maskTR = v => {
+    const d=(v||"").replace(/\D/g,"").slice(0,10);
+    let o=""; if(d.length>0) o+=d.slice(0,3);
+    if(d.length>3) o+=" "+d.slice(3,6);
+    if(d.length>6) o+=" "+d.slice(6,8);
+    if(d.length>8) o+=" "+d.slice(8,10);
+    return o;
+  };
+  phoneEl.addEventListener("input",e=> e.target.value = maskTR(e.target.value));
+  phoneEl.addEventListener("paste",(e)=>{
+    e.preventDefault();
+    const t=(e.clipboardData||window.clipboardData).getData("text")||"";
+    const d=t.replace(/\D/g,"").slice(0,10);
+    phoneEl.value = maskTR(d);
+  });
+
+  const bodyLock = (lock)=>{ document.documentElement.style.overflow = lock ? "hidden" : ""; };
+
+  let trapHandler=null;
+  function clearErrors(){ [nameWrap,phoneWrap].forEach(w=>w.classList.remove("invalid")); }
+  function openModal(){
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden","false");
+    bodyLock(true);
+
+    const focusables = overlay.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const first=focusables[0], last=focusables[focusables.length-1];
+    trapHandler=(e)=>{
+      if(e.key!=="Tab") return;
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    };
+    overlay.addEventListener("keydown", trapHandler);
+
+    setTimeout(()=>nameEl.focus({preventScroll:true}), 30);
+  }
+  function closeModal(){
+    overlay.classList.remove("show");
+    overlay.setAttribute("aria-hidden","true");
+    bodyLock(false);
+    if(trapHandler){ overlay.removeEventListener("keydown", trapHandler); trapHandler=null; }
+    clearErrors();
+    btnOpen.focus({preventScroll:true});
+  }
+
+  btnOpen.onclick=openModal;
+  btnClose.onclick=closeModal;
+  btnCancel.onclick=closeModal;
+  overlay.addEventListener("mousedown",(e)=>{ if(e.target===overlay) closeModal(); });
+  document.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && overlay.classList.contains("show")) closeModal(); });
+
+  function validateModal(){
+    clearErrors();
+    let ok=true;
+    if(!nameEl.value.trim()){ nameWrap.classList.add("invalid"); ok=false; }
+    const national = phoneEl.value.replace(/\D/g,"");
+    if(!/^\d{10}$/.test(national)){ phoneWrap.classList.add("invalid"); ok=false; }
+    return { ok, national };
+  }
+
+  addBtn.onclick=()=>{
+    const { ok, national } = validateModal();
+    if(!ok) return;
+
+    const ownerPhoneNational = (()=> {
+      try{
+        const p = JSON.parse(readStore(K_PROFILE)||"{}");
+        return p?.adminPhone ? String(p.adminPhone).replace(/\D/g,"").slice(0,10) : "";
+      }catch{ return ""; }
+    })();
+
+    if(ownerPhoneNational && national === ownerPhoneNational){
+      showToast("Bu numara sahibiyle aynı");
+      return;
+    }
+
+    const exists = members.some(m => m.phone === national);
+    if(exists){
+      showToast("Bu kişi zaten ekli");
+      return;
+    }
+
+    DIRTY=true;
+
+    const name=nameEl.value.trim();
+    const workingHoursCopy = JSON.parse(JSON.stringify(SHOP_WORKING_CHOSEN));
+    // ✅ Yeni eklenen personele de 7. adımdaki tüm hizmetler atanır
+    const staffServices = getServicesServerItems();
+    const m={
+      name,
+      phone: national,
+      phoneE164: `+90${national}`,
+      initials: initials(name),
+      color: colorFor(name),
+      workingHours: workingHoursCopy,
+      bookable: true,
+      photoURL: null,
+      services: staffServices  // ✅ tüm hizmetler bu personele atandı
+    };
+
+    members.push(m);
+    renderMembers();
+    persistStep8();
+
+    nameEl.value=""; phoneEl.value="";
+
+    closeModal();
+    showToast("Personel eklendi");
+  };
+
+  [nameEl, phoneEl].forEach(el=>{
+    el.addEventListener("keydown",(e)=>{
+      if(e.key==="Enter"){ e.preventDefault(); addBtn.click(); }
+    });
+  });
+
+  /* ---------- Staff payload (owner + members) ---------- */
+  function buildStaffPayload(){
+    const prof = mergeProfileForServer();
+
+    // ✅ 7. adımda seçilen tüm hizmetler her çalışana otomatik atanır.
+    // Admin daha sonra yönetici panelinden değiştirebilir.
+    const allServices = getServicesServerItems();
+
+    const ownerName = (prof?.adminName || "Ben").trim();
+    const ownerPhoneNational = prof?.adminPhone ? String(prof.adminPhone).replace(/\D/g,"").slice(0,10) : "";
+
+    const owner = {
+      name: ownerName,
+      phoneNational: ownerPhoneNational || "",
+      phoneE164: ownerPhoneNational ? `+90${ownerPhoneNational}` : "",
+      initials: initials(ownerName) || "ME",
+      color: colorFor(ownerName),
+      bookable: true,
+      photoURL: null,
+      services: allServices  // ✅ tüm hizmetler owner'a atandı
+    };
+
+    const extra = (members||[]).map(m=>({
+      name: m.name,
+      phoneNational: m.phone || "",
+      phoneE164: m.phoneE164 || (m.phone ? `+90${m.phone}` : ""),
+      initials: m.initials || initials(m.name) || "PR",
+      color: m.color || colorFor(m.name),
+      bookable: m.bookable !== false,
+      photoURL: (m.photoURL ?? null),
+      services: allServices  // ✅ tüm hizmetler her personele atandı
+    }));
+
+    const out = [];
+    const seen = new Set();
+    [owner, ...extra].forEach(x=>{
+      const k = x.phoneE164 || (x.name||"").toLowerCase();
+      if(seen.has(k)) return;
+      seen.add(k);
+      out.push(x);
+    });
+    return out;
+  }
+
+  /* ---------- FINAL SUBMIT (tek sefer) ---------- */
+  function setFinishLoading(on){
+    btnFinish.disabled = !!on;
+    if(on){
+      btnFinish.dataset._t = btnFinish.innerHTML;
+      btnFinish.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Kaydediliyor…';
+    }else if(btnFinish.dataset._t){
+      btnFinish.innerHTML = btnFinish.dataset._t;
+      delete btnFinish.dataset._t;
+    }
+  }
+
+  btnFinish.onclick = async () => {
+    if(btnFinish.disabled || IS_SUBMITTING) return;
+
+    persistStep8();
+
+    const onboarding = getOnboardingData();
+    const services = getServicesServerItems();
+    if(!services.length){
+      alert("En az 1 hizmet eklemelisin.");
+      return;
+    }
+
+    const staff = buildStaffPayload();
+    if(!staff.length){
+      alert("En az 1 personel olmalı.");
+      return;
+    }
+
+    const profile = mergeProfileForServer();
+    const workingHours = getWorkingHoursServer();
+
+    const addressObj = getAddressPayload();
+
+    const step5Draft = getStep5LocationDraft();
+    const locationDraft = (() => {
+      const base = (step5Draft && typeof step5Draft === "object") ? { ...step5Draft } : {};
+      if(addressObj && !base.address && !base.businessLocation){
+        base.address = addressObj;
+      }
+      return base;
+    })();
+
+    const rawOnboarding = (() => {
+      const ro = { ...(onboarding || {}) };
+      if(addressObj && !ro.address) ro.address = addressObj;
+      return ro;
+    })();
+
+    const payload = {
+      profile,
+      workingHours,
+      services,
+      staff,
+      locationDraft,
+      rawOnboarding
+    };
+
+    IS_SUBMITTING = true;
+    setFinishLoading(true);
+
+    try{
+      // 1. Adım: Kullanıcıyı oluştur + session aç
+      const email = (localStorage.getItem(K_EMAIL) || "").trim().toLowerCase();
+      const method = (localStorage.getItem(K_METHOD) || "").trim().toLowerCase();
+      const pass  = (localStorage.getItem("_reg_pw") || "").trim();
+      if(!email){
+        alert("Kayıt bilgileri eksik. Lütfen baştan başlayın.");
+        location.replace("admin-register-login.html");
+        return;
+      }
+      if(!pass){
+        alert("Kayıt bilgileri eksik. Lütfen baştan başlayın.");
+        location.replace("admin-register-login.html");
+        return;
+      }
+      const regPayload = { email, password: pass };
+      if(method === "google"){
+        const googleCredential = (sessionStorage.getItem(K_GOOGLE_SIGNUP_CRED) || "").trim();
+        if(!googleCredential){
+          throw Object.assign(new Error("Google doğrulaması bulunamadı. Lütfen kayıt akışını yeniden başlatın."), { status: 401 });
+        }
+        regPayload.googleCredential = googleCredential;
+      }
+      {
+        const regResp = await postJson("/auth/register.php", regPayload);
+        if(regResp?.ok !== true){
+          const msg = regResp?.error || "Kullanıcı oluşturulamadı.";
+          if(regResp?.code === "email_taken"){
+            throw Object.assign(new Error("Bu e-posta zaten kayıtlı. Giriş yapın veya farklı bir e-posta kullanın."), { status: 409 });
+          } else {
+            throw Object.assign(new Error(msg), { status: 400 });
+          }
+        }
+      }
+      localStorage.removeItem("_reg_pw");
+      await refreshCsrfToken();
+      try{sessionStorage.removeItem(K_GOOGLE_SIGNUP_CRED);}catch(_){}
+
+      // 2. Adım: İşletme verilerini kaydet
+      try{
+        await postJson("/admin/completeOnboarding.php", payload);
+      }catch(saveErr){
+        if(saveErr?.status === 403 && saveErr?.response?.code === "csrf_invalid"){
+          await refreshCsrfToken();
+          await postJson("/admin/completeOnboarding.php", payload);
+        }else{
+          throw saveErr;
+        }
+      }
+
+      writeStore(K_LAST, "7");
+      allowLeave = true;
+      DIRTY = false;
+
+      location.replace("admin-register9.html");
+    }catch(err){
+      console.error("[completeOnboarding]", err);
+
+      if(err?.name === "AbortError"){
+        alert("Sunucu geç yanıt verdi. Lütfen tekrar deneyin.");
+      }else if(err?.status === 401){
+        alert("Oturum süresi dolmuş. Lütfen tekrar giriş yapın.");
+        location.replace("admin-register-login.html#login");
+        return;
+      }else if(err?.status === 403){
+        const code = err?.response?.code || "";
+        if(code === "csrf_invalid"){
+          alert("Güvenlik doğrulaması yenilenemedi. Lütfen sayfayı yenileyip tekrar deneyin.");
+        }else{
+          alert("Bu işlem için yetkiniz doğrulanamadı. Lütfen tekrar giriş yapın.");
+          location.replace("admin-register-login.html#login");
+          return;
+        }
+      }else{
+        const msg = err?.response?.message || err?.message || "İşlem başarısız. Lütfen tekrar deneyin.";
+        alert(msg);
+      }
+
+      IS_SUBMITTING = false;
+      setFinishLoading(false);
+    }
+  };
+
+  /* ---------- Init ---------- */
+  (async function boot(){
+    const me = await requireSessionOrRedirect();
+    if(!me) return;
+
+    if(!guardFlowLocal()) return;
+
+    renderOwner();
+    hydrateStep8();
+    renderMembers();
+    persistStep8(); // local sync
+  })();
+</script>
+
+</body>
+</html>

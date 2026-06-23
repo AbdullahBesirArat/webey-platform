@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <link rel='icon' href='img/favicon.ico' />
+  <meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/><meta name="robots" content="noindex,nofollow"/><meta name="theme-color" content="#07080d"/>
+  <title>Kayıt Tamamlandı | Webey</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous"/>
+  <style>
+    :root{--bg:#07080d;--bg2:#0d0f17;--bg3:#111420;--teal:#0ea5b3;--teal-d:#0b8a96;--teal-g:rgba(14,165,179,.35);--teal-s:rgba(14,165,179,.10);--ink:#fff;--ink2:rgba(255,255,255,.68);--ink3:rgba(255,255,255,.40);--border:rgba(255,255,255,.08);--border-t:rgba(14,165,179,.22);--on:#22c55e;--on-g:rgba(34,197,94,.2);--danger:#ef4444;--danger-s:rgba(239,68,68,.12);--warn:#f59e0b;--warn-s:rgba(245,158,11,.12);--input-bg:rgba(255,255,255,.04);--radius:20px;--radius-sm:12px;--shadow:0 0 0 1px var(--border-t),0 32px 80px rgba(0,0,0,.6),0 0 60px rgba(14,165,179,.06);--ring:rgba(14,165,179,.3);}
+    *,*::before,*::after{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0;min-height:100dvh;font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;align-items:center;padding:clamp(16px,3vw,28px) clamp(12px,4vw,20px);padding-top:calc(env(safe-area-inset-top,0px) + 16px);padding-bottom:calc(env(safe-area-inset-bottom,0px) + 32px);-webkit-font-smoothing:antialiased;}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(14,165,179,.12),transparent 65%);}
+    .page-logo{display:block;text-align:center;margin-bottom:20px;font-family:'DM Serif Display',serif;font-style:italic;font-size:26px;color:#fff;text-decoration:none;position:relative;z-index:1;}.page-logo em{color:var(--teal);font-style:normal;}
+    .sn{width:min(600px,100%);margin:0 auto 20px;display:flex;align-items:flex-start;position:relative;z-index:1;}
+    .sn-item{display:flex;flex-direction:column;align-items:center;gap:5px;flex:0 0 auto;}
+    .sn-line{flex:1 1 0;height:2px;background:var(--border);margin-top:14px;border-radius:2px;min-width:6px;transition:background .35s;}.sn-line.done{background:var(--on);}
+    .sn-bubble{width:28px;height:28px;border-radius:50%;background:var(--bg3);border:2px solid var(--border);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--ink3);transition:all .3s;}
+    .sn-item.done .sn-bubble{background:var(--on);border-color:var(--on);color:#fff;}
+    .sn-item.active .sn-bubble{background:var(--teal);border-color:var(--teal);color:#fff;box-shadow:0 0 0 4px var(--teal-s);}
+    .sn-label{font-size:9.5px;font-weight:700;color:var(--ink3);letter-spacing:.05em;text-align:center;white-space:nowrap;text-transform:uppercase;line-height:1;}
+    .sn-item.done .sn-label,.sn-item.active .sn-label{color:var(--ink2);}
+    @media(max-width:480px){.sn-label{display:none}.sn-bubble{width:24px;height:24px;font-size:10px}.sn-line{margin-top:11px}}
+    .card,.container{width:min(600px,100%);background:var(--bg2);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border-t);padding:28px 28px 32px;position:relative;z-index:1;}
+    @media(max-width:560px){.card,.container{padding:20px 18px 28px;}}
+    .top{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+    .back-btn{width:38px;height:38px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--ink2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:all .15s;}
+    .back-btn:hover{border-color:var(--border-t);color:var(--teal);background:var(--teal-s);}
+    .back-btn:focus-visible{outline:2px solid var(--teal);}
+    h1{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    h2{font-size:clamp(17px,3.5vw,20px);font-weight:700;letter-spacing:-.1px;margin:0 0 8px;color:#fff;}
+    .title{font-family:'DM Serif Display',serif;font-size:clamp(22px,4.5vw,28px);font-weight:400;margin:0 0 6px;color:#fff;}
+    .subtitle,.sub{color:var(--ink2);margin:0 0 22px;font-size:14px;line-height:1.55;}
+    .row,.form-row,.field,.field-row{margin-bottom:16px;}
+    label{display:block;font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:7px;letter-spacing:.08em;text-transform:uppercase;}
+    input[type="text"],input[type="tel"],input[type="email"],input[type="password"],input[type="number"],input[type="time"],select,textarea{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;}
+    input::placeholder,textarea::placeholder{color:var(--ink3);}
+    input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    input[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+    textarea{height:auto;padding:12px 14px;resize:vertical;}
+    select option{background:var(--bg3);color:#fff;}
+    .btn{width:100%;min-height:50px;border-radius:999px;border:none;font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;margin-top:10px;}
+    .btn:hover:not([disabled]){opacity:.92;}
+    .btn:active:not([disabled]){transform:scale(.98);}
+    .btn[disabled]{opacity:.4;cursor:not-allowed;}
+    .btn-primary{background:var(--teal);color:#fff;box-shadow:0 6px 22px var(--teal-g);}
+    .btn-primary:hover:not([disabled]){background:var(--teal-d);box-shadow:0 10px 28px var(--teal-g);transform:translateY(-1px);}
+    .btn-ghost{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ghost:hover:not([disabled]){background:rgba(255,255,255,.09);color:#fff;}
+    .btn-secondary{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--border);}
+    .btn-ok{background:var(--on);color:#fff;}
+    .btn-danger{background:rgba(239,68,68,.15);color:var(--danger);border:1px solid rgba(239,68,68,.25);}
+    .btn-row{display:flex;gap:10px;margin-top:14px;}
+    .btn-row .btn{margin-top:0;flex:1;}
+    @media(max-width:440px){.btn-row{flex-direction:column;}}
+    .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--bg3);color:#fff;border:1px solid var(--border);padding:11px 22px;border-radius:999px;font-size:13.5px;font-weight:600;display:none;z-index:10000;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.4);}
+    .toast.show{display:block;animation:toastPop 2.4s ease both;}
+    .toast.err{background:#7f1d1d;border-color:var(--danger);}
+    @keyframes toastPop{0%{opacity:0;transform:translate(-50%,10px)}12%{opacity:1;transform:translate(-50%,0)}88%{opacity:1}100%{opacity:0;transform:translate(-50%,10px)}}
+    .help{font-size:12px;color:var(--ink3);margin-top:5px;line-height:1.4;}
+    .error-text{font-size:12px;color:var(--danger);margin-top:5px;display:none;}
+    .error-text.show{display:block;}
+    .warn-text{font-size:12px;color:var(--warn);margin-top:5px;display:none;}
+    .warn-text.show{display:block;}
+    .section-divider{height:1px;background:var(--border);margin:20px 0;}
+    /* Toggle switch */
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+    .toggle-row:last-child{border-bottom:none;}
+    .toggle-label{font-size:14px;font-weight:600;color:var(--ink);}
+    .toggle-sub{font-size:12px;color:var(--ink3);}
+    .sw{position:relative;width:46px;height:26px;flex-shrink:0;}
+    .sw input{opacity:0;width:0;height:0;}
+    .sw-slider{position:absolute;inset:0;background:rgba(255,255,255,.15);border-radius:999px;cursor:pointer;transition:.25s;}
+    .sw-slider::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s;}
+    .sw input:checked~.sw-slider{background:var(--teal);}
+    .sw input:checked~.sw-slider::before{transform:translateX(20px);}
+    /* Day rows (register6) */
+    .day-row{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+    .day-row:last-child{border-bottom:none;}
+    .day-name{font-size:14px;font-weight:600;min-width:80px;}
+    .time-pair{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .time-pair input[type="time"]{width:110px;height:40px;flex-shrink:0;}
+    .time-sep{font-size:13px;color:var(--ink3);}
+    /* Service & staff cards */
+    .item-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+    .item-name{font-size:15px;font-weight:600;}
+    .item-detail{font-size:13px;color:var(--ink2);}
+    .item-actions{display:flex;gap:6px;flex-shrink:0;}
+    .icon-btn{width:34px;height:34px;border-radius:9px;border:1px solid var(--border);background:transparent;color:var(--ink3);display:grid;place-items:center;cursor:pointer;transition:all .15s;font-size:14px;}
+    .icon-btn:hover{color:#fff;border-color:rgba(255,255,255,.2);background:rgba(255,255,255,.06);}
+    .icon-btn.del:hover{color:var(--danger);border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.06);}
+    /* Avatar */
+    .avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:14px;font-weight:700;flex-shrink:0;}
+    /* Modal */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px;}
+    .modal-overlay.active{display:flex;}
+    .modal{background:var(--bg2);border:1px solid var(--border-t);border-radius:var(--radius);padding:24px;width:min(480px,100%);max-height:90dvh;overflow-y:auto;}
+    .modal h3{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;margin:0 0 18px;color:#fff;}
+    .modal-footer{display:flex;gap:10px;margin-top:20px;}
+    .modal-footer .btn{margin-top:0;flex:1;}
+    /* Picker */
+    .picker-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:2000;display:none;flex-direction:column;}
+    .picker-overlay.active{display:flex;}
+    .picker-sheet{background:var(--bg2);border-top:1px solid var(--border-t);border-radius:20px 20px 0 0;padding:20px;margin-top:auto;max-height:70dvh;display:flex;flex-direction:column;}
+    .picker-title{font-size:16px;font-weight:700;margin-bottom:12px;color:#fff;}
+    .picker-search{width:100%;height:44px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:#fff;font-family:inherit;outline:none;margin-bottom:10px;}
+    .picker-search:focus{border-color:var(--teal);}
+    .picker-list{overflow-y:auto;flex:1;}
+    .picker-item{display:block;width:100%;text-align:left;padding:13px 14px;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--ink2);font-family:inherit;font-size:15px;cursor:pointer;transition:background .15s;}
+    .picker-item:hover,.picker-item.selected{background:var(--teal-s);color:#fff;}
+    .picker-cancel{margin-top:10px;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--ink2);font-family:inherit;font-size:15px;font-weight:600;border-radius:999px;height:48px;cursor:pointer;transition:all .15s;}
+    .picker-cancel:hover{background:rgba(255,255,255,.09);color:#fff;}
+    .picker-empty{padding:20px;text-align:center;color:var(--ink3);font-size:14px;}
+    /* Grid */
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    @media(max-width:420px){.grid-2{grid-template-columns:1fr;}}
+    /* Add form */
+    .add-form{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px;}
+    /* Staff owner card */
+    .owner-card{background:var(--teal-s);border:1px solid var(--border-t);border-radius:var(--radius-sm);padding:14px 16px;display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+    .owner-badge{font-size:11px;font-weight:700;background:var(--teal);color:#fff;border-radius:999px;padding:2px 8px;}
+    /* Success card (register9) */
+    .success-hero{text-align:center;padding:16px 0 28px;}
+    .success-icon{width:72px;height:72px;border-radius:24px;background:var(--on-g);border:1px solid rgba(34,197,94,.3);display:grid;place-items:center;margin:0 auto 20px;font-size:28px;color:var(--on);}
+    .feature-list{list-style:none;padding:0;margin:0;}
+    .feature-list li{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;color:var(--ink2);}
+    .feature-list li:last-child{border-bottom:none;}
+    .feature-list li i{color:var(--teal);width:20px;text-align:center;flex-shrink:0;}
+    /* Checkbox */
+    input[type="checkbox"]{accent-color:var(--teal);width:16px;height:16px;}
+    /* Tag chips */
+    .tag{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:600;background:var(--teal-s);border:1px solid var(--border-t);color:var(--teal);margin:3px;}
+    .tag.inactive{background:rgba(255,255,255,.04);border-color:var(--border);color:var(--ink3);}
+    /* Select trigger button for address page */
+    .select-trigger{width:100%;height:48px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:var(--input-bg);padding:0 14px;font-size:15px;color:var(--ink3);font-family:inherit;outline:none;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;transition:border-color .15s;}
+    .select-trigger.filled{color:#fff;}
+    .select-trigger:focus{border-color:var(--teal);box-shadow:0 0 0 3px var(--ring);}
+    .select-trigger[aria-invalid="true"]{border-color:var(--danger);background:var(--danger-s);}
+    /* ===== register9 success page ===== */
+    .card{overflow:hidden;}
+
+    /* Hero */
+    .hero{position:relative;padding:32px 0 24px;text-align:center;overflow:hidden;}
+    .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(34,197,94,.18),transparent 70%);pointer-events:none;}
+    .confetti{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:0;}
+    .confetti i{position:absolute;top:-10%;font-style:normal;font-size:clamp(12px,3vw,18px);animation:fall linear forwards;}
+    @keyframes fall{to{transform:translateY(120vh) rotate(540deg);opacity:0;}}
+    .hero-content{position:relative;z-index:1;}
+    .check-ring{width:72px;height:72px;border-radius:50%;background:rgba(34,197,94,.15);border:2px solid rgba(34,197,94,.4);display:grid;place-items:center;margin:0 auto 18px;font-size:26px;color:#22c55e;box-shadow:0 0 0 8px rgba(34,197,94,.07),0 0 40px rgba(34,197,94,.18);}
+    .hero h1{font-family:'DM Serif Display',serif;font-size:clamp(24px,5vw,32px);font-weight:400;margin:0 0 10px;line-height:1.2;}
+    .hero .subtitle{font-size:14px;color:var(--ink2);margin:0 auto;max-width:420px;line-height:1.6;}
+
+    /* Brand pill */
+    .brand{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:999px;padding:8px 16px 8px 8px;margin-top:20px;max-width:100%;}
+    .brand .avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;flex-shrink:0;overflow:hidden;}
+    .brand .name{font-size:15px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .brand .sub{font-size:12px;color:var(--ink3);}
+
+    /* Content */
+    .content{padding-top:4px;}
+
+    /* Tips grid */
+    .tips{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+    @media(max-width:440px){.tips{grid-template-columns:1fr;}}
+    .tip{background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;transition:border-color .2s,transform .2s;}
+    .tip:hover{border-color:var(--border-t);transform:translateY(-2px);}
+    .tip-icon{width:36px;height:36px;border-radius:10px;background:var(--teal-s);border:1px solid var(--border-t);display:grid;place-items:center;font-size:15px;color:var(--teal);flex-shrink:0;}
+    .tip strong{display:block;font-size:13.5px;font-weight:700;color:#fff;margin-bottom:3px;}
+    .tip span{font-size:12.5px;color:var(--ink3);line-height:1.4;}
+
+    /* CTA */
+    .cta{margin-bottom:0;}
+
+    /* Email notice */
+    .email-notice{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.25);border-radius:14px;padding:14px 16px;margin-top:14px;display:flex;align-items:flex-start;gap:12px;font-size:13px;color:rgba(245,158,11,.9);line-height:1.55;}
+    .email-notice .notice-icon{font-size:20px;flex-shrink:0;line-height:1;}
+    .email-notice strong{color:#f59e0b;}
+    .resend-btn{display:inline-block;margin-top:5px;background:none;border:none;cursor:pointer;color:#f59e0b;font-size:12px;text-decoration:underline;padding:0;font-family:inherit;}
+    .resend-btn:hover{opacity:.8;}
+
+    /* Foot note */
+    .foot{font-size:12.5px;color:var(--ink3);margin:16px 0 0;line-height:1.5;background:rgba(255,255,255,.03);border-radius:10px;padding:12px 14px;border:1px solid var(--border);}
+  </style>
+</head>
+<body>
+  <a href="index.html" class="page-logo">Web<em>ey</em></a>
+  <nav class="sn" aria-label="Kayıt adımları (7 adım)">
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Şifre</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Profil</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Adres</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Saatler</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Hizmetler</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item done"><div class="sn-bubble"><i class="fa-solid fa-check" aria-hidden="true"></i></div><span class="sn-label">Personel</span></div>
+    <div class="sn-line done"></div>
+    <div class="sn-item active" aria-current=step><div class="sn-bubble">7</div><span class="sn-label">Bitiş</span></div>
+  </nav>
+  
+  
+
+<main class="card" role="main">
+  <header class="hero">
+    <div class="confetti" aria-hidden="true" id="confetti"></div>
+    <div class="hero-content">
+      <div class="check-ring"><i class="fa-solid fa-check" aria-hidden="true"></i></div>
+      <h1>Hoş geldiniz!</h1>
+      <p class="subtitle">Kayıt işlemini başarıyla tamamladınız. Artık takviminizi yönetebilir ve randevu almaya başlayabilirsiniz.</p>
+
+      <div class="brand" id="brandBox" aria-live="polite">
+        <div class="avatar" id="brandAvatar" aria-hidden="true">İŞ</div>
+        <div>
+          <div class="name" id="brandName">İşletme</div>
+          <div class="sub" id="ownerName">Sahip: —</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="content">
+    <div class="tips">
+      <div class="tip">
+        <div class="tip-icon"><i class="fa-solid fa-calendar-check" aria-hidden="true"></i></div>
+        <div>
+          <strong>Takvimi keşfedin</strong>
+          <span>Gün/hafta görünümünde randevuları yönetin.</span>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon"><i class="fa-solid fa-scissors" aria-hidden="true"></i></div>
+        <div>
+          <strong>Hizmet & fiyatlar</strong>
+          <span>Önerilen hizmetleri fiyat ve sürelerle güncelleyin.</span>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon"><i class="fa-solid fa-clock" aria-hidden="true"></i></div>
+        <div>
+          <strong>Çalışma saatleri</strong>
+          <span>İşletme saatlerini uygunluğunuza göre ayarlayın.</span>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon"><i class="fa-solid fa-user-group" aria-hidden="true"></i></div>
+        <div>
+          <strong>Ekibinizi yönetin</strong>
+          <span>Personel ekleyin ve çalışma saatlerini düzenleyin.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <button id="goBtn" class="btn btn-primary" disabled>
+        <i class="fa-solid fa-calendar-days" aria-hidden="true"></i> Takvime Git
+      </button>
+    </div>
+
+    <!-- Email Doğrulama Bildirimi -->
+    <div id="emailVerifyNotice" class="email-notice">
+      <span class="notice-icon"></span>
+      <div>
+        <strong>Email adresinizi doğrulayın.</strong>
+        Kayıt sırasında bir doğrulama emaili gönderdik. Spam klasörünü de kontrol edin.
+        <button id="resendVerifyBtn" type="button" class="resend-btn">Tekrar gönder</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">
+    <i class="fa-solid fa-circle-info" style="margin-right:5px;opacity:.6"></i>
+    "Ayarlar" bölümünden işletme bilgilerinizi, kapak görsellerini ve randevu tercihlerinizi dilediğiniz zaman güncelleyebilirsiniz.
+  </p>
+</main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module">
+    const $ = (s, r = document) => r.querySelector(s);
+
+    /* ---------- Flow sabitleri + step haritası ---------- */
+    const K_LAST   = "admin_onboarding_last_step";
+    const K_TOTAL  = "admin_onboarding_total";
+    const TOTAL_STEPS = 7;
+    const COMPLETED_STEP = 7;
+
+    function stepToHref(n){
+      const s = Math.max(1, Math.min(TOTAL_STEPS, Number(n)||1));
+      if (s <= 1) return "admin-register1.html";
+      if (s === 2) return "admin-register2.html";
+      if (s === 3) return "admin-register5.html";
+      if (s === 4) return "admin-register6.html";
+      if (s === 5) return "admin-register7.html";
+      if (s === 6) return "admin-register8.html";
+      return "admin-register9.html";
+    }
+
+    /* ---------- Storage helpers ---------- */
+    const readStore  = (k) => localStorage.getItem(k) ?? sessionStorage.getItem(k);
+    const writeStore = (k,v) => { localStorage.setItem(k,v); };
+
+    /* ---------- Confetti ---------- */
+    (function confetti(){
+      const prefersReduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReduced) return;
+
+      const box = $("#confetti");
+      const colors = ["#34d399","#60a5fa","#fbbf24","#f472b6","#a78bfa","#f87171"];
+      const isMobile = window.innerWidth < 560;
+      const count = isMobile ? 24 : 40;
+
+      for (let i = 0; i < count; i++){
+        const el = document.createElement("i");
+        el.textContent = "★";
+        el.style.left = (Math.random() * 100) + "%";
+        el.style.color = colors[i % colors.length];
+        el.style.animationDuration = (1.6 + Math.random()*1.4) + "s";
+        el.style.animationDelay = (Math.random()*0.6) + "s";
+        box.appendChild(el);
+      }
+      setTimeout(() => box.innerHTML = "", 3600);
+    })();
+
+    /* ---------- Brand helpers ---------- */
+    const hashColor = (s = "") => {
+      const palette = ["#111827","#2563eb","#0ea5e9","#059669","#f59e0b","#dc2626","#7c3aed","#0ea5a5"];
+      let h = 0;
+      for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+      return palette[h % palette.length];
+    };
+    const initials = (n) =>
+      (n || "").split(" ").filter(Boolean).map(w => w[0]).slice(0,2).join("").toUpperCase() || "İŞ";
+
+    function setBrandUI({ businessName, ownerName }){
+      const bizName  = (businessName || localStorage.getItem("admin_business_name") || "İşletmeniz").trim();
+      const ownerStr = (ownerName    || localStorage.getItem("admin_owner_name")    || "—").trim();
+
+      $("#brandName").textContent = bizName;
+      $("#ownerName").textContent = "Sahip: " + ownerStr;
+
+      const avatar = $("#brandAvatar");
+      avatar.textContent = initials(bizName);
+      avatar.style.background = hashColor(bizName || "");
+
+      localStorage.setItem("admin_business_name", bizName);
+      localStorage.setItem("admin_owner_name", ownerStr);
+
+      try { document.title = `Hoş Geldiniz – ${bizName}`; } catch {}
+    }
+
+    function pickBrandFromLocal(){
+      try{
+        const od = JSON.parse(localStorage.getItem("onboardingData") || "{}");
+
+        // register2 verileri "about" altında kaydediyor
+        const a = od?.about || {};
+        if (a?.businessName || a?.adminName) {
+          return { businessName: a.businessName || "", ownerName: a.adminName || "" };
+        }
+
+        // eski "profile" key de dene (geriye dönük uyumluluk)
+        const p = od?.profile || {};
+        if (p?.businessName || p?.adminName) {
+          return { businessName: p.businessName || "", ownerName: p.adminName || "" };
+        }
+      }catch{}
+
+      try{
+        const prof = JSON.parse(localStorage.getItem("pending_admin_profile") || "{}") || {};
+        if (prof?.businessName || prof?.adminName) {
+          return { businessName: prof.businessName || "", ownerName: prof.adminName || "" };
+        }
+      }catch{}
+
+      return {
+        businessName: localStorage.getItem("admin_business_name") || "",
+        ownerName: localStorage.getItem("admin_owner_name") || ""
+      };
+    }
+
+    /* ---------- API (SESSION): /api/auth/me.php ---------- */
+    const API_BASE = (window.API_BASE || "/api").replace(/\/+$/, "");
+    function apiUrl(path){
+      if (/^https?:\/\//i.test(path)) return path;
+      if (!path.startsWith("/")) path = "/" + path;
+      return API_BASE + path;
+    }
+
+    // CSRF token önbelleği
+    let __localCsrf = null;
+    async function getCsrfToken() {
+      if (__localCsrf) return __localCsrf;
+      try {
+        const r = await fetch("/api/csrf.php", { credentials: "include" });
+        const j = await r.json();
+        __localCsrf = j?.data?.token || null;
+      } catch {}
+      return __localCsrf;
+    }
+
+    async function postJson(path, body){
+      const ctrl = new AbortController();
+      const to = setTimeout(()=>ctrl.abort(), 15000);
+
+      const csrf = await getCsrfToken();
+      const headers = { "Content-Type":"application/json", "Accept":"application/json" };
+      if (csrf) headers["X-CSRF-Token"] = csrf;
+
+      const res = await fetch(apiUrl(path), {
+        method:"POST",
+        credentials:"include",
+        headers,
+        body: JSON.stringify(body && typeof body==="object" ? body : {}),
+        signal: ctrl.signal
+      }).finally(()=> clearTimeout(to));
+
+      const data = await res.json().catch(()=> ({}));
+
+      if(!res.ok){
+        const err = new Error(data?.error || data?.message || `İstek başarısız (${res.status})`);
+        err.status = res.status;
+        err.response = data;
+        throw err;
+      }
+      if(data?.success === false || data?.ok === false){
+        const err = new Error(data?.message || data?.error || "İşlem başarısız");
+        err.status = res.status;
+        err.response = data;
+        throw err;
+      }
+      return data;
+    }
+
+    async function requireSessionOrRedirect(){
+      /* ✅ FIX: __reg_ok veya K_LAST>=7 varsa session'sız da izin ver */
+      const _localLast = Number(localStorage.getItem("admin_onboarding_last_step")||"0");
+      const _regOk = localStorage.getItem("__reg_ok") === "1";
+      if(_localLast >= 7 || _regOk){
+        try{
+          const me = await postJson("/auth/me.php", {});
+          if(me?.ok === true) return me;
+        }catch{}
+        return { ok:true, data:{} };
+      }
+      try{
+        const me = await postJson("/auth/me.php", {});
+        if(me?.ok !== true) throw new Error("Unauthorized");
+        return me;
+      }catch{
+        location.replace("admin-register-login.html#login");
+        return null;
+      }
+    }
+
+    function coalesce(...vals){
+      for(const v of vals){
+        if(typeof v === "string" && v.trim()) return v.trim();
+      }
+      return "";
+    }
+
+    function pickBrandFromMe(me){
+      const d = me?.data || {};
+      const admin = d?.admin || d?.user || {};
+      const business = d?.business || d?.shop || d?.salon || {};
+
+      const businessName = coalesce(
+        d.businessName, d.business_name,
+        business.businessName, business.business_name, business.name,
+        admin.businessName, admin.business_name
+      );
+
+      const ownerName = coalesce(
+        d.ownerName, d.owner_name,
+        admin.adminName, admin.admin_name,
+        admin.name, admin.fullName, admin.full_name
+      );
+
+      const email = coalesce(
+        admin.email,
+        d.email
+      ).toLowerCase();
+
+      const onboardingCompleted = Boolean(
+        d.onboardingCompleted ??
+        d.onboarding_completed ??
+        admin.onboardingCompleted ??
+        admin.onboarding_completed
+      );
+
+      return { businessName, ownerName, email, onboardingCompleted };
+    }
+
+    /* ---------- Onboarding cache temizliği ---------- */
+    function clearOnboardingCache(){
+      const PRESERVE = new Set([
+        "__reg_ok",
+        "pending_admin_email",
+        "post_login_tour",
+        "admin_business_name",
+        "admin_owner_name",
+        "return_to"
+      ]);
+
+      const EXACT = [
+        "pending_admin_profile","pending_admin_password",
+        "admin_onboarding_flow","admin_onboarding_last_step","admin_onboarding_method",
+        "admin_onboarding_total",
+        "onboardingData"
+      ];
+
+      const PREFIX = ["step"];
+
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (!k) continue;
+        if (PRESERVE.has(k)) continue;
+        const kl = k.toLowerCase();
+        if (EXACT.includes(k) || PREFIX.some(p => kl.startsWith(p))) localStorage.removeItem(k);
+      }
+
+      for (let i = sessionStorage.length - 1; i >= 0; i--) {
+        const k = sessionStorage.key(i);
+        if (!k) continue;
+        if (PRESERVE.has(k)) continue;
+        const kl = k.toLowerCase();
+        if (EXACT.includes(k) || PREFIX.some(p => kl.startsWith(p))) sessionStorage.removeItem(k);
+      }
+    }
+
+    /* ---------- CTA ---------- */
+    const goBtn = $("#goBtn");
+
+    const getReturnTo = () => {
+      const rt = (readStore("return_to") || "").trim();
+      return (rt && !rt.startsWith("http")) ? rt : "calendar.html";
+    };
+
+    const go = () => {
+      const dest = getReturnTo() || "calendar.html";
+      // Yeni kayıt sonrası: session cookie tam oturması için hard reload
+      if (localStorage.getItem("__reg_ok") === "1") {
+        window.location.href = dest;
+      } else {
+        location.replace(dest);
+      }
+    };
+
+    goBtn.addEventListener("click", go);
+    $("#btnBack")?.addEventListener("click", (e) => { e.preventDefault(); go(); });
+
+    /* Resend email verify */
+    $("#resendVerifyBtn")?.addEventListener("click", async (e) => {
+      const btn = e.currentTarget;
+      btn.textContent = "Gönderiliyor…";
+      btn.disabled = true;
+      try {
+        const meData = await postJson("/auth/me.php", {});
+        const email = meData?.data?.email || "";
+        const csrf = await getCsrfToken();
+        const res = await fetch("/api/auth/resend-verification.php", {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            ...(csrf ? { "X-CSRF-Token": csrf } : {})
+          },
+          body: JSON.stringify({ email })
+        });
+        const json = await res.json();
+        if (res.status === 429) {
+          btn.textContent = json.wait ? `${json.wait}sn bekleyin` : "Biraz bekleyin";
+          setTimeout(() => { btn.textContent = "Tekrar gönder"; btn.disabled = false; }, (json.wait || 60) * 1000);
+        } else {
+          btn.textContent = "✓ Gönderildi!";
+          setTimeout(() => { btn.textContent = "Tekrar gönder"; btn.disabled = false; }, 5000);
+        }
+      } catch {
+        btn.textContent = "Hata, tekrar dene";
+        btn.disabled = false;
+      }
+    });
+
+    /* ---------- Local guard (tamamlanmadıysa adımlara geri at) ---------- */
+    function guardLocalOrRedirectIfNeeded(onboardingCompleted){
+      const localLast = Number(localStorage.getItem(K_LAST) || "0");
+      const regOk = localStorage.getItem("__reg_ok") === "1";
+
+      // Sunucu tamamlandı diyorsa veya local tamamlandı işaretliyse -> izin ver
+      if (onboardingCompleted || regOk || localLast >= COMPLETED_STEP) return true;
+
+      // değilse adımlara geri
+      if (localLast > 0) {
+        location.replace(stepToHref(localLast));
+        return false;
+      }
+
+      location.replace("admin-register-login.html#login");
+      return false;
+    }
+
+    /* ---------- Init ---------- */
+    (async function boot(){
+      // 0) önce local ile doldur (UI anında dolsun)
+      const localB = pickBrandFromLocal();
+      setBrandUI({ businessName: localB.businessName, ownerName: localB.ownerName });
+
+      // 1) session zorunlu
+      const me = await requireSessionOrRedirect();
+      if(!me) return;
+
+      const picked = pickBrandFromMe(me);
+
+      // 2) tamamlanmadıysa geri gönder
+      if(!guardLocalOrRedirectIfNeeded(picked.onboardingCompleted)) return;
+
+      // 3) server’dan gelen isimler varsa güncelle
+      if (picked.businessName || picked.ownerName){
+        setBrandUI({ businessName: picked.businessName, ownerName: picked.ownerName });
+      }
+
+      // 4) email normalize
+      if (picked.email) localStorage.setItem("pending_admin_email", picked.email);
+
+      // 5) local completed işaretle
+      localStorage.setItem("__reg_ok", "1");
+      writeStore(K_LAST, String(COMPLETED_STEP));
+      if (!readStore(K_TOTAL)) writeStore(K_TOTAL, String(TOTAL_STEPS));
+
+      // 6) CTA aktif
+      goBtn.disabled = false;
+
+      // 7) cache temizliği (tamamlandı sayfası sonrası)
+      setTimeout(clearOnboardingCache, 180);
+    })();
+  </script>
+
+  <!-- Fallback: Eğer API yanıt vermezse veya guard başarısız olursa,
+       localStorage'da tamamlanma işareti varsa butonları aktif et -->
+  <script>
+    (function fallbackEnableButtons() {
+      // API'nin cevap vermesi için kısa bir süre bekle
+      setTimeout(function() {
+        var goBtn = document.getElementById('goBtn');
+        if (!goBtn || !goBtn.disabled) return; // Zaten aktifse çık
+
+        var localLast = Number(localStorage.getItem('admin_onboarding_last_step') || '0');
+        var regOk = localStorage.getItem('__reg_ok') === '1';
+
+        if (localLast >= 7 || regOk) {
+          goBtn.disabled = false;
+          console.log('[register9] Fallback: butonlar localStorage ile aktif edildi.');
+        }
+      }, 3500);
+    })();
+  </script>
+
+</body>
+</html>
