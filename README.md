@@ -219,19 +219,43 @@ history that might contain secrets. See [`SECURITY.md`](SECURITY.md).
 
 ## Mobile App Screenshots
 
-The following screenshots were captured from the current Android test builds and illustrate representative customer and business workflows. Sensitive account, payment, and customer information is intentionally excluded.
+The following screenshots were captured from the current Android test builds and illustrate representative customer and business workflows. Sensitive account, payment, customer, and appointment information is intentionally excluded.
 
 ### Customer App
 
-![Webey customer app salon discovery screen](assets/screenshots/customer-discover.png)
-
-![Webey customer app booking workflow](assets/screenshots/customer-booking.png)
+<table>
+  <tr>
+    <td align="center"><img src="assets/screenshots/customer-discover.png" alt="Webey customer salon discovery screen" width="230"><br><sub>Salon discovery</sub></td>
+    <td align="center"><img src="assets/screenshots/customer-categories.png" alt="Webey customer category browsing screen" width="230"><br><sub>Category browsing</sub></td>
+    <td align="center"><img src="assets/screenshots/customer-search-results.png" alt="Webey customer search results screen" width="230"><br><sub>Search and filters</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/screenshots/customer-salon-detail.png" alt="Webey customer salon detail screen" width="230"><br><sub>Salon profile</sub></td>
+    <td align="center"><img src="assets/screenshots/customer-gallery.png" alt="Webey customer salon gallery screen" width="230"><br><sub>Gallery experience</sub></td>
+    <td align="center"><img src="assets/screenshots/customer-booking.png" alt="Webey customer service selection screen" width="230"><br><sub>Service selection</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/screenshots/customer-staff-selection.png" alt="Webey customer staff selection screen" width="230"><br><sub>Staff selection</sub></td>
+  </tr>
+</table>
 
 ### Business App
 
-![Webey Business operational dashboard](assets/screenshots/business-dashboard.png)
-
-![Webey Business management workflow](assets/screenshots/business-management.png)
+<table>
+  <tr>
+    <td align="center"><img src="assets/screenshots/business-dashboard.png" alt="Webey Business management overview" width="230"><br><sub>Management overview</sub></td>
+    <td align="center"><img src="assets/screenshots/business-management.png" alt="Webey Business services management screen" width="230"><br><sub>Services management</sub></td>
+    <td align="center"><img src="assets/screenshots/business-staff.png" alt="Webey Business staff management screen" width="230"><br><sub>Staff management</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/screenshots/business-gallery.png" alt="Webey Business gallery management screen" width="230"><br><sub>Gallery management</sub></td>
+    <td align="center"><img src="assets/screenshots/business-campaigns.png" alt="Webey Business campaigns screen" width="230"><br><sub>Campaign management</sub></td>
+    <td align="center"><img src="assets/screenshots/business-cancellation-policy.png" alt="Webey Business cancellation policy screen" width="230"><br><sub>Cancellation policy</sub></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="assets/screenshots/business-notifications.png" alt="Webey Business notification preferences screen" width="230"><br><sub>Notification preferences</sub></td>
+  </tr>
+</table>
 
 ---
 
