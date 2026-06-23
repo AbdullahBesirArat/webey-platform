@@ -217,11 +217,21 @@ history that might contain secrets. See [`SECURITY.md`](SECURITY.md).
 
 ---
 
-## Screenshots
+## Mobile App Screenshots
 
-Screenshots live in [`assets/screenshots/`](assets/screenshots/). Placeholders are
-provided; only clean, anonymized images free of personal or sensitive data should
-be added.
+The following screenshots were captured from the current Android test builds and illustrate representative customer and business workflows. Sensitive account, payment, and customer information is intentionally excluded.
+
+### Customer App
+
+![Webey customer app salon discovery screen](assets/screenshots/customer-discover.png)
+
+![Webey customer app booking workflow](assets/screenshots/customer-booking.png)
+
+### Business App
+
+![Webey Business operational dashboard](assets/screenshots/business-dashboard.png)
+
+![Webey Business management workflow](assets/screenshots/business-management.png)
 
 ---
 
