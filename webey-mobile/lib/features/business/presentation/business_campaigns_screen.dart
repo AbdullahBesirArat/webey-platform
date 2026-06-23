@@ -534,7 +534,7 @@ class _CampaignCard extends StatelessWidget {
               Switch(
                 value: campaign.isActive,
                 onChanged: _isEnded ? null : (_) => onToggle(),
-                activeColor: WebeyColors.primaryGold,
+                activeThumbColor: WebeyColors.primaryGold,
               ),
               Text(
                 campaign.isActive ? 'Yayında' : 'Duraklat',
@@ -1033,7 +1033,7 @@ class _CampaignFormSheetState extends State<_CampaignFormSheet> {
                           ),
                         ),
                         value: _active,
-                        activeColor: WebeyColors.primaryGold,
+                        activeThumbColor: WebeyColors.primaryGold,
                         onChanged: (v) => setState(() => _active = v),
                       ),
                     ),

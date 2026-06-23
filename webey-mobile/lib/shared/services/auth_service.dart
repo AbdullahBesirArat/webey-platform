@@ -198,8 +198,8 @@ class WebeyAuthService implements AuthService {
           'neighborhood': neighborhood.trim(),
         if (addressLine != null && addressLine.trim().isNotEmpty)
           'address_line': addressLine.trim(),
-        if (latitude != null) 'latitude': latitude,
-        if (longitude != null) 'longitude': longitude,
+        'latitude': ?latitude,
+        'longitude': ?longitude,
         ..._deviceMeta(),
       },
       expectedUserType: 'customer',
